@@ -46,10 +46,12 @@ public class OuladContext : DbContext
         modelBuilder.Entity<StudentAssessment>().HasKey(sa => new { sa.IdAssessment, sa.IdStudent, sa.CodeModule, sa.CodePresentation });
         modelBuilder.Entity<StudentAssessment>().HasOne(sa => sa.Assessment)
             .WithMany(a => a.StudentAssessments)
-            .HasForeignKey(sa => sa.IdAssessment);
+            .HasForeignKey(sa => sa.IdAssessment)
+            .OnDelete(DeleteBehavior.Restrict);
         modelBuilder.Entity<StudentAssessment>().HasOne(sa => sa.StudentInfo)
             .WithMany(si => si.Assessments)
-            .HasForeignKey(sa => new { sa.CodeModule, sa.CodePresentation, sa.IdStudent });
+            .HasForeignKey(sa => new { sa.CodeModule, sa.CodePresentation, sa.IdStudent })
+            .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<StudentVle>().HasKey(sv => new { sv.IdSite, sv.IdStudent, sv.CodeModule, sv.CodePresentation });
         modelBuilder.Entity<StudentVle>().HasOne(sv => sv.Vle)
