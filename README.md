@@ -1,36 +1,67 @@
-# NewRepo
+# 🧠 Caso Práctico 3 – ETL y EDA del dataset OULAD
 
-## Dependencies
+Maestría en Ciencia de Datos e Inteligencia Artificial (MACDIA)
+Materia: Ciencia de Datos I – INF-7303-C1
+Profesor: Silverio Del Orbe A.
 
-This project uses Entity Framework Core with the SQL Server provider. These
-packages are referenced in `OuladEtlEda.csproj`:
+## 🎯 Objetivo del proyecto
+Este repositorio corresponde al tercer caso práctico colaborativo. El objetivo es
+exportar el modelo del dataset **OULAD** a **SQL Server**, limpiar la data,
+crear las claves primarias y foráneas, generar campos ordinales para variables
+categóricas y preparar un `FullDomain` en los niveles detallados de **ASSESS** y
+**VLE**. Sobre la base resultante se ejecuta un proceso de **ETL** y un **EDA**
+extendido implementado preferiblemente en C#.
 
-```
-Microsoft.EntityFrameworkCore
-Microsoft.EntityFrameworkCore.SqlServer
-```
+## 🧱 Arquitectura de la solución
+La solución sigue los principios de *Clean Architecture* y separa la lógica en
+capas claras:
 
-## Generating the Schema
+- **DataAccess** – DbContext de Entity Framework Core y scripts de migración.
+- **Domain** – Entidades con validaciones y reglas de negocio.
+- **DataImport** – Lectura de CSV y mapeo de variables categóricas a ordinales.
+- **Infrastructure** – Utilidades de logging y carga masiva de datos.
+- **Pipeline** – Implementación del proceso ETL orquestado.
+- **Tests** – Conjunto de pruebas unitarias para validadores y mapeadores.
 
-The `OuladContext` class defines the tables from the OULAD dataset. To generate
-the schema in a database run the standard EF Core commands:
+## 🧰 Stack Tecnológico
 
-```bash
-dotnet ef migrations add InitialCreate
-dotnet ef database update
-```
+| Capa            | Tecnología                       |
+|-----------------|----------------------------------|
+| Backend         | .NET 9.0 (consola)               |
+| ORM             | Entity Framework Core            |
+| Base de Datos   | SQL Server                       |
+| EDA             | C# (.NET), ML.NET, OxyPlot       |
+| IDE             | Visual Studio 2022 / VS Code     |
 
-## Project Structure
+## ✅ Criterios de evaluación cubiertos
 
-The repository is organized into two top-level directories:
+| Criterio                                                     | Cumplimiento |
+|--------------------------------------------------------------|--------------|
+| Montar el OULAD en un DBMS                                   | ✅ Script DDL |
+| ETL orquestado y utilidades encapsuladas                     | ✅ Implementado |
+| EDA extendido (matrices de confusión, correlaciones, etc.)   | ✅ C# |
+| Artículo de divulgación con hallazgos                        | ✅ En elaboración |
 
-- `src` &mdash; application code
-- `tests` &mdash; unit tests
+## 👥 Equipo de trabajo
+- Víctor Martín Blanco Núñez
+- Anthony Manuel Burgos Reyes
 
-Within `src` the layers are grouped into folders:
+## 📄 Documentación de entrega
+El documento en formato `.docx` incluye una presentación del equipo en estilo
+APA, un resumen técnico de 250 palabras, capturas y enlaces al repositorio.
 
-- `Domain` &mdash; entity models and validation
-- `DataAccess` &mdash; EF Core context and migrations
-- `DataImport` &mdash; CSV readers
-- `Infrastructure` &mdash; logging and bulk loading helpers
-- `Pipeline` &mdash; ETL pipeline implementation
+## 🚀 Cómo ejecutar el proyecto
+1. Clona este repositorio.
+2. Ejecuta `dotnet restore` en la raíz para descargar las dependencias.
+3. Crea la base de datos destino y ajusta la cadena de conexión en `Program.cs`.
+4. Ejecuta `dotnet ef database update` para generar el esquema.
+5. Corre la aplicación en modo ETL:
+   ```bash
+   dotnet run -- --mode etl --csv-dir <ruta-a-csv>
+   ```
+6. Realiza el análisis exploratorio de datos con los scripts en C# que
+   encontrarás en `src/`.
+
+## 📚 Referencias
+- [Entity Framework Core Docs](https://learn.microsoft.com/ef/)
+- [SQL Server Documentation](https://learn.microsoft.com/sql/)
