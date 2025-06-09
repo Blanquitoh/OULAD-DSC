@@ -1,6 +1,6 @@
 using CsvHelper.Configuration.Attributes;
 
-namespace OuladEtlEda.DataImport;
+namespace OuladEtlEda.DataImport.Models;
 
 public class StudentRegistrationCsv
 {

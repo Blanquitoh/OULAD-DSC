@@ -2,7 +2,7 @@ using System.Globalization;
 using CsvHelper;
 using CsvHelper.Configuration;
 
-namespace OuladEtlEda.DataImport;
+namespace OuladEtlEda.DataImport.Readers;
 
 public abstract class CsvReaderBase<T>
 {
