@@ -1,12 +1,7 @@
-using System;
-using System.Threading.Tasks;
 using OuladEtlEda.Models;
 
 namespace OuladEtlEda;
 
-/// <summary>
-/// Domain validator for <see cref="Assessment"/> entities.
-/// </summary>
 public class AssessDomainValidator : IDomainValidator<Assessment>
 {
     public Task ValidateAsync(Assessment entity)

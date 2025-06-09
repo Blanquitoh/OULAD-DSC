@@ -1,9 +1,8 @@
 using System.CommandLine;
-using System.IO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Serilog;
 using OuladEtlEda.Csv;
+using Serilog;
 
 namespace OuladEtlEda;
 
@@ -12,7 +11,7 @@ internal class Program
     private static async Task<int> Main(string[] args)
     {
         var config = new ConfigurationBuilder()
-            .AddJsonFile("logging.json", optional: true)
+            .AddJsonFile("logging.json", true)
             .Build();
         Log.Logger = new LoggerConfiguration()
             .ReadFrom.Configuration(config)
@@ -25,12 +24,13 @@ internal class Program
         };
         var root = new RootCommand { modeOption, csvDirOption };
 
-        root.SetHandler(async (string mode, string csvDir) =>
+        root.SetHandler(async (mode, csvDir) =>
         {
             Log.Information("ETL started");
 
             var options = new DbContextOptionsBuilder<OuladContext>()
-                .UseSqlServer("Data Source=BLANQUITOH-SERV;User ID=Blanquitoh;Password=welc0me;Database=Oulad;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False")
+                .UseSqlServer(
+                    "Data Source=BLANQUITOH-SERV;User ID=Blanquitoh;Password=welc0me;Database=Oulad;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False")
                 .Options;
 
             using var context = new OuladContext(options);

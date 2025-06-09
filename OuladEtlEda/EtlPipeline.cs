@@ -1,27 +1,21 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using OuladEtlEda.Csv;
 using OuladEtlEda.Models;
 
 namespace OuladEtlEda;
 
-/// <summary>
-/// Simple ETL pipeline that reads CSV records, maps them to domain entities,
-/// validates them and finally inserts them using <see cref="BulkLoader"/>.
-/// </summary>
 public class EtlPipeline
 {
-    private readonly CsvAssessmentReader _reader;
-    private readonly CategoricalOrdinalMapper _mapper;
-    private readonly AssessDomainValidator _validator;
-    private readonly BulkLoader _loader;
     private readonly OuladContext _context;
+    private readonly BulkLoader _loader;
+    private readonly CategoricalOrdinalMapper _mapper;
+    private readonly CsvAssessmentReader _reader;
+    private readonly AssessDomainValidator _validator;
 
     public EtlPipeline(CsvAssessmentReader reader,
-                       CategoricalOrdinalMapper mapper,
-                       AssessDomainValidator validator,
-                       BulkLoader loader,
-                       OuladContext context)
+        CategoricalOrdinalMapper mapper,
+        AssessDomainValidator validator,
+        BulkLoader loader,
+        OuladContext context)
     {
         _reader = reader;
         _mapper = mapper;
@@ -30,9 +24,6 @@ public class EtlPipeline
         _context = context;
     }
 
-    /// <summary>
-    /// Executes the ETL pipeline.
-    /// </summary>
     public async Task RunAsync()
     {
         try
@@ -44,6 +35,7 @@ public class EtlPipeline
                 await _validator.ValidateAsync(assessment);
                 entities.Add(assessment);
             }
+
             await _loader.BulkInsertAsync(_context, entities);
         }
         catch (DomainException ex)
@@ -62,7 +54,7 @@ public class EtlPipeline
             CodePresentation = csv.CodePresentation,
             AssessmentType = csv.AssessmentType,
             Date = csv.Date,
-            Weight = csv.Weight,
+            Weight = csv.Weight
         };
     }
 }

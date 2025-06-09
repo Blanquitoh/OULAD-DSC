@@ -1,14 +1,13 @@
+using System.Globalization;
 using CsvHelper;
 using CsvHelper.Configuration;
-using System.Globalization;
-using System.IO;
 
 namespace OuladEtlEda.Csv;
 
 public abstract class CsvReaderBase<T>
 {
-    private readonly string _path;
     private readonly CsvConfiguration _configuration;
+    private readonly string _path;
 
     protected CsvReaderBase(string path, CsvConfiguration? configuration = null)
     {
@@ -29,11 +28,10 @@ public abstract class CsvReaderBase<T>
         await csv.ReadAsync();
         csv.ReadHeader();
 
-        while (await csv.ReadAsync())
-        {
-            yield return csv.GetRecord<T>();
-        }
+        while (await csv.ReadAsync()) yield return csv.GetRecord<T>();
     }
 
-    protected virtual void Configure(CsvReader csv) { }
+    protected virtual void Configure(CsvReader csv)
+    {
+    }
 }

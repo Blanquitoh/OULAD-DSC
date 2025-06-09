@@ -1,5 +1,4 @@
 using Xunit;
-using OuladEtlEda;
 
 namespace OuladEtlEda.Tests.MapperTests;
 
