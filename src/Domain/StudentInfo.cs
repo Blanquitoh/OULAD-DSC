@@ -10,12 +10,16 @@ public class StudentInfo : ICourseEntity
 
     public Gender Gender { get; set; }
 
+    [MaxLength(32)]
+    [Column(TypeName = "varchar(32)")]
     public string? Region { get; set; }
 
     public int? RegionOrdinal { get; set; }
 
     public EducationLevel HighestEducation { get; set; }
 
+    [MaxLength(32)]
+    [Column(TypeName = "varchar(32)")]
     public string? ImdBand { get; set; }
 
     public int? ImdBandOrdinal { get; set; }
