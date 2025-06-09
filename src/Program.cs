@@ -22,10 +22,8 @@ internal class Program
             .CreateLogger();
 
         var modeOption = new Option<string>("--mode", () => "etl", "Execution mode");
-        var csvDirOption = new Option<string>("--csv-dir", "C:\\csv")
-        {
-            IsRequired = true
-        };
+        var csvDirOption = new Option<string>("--csv-dir", () => "C:\\csv",
+            "Directory containing CSV files");
         var root = new RootCommand { modeOption, csvDirOption };
 
         root.SetHandler(async (mode, csvDir) =>
