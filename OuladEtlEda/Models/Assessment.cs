@@ -9,10 +9,8 @@ public class Assessment
     [Key]
     public int IdAssessment { get; set; }
 
-    [ForeignKey(nameof(Course))]
     public string CodeModule { get; set; } = null!;
 
-    [ForeignKey(nameof(Course))]
     public string CodePresentation { get; set; } = null!;
 
     public string? AssessmentType { get; set; }
@@ -21,6 +19,7 @@ public class Assessment
 
     public int Weight { get; set; }
 
+    [ForeignKey("CodeModule,CodePresentation")]
     public Course? Course { get; set; }
     public ICollection<StudentAssessment> StudentAssessments { get; set; } = new List<StudentAssessment>();
 }

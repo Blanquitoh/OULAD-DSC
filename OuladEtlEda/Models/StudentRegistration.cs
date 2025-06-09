@@ -8,12 +8,10 @@ public class StudentRegistration
 {
     [Key]
     [Column(Order = 0)]
-    [ForeignKey(nameof(Course))]
     public string CodeModule { get; set; } = null!;
 
     [Key]
     [Column(Order = 1)]
-    [ForeignKey(nameof(Course))]
     public string CodePresentation { get; set; } = null!;
 
     [Key]
@@ -24,6 +22,7 @@ public class StudentRegistration
 
     public int? DateUnregistration { get; set; }
 
+    [ForeignKey("CodeModule,CodePresentation")]
     public Course? Course { get; set; }
 
     [ForeignKey("CodeModule,CodePresentation,IdStudent")]

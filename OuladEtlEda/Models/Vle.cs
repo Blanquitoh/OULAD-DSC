@@ -9,10 +9,8 @@ public class Vle
     [Key]
     public int IdSite { get; set; }
 
-    [ForeignKey(nameof(Course))]
     public string CodeModule { get; set; } = null!;
 
-    [ForeignKey(nameof(Course))]
     public string CodePresentation { get; set; } = null!;
 
     public string? ActivityType { get; set; }
@@ -21,6 +19,7 @@ public class Vle
 
     public int? WeekTo { get; set; }
 
+    [ForeignKey("CodeModule,CodePresentation")]
     public Course? Course { get; set; }
     public ICollection<StudentVle> StudentVles { get; set; } = new List<StudentVle>();
 }
