@@ -32,6 +32,9 @@ namespace OuladEtlEda.Migrations
                     b.Property<string>("AssessmentType")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("AssessmentTypeOrdinal")
+                        .HasColumnType("int");
+
                     b.Property<string>("CodeModule")
                         .IsRequired()
                         .HasMaxLength(8)
@@ -153,11 +156,17 @@ namespace OuladEtlEda.Migrations
                     b.Property<string>("ImdBand")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ImdBandOrdinal")
+                        .HasColumnType("int");
+
                     b.Property<int>("NumOfPrevAttempts")
                         .HasColumnType("int");
 
                     b.Property<string>("Region")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("RegionOrdinal")
+                        .HasColumnType("int");
 
                     b.Property<int>("StudiedCredits")
                         .HasColumnType("int");
@@ -241,6 +250,9 @@ namespace OuladEtlEda.Migrations
 
                     b.Property<string>("ActivityType")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ActivityTypeOrdinal")
+                        .HasColumnType("int");
 
                     b.Property<string>("CodeModule")
                         .IsRequired()

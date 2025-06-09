@@ -22,9 +22,13 @@ public class StudentInfo : ICourseEntity
 
     public string? Region { get; set; }
 
+    public int? RegionOrdinal { get; set; }
+
     public EducationLevel HighestEducation { get; set; }
 
     public string? ImdBand { get; set; }
+
+    public int? ImdBandOrdinal { get; set; }
 
     public AgeBand AgeBand { get; set; }
 
