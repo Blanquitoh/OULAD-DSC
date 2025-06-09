@@ -28,7 +28,7 @@ public static class ExtendedEda
         foreach (var s in ctx.StudentInfos)
             matrix[(int)s.Gender, (int)s.FinalResult]++;
 
-        var model = new PlotModel { Title = "Confusion Matrix" };
+        var model = new PlotModel { Title = "Confusion Matrix", Background = OxyColors.White };
         model.Axes.Add(new CategoryAxis { Position = AxisPosition.Left, Key = "y", ItemsSource = genders.Select(g => g.ToString()).ToList() });
         model.Axes.Add(new CategoryAxis { Position = AxisPosition.Bottom, Key = "x", ItemsSource = results.Select(r => r.ToString()).ToList() });
 
@@ -41,7 +41,7 @@ public static class ExtendedEda
             Data = matrix
         };
         model.Series.Add(heatMap);
-        PngExporter.Export(model, path, 600, 400, OxyColors.White);
+        PngExporter.Export(model, path, 600, 400, 96);
     }
 
     public static void PlotCorrelationMatrix(OuladContext ctx, string path)
@@ -60,7 +60,7 @@ public static class ExtendedEda
             for (int j = 0; j < cols; j++)
                 matrix[i, j] = Pearson(rows.Select(r => r[i]), rows.Select(r => r[j]));
 
-        var model = new PlotModel { Title = "Correlation Matrix" };
+        var model = new PlotModel { Title = "Correlation Matrix", Background = OxyColors.White };
         model.Axes.Add(new CategoryAxis { Position = AxisPosition.Left, ItemsSource = new[] { "Age", "Attempts", "Credits" } });
         model.Axes.Add(new CategoryAxis { Position = AxisPosition.Bottom, ItemsSource = new[] { "Age", "Attempts", "Credits" } });
         var heatMap = new HeatMapSeries
@@ -72,7 +72,7 @@ public static class ExtendedEda
             Data = matrix
         };
         model.Series.Add(heatMap);
-        PngExporter.Export(model, path, 600, 400, OxyColors.White);
+        PngExporter.Export(model, path, 600, 400, 96);
 
         static double Pearson(IEnumerable<double> xs, IEnumerable<double> ys)
         {
@@ -96,7 +96,7 @@ public static class ExtendedEda
 
     public static void PlotBoxplot(OuladContext ctx, string path)
     {
-        var model = new PlotModel { Title = "StudiedCredits by Age" };
+        var model = new PlotModel { Title = "StudiedCredits by Age", Background = OxyColors.White };
         var series = new BoxPlotSeries();
         var ageBands = Enum.GetValues<AgeBand>();
         int x = 0;
@@ -119,7 +119,7 @@ public static class ExtendedEda
         model.Series.Add(series);
         model.Axes.Add(new CategoryAxis { Position = AxisPosition.Bottom, ItemsSource = ageBands.Select(a => a.ToString()).ToList() });
         model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
-        PngExporter.Export(model, path, 600, 400, OxyColors.White);
+        PngExporter.Export(model, path, 600, 400, 96);
 
         static double Percentile(IList<double> ordered, double p)
         {
@@ -161,12 +161,12 @@ public static class ExtendedEda
             normal.Points.Add(new DataPoint(x, y));
         }
 
-        var model = new PlotModel { Title = "Normal Distribution" };
+        var model = new PlotModel { Title = "Normal Distribution", Background = OxyColors.White };
         model.Series.Add(hist);
         model.Series.Add(normal);
         model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
         model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
-        PngExporter.Export(model, path, 600, 400, OxyColors.White);
+        PngExporter.Export(model, path, 600, 400, 96);
 
         static double Normal(double x, double mu, double sigma)
             => 1.0 / (Math.Sqrt(2 * Math.PI) * sigma) * Math.Exp(-Math.Pow(x - mu, 2) / (2 * sigma * sigma));
@@ -177,10 +177,10 @@ public static class ExtendedEda
         var series = new ScatterSeries { MarkerType = MarkerType.Circle };
         foreach (var s in ctx.StudentInfos)
             series.Points.Add(new ScatterPoint(s.NumOfPrevAttempts, s.StudiedCredits));
-        var model = new PlotModel { Title = "Attempts vs Credits" };
+        var model = new PlotModel { Title = "Attempts vs Credits", Background = OxyColors.White };
         model.Series.Add(series);
         model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "Attempts" });
         model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Credits" });
-        PngExporter.Export(model, path, 600, 400, OxyColors.White);
+        PngExporter.Export(model, path, 600, 400, 96);
     }
 }
