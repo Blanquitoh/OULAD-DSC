@@ -11,13 +11,13 @@ public class EtlPipeline
     private readonly OuladContext _context;
     private readonly BulkLoader _loader;
     private readonly CategoricalOrdinalMapper _mapper;
-    private readonly CsvCourseReader _courseReader;
-    private readonly CsvAssessmentReader _assessmentReader;
-    private readonly CsvStudentInfoReader _studentInfoReader;
-    private readonly CsvStudentRegistrationReader _registrationReader;
-    private readonly CsvStudentAssessmentReader _studentAssessmentReader;
-    private readonly CsvVleReader _vleReader;
-    private readonly CsvStudentVleReader _studentVleReader;
+    private readonly CsvReader<CourseCsv> _courseReader;
+    private readonly CsvReader<AssessmentCsv> _assessmentReader;
+    private readonly CsvReader<StudentInfoCsv> _studentInfoReader;
+    private readonly CsvReader<StudentRegistrationCsv> _registrationReader;
+    private readonly CsvReader<StudentAssessmentCsv> _studentAssessmentReader;
+    private readonly CsvReader<VleCsv> _vleReader;
+    private readonly CsvReader<StudentVleCsv> _studentVleReader;
 
     private readonly CourseValidator _courseValidator;
     private readonly AssessmentValidator _assessmentValidator;
@@ -28,13 +28,13 @@ public class EtlPipeline
     private readonly StudentVleValidator _studentVleValidator;
 
     public EtlPipeline(
-        CsvCourseReader courseReader,
-        CsvAssessmentReader assessmentReader,
-        CsvStudentInfoReader studentInfoReader,
-        CsvStudentRegistrationReader registrationReader,
-        CsvStudentAssessmentReader studentAssessmentReader,
-        CsvVleReader vleReader,
-        CsvStudentVleReader studentVleReader,
+        CsvReader<CourseCsv> courseReader,
+        CsvReader<AssessmentCsv> assessmentReader,
+        CsvReader<StudentInfoCsv> studentInfoReader,
+        CsvReader<StudentRegistrationCsv> registrationReader,
+        CsvReader<StudentAssessmentCsv> studentAssessmentReader,
+        CsvReader<VleCsv> vleReader,
+        CsvReader<StudentVleCsv> studentVleReader,
         CategoricalOrdinalMapper mapper,
         CourseValidator courseValidator,
         AssessmentValidator assessmentValidator,
