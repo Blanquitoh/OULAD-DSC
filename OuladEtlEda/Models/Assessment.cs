@@ -10,9 +10,11 @@ public class Assessment
     public int IdAssessment { get; set; }
 
     [MaxLength(8)]
+    [Column(TypeName = "varchar(8)")]
     public string CodeModule { get; set; } = null!;
 
     [MaxLength(8)]
+    [Column(TypeName = "varchar(8)")]
     public string CodePresentation { get; set; } = null!;
 
     public string? AssessmentType { get; set; }

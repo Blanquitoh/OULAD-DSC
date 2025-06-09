@@ -8,11 +8,13 @@ public class Course
 {
     [Key]
     [Column(Order = 0)]
+    [Column(TypeName = "varchar(8)")]
     [MaxLength(8)]
     public string CodeModule { get; set; } = null!;
 
     [Key]
     [Column(Order = 1)]
+    [Column(TypeName = "varchar(8)")]
     [MaxLength(8)]
     public string CodePresentation { get; set; } = null!;
 
