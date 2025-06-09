@@ -24,13 +24,21 @@ public class OuladContext : DbContext
         modelBuilder.Entity<Course>(entity =>
         {
             entity.HasKey(c => new { c.CodeModule, c.CodePresentation });
-            entity.Property(c => c.CodeModule).HasMaxLength(8);
-            entity.Property(c => c.CodePresentation).HasMaxLength(8);
+            entity.Property(c => c.CodeModule)
+                .HasMaxLength(8)
+                .IsUnicode(false);
+            entity.Property(c => c.CodePresentation)
+                .HasMaxLength(8)
+                .IsUnicode(false);
         });
         modelBuilder.Entity<Assessment>(entity =>
         {
-            entity.Property(a => a.CodeModule).HasMaxLength(8);
-            entity.Property(a => a.CodePresentation).HasMaxLength(8);
+            entity.Property(a => a.CodeModule)
+                .HasMaxLength(8)
+                .IsUnicode(false);
+            entity.Property(a => a.CodePresentation)
+                .HasMaxLength(8)
+                .IsUnicode(false);
             entity.HasOne(a => a.Course)
                 .WithMany(c => c.Assessments)
                 .HasForeignKey(a => new { a.CodeModule, a.CodePresentation })
@@ -38,8 +46,12 @@ public class OuladContext : DbContext
         });
         modelBuilder.Entity<Vle>(entity =>
         {
-            entity.Property(v => v.CodeModule).HasMaxLength(8);
-            entity.Property(v => v.CodePresentation).HasMaxLength(8);
+            entity.Property(v => v.CodeModule)
+                .HasMaxLength(8)
+                .IsUnicode(false);
+            entity.Property(v => v.CodePresentation)
+                .HasMaxLength(8)
+                .IsUnicode(false);
             entity.HasOne(v => v.Course)
                 .WithMany(c => c.Vles)
                 .HasForeignKey(v => new { v.CodeModule, v.CodePresentation })
@@ -49,8 +61,12 @@ public class OuladContext : DbContext
         modelBuilder.Entity<StudentInfo>(entity =>
         {
             entity.HasKey(s => new { s.CodeModule, s.CodePresentation, s.IdStudent });
-            entity.Property(s => s.CodeModule).HasMaxLength(8);
-            entity.Property(s => s.CodePresentation).HasMaxLength(8);
+            entity.Property(s => s.CodeModule)
+                .HasMaxLength(8)
+                .IsUnicode(false);
+            entity.Property(s => s.CodePresentation)
+                .HasMaxLength(8)
+                .IsUnicode(false);
             entity.HasOne(s => s.Course)
                 .WithMany(c => c.Students)
                 .HasForeignKey(s => new { s.CodeModule, s.CodePresentation })
@@ -60,8 +76,12 @@ public class OuladContext : DbContext
         modelBuilder.Entity<StudentRegistration>(entity =>
         {
             entity.HasKey(r => new { r.CodeModule, r.CodePresentation, r.IdStudent });
-            entity.Property(r => r.CodeModule).HasMaxLength(8);
-            entity.Property(r => r.CodePresentation).HasMaxLength(8);
+            entity.Property(r => r.CodeModule)
+                .HasMaxLength(8)
+                .IsUnicode(false);
+            entity.Property(r => r.CodePresentation)
+                .HasMaxLength(8)
+                .IsUnicode(false);
             entity.HasOne(r => r.Course)
                 .WithMany(c => c.Registrations)
                 .HasForeignKey(r => new { r.CodeModule, r.CodePresentation })
@@ -75,8 +95,12 @@ public class OuladContext : DbContext
         modelBuilder.Entity<StudentAssessment>(entity =>
         {
             entity.HasKey(sa => new { sa.IdAssessment, sa.IdStudent, sa.CodeModule, sa.CodePresentation });
-            entity.Property(sa => sa.CodeModule).HasMaxLength(8);
-            entity.Property(sa => sa.CodePresentation).HasMaxLength(8);
+            entity.Property(sa => sa.CodeModule)
+                .HasMaxLength(8)
+                .IsUnicode(false);
+            entity.Property(sa => sa.CodePresentation)
+                .HasMaxLength(8)
+                .IsUnicode(false);
             entity.HasOne(sa => sa.Assessment)
                 .WithMany(a => a.StudentAssessments)
                 .HasForeignKey(sa => sa.IdAssessment)
@@ -90,8 +114,12 @@ public class OuladContext : DbContext
         modelBuilder.Entity<StudentVle>(entity =>
         {
             entity.HasKey(sv => new { sv.IdSite, sv.IdStudent, sv.CodeModule, sv.CodePresentation });
-            entity.Property(sv => sv.CodeModule).HasMaxLength(8);
-            entity.Property(sv => sv.CodePresentation).HasMaxLength(8);
+            entity.Property(sv => sv.CodeModule)
+                .HasMaxLength(8)
+                .IsUnicode(false);
+            entity.Property(sv => sv.CodePresentation)
+                .HasMaxLength(8)
+                .IsUnicode(false);
             entity.HasOne(sv => sv.Vle)
                 .WithMany(v => v.StudentVles)
                 .HasForeignKey(sv => sv.IdSite)
@@ -104,8 +132,12 @@ public class OuladContext : DbContext
 
         modelBuilder.Entity<Vle>(entity =>
         {
-            entity.Property(v => v.CodeModule).HasMaxLength(8);
-            entity.Property(v => v.CodePresentation).HasMaxLength(8);
+            entity.Property(v => v.CodeModule)
+                .HasMaxLength(8)
+                .IsUnicode(false);
+            entity.Property(v => v.CodePresentation)
+                .HasMaxLength(8)
+                .IsUnicode(false);
         });
 
         // store enums as integers
