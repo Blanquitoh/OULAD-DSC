@@ -7,20 +7,16 @@ namespace OuladEtlEda.Models;
 public class StudentRegistration
 {
     [Key]
-    [Column(Order = 0)]
-    [Column(TypeName = "varchar(8)")]
+    [Column(Order = 0, TypeName = "varchar(8)")]
     [MaxLength(8)]
     public string CodeModule { get; set; } = null!;
 
     [Key]
-    [Column(Order = 1)]
-    [Column(TypeName = "varchar(8)")]
+    [Column(Order = 1, TypeName = "varchar(8)")]
     [MaxLength(8)]
     public string CodePresentation { get; set; } = null!;
 
-    [Key]
-    [Column(Order = 2)]
-    public int IdStudent { get; set; }
+    [Key] [Column(Order = 2)] public int IdStudent { get; set; }
 
     public int? DateRegistration { get; set; }
 
