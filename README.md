@@ -57,11 +57,11 @@ APA, un resumen técnico de 250 palabras, capturas y enlaces al repositorio.
 4. Ejecuta `dotnet ef database update` para generar el esquema.
 5. Corre la aplicación en modo ETL:
    ```bash
-   dotnet run -- --mode etl --csv-dir <ruta-a-csv>
+   dotnet run -- --mode Etl --csv-dir <ruta-a-csv>
    ```
 6. Para el análisis exploratorio ejecuta:
    ```bash
-   dotnet run -- --mode eda
+   dotnet run -- --mode Eda
    ```
 
 ## 📚 Referencias
