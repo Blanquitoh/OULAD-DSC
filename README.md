@@ -54,7 +54,13 @@ APA, un resumen técnico de 250 palabras, capturas y enlaces al repositorio.
 1. Clona este repositorio.
 2. Ejecuta `dotnet restore` en la raíz para descargar las dependencias.
 3. Crea la base de datos destino y ajusta la cadena de conexión en `Program.cs`.
-4. Ejecuta `dotnet ef database update` para generar el esquema.
+4. Ejecuta `dotnet ef database update` para generar el esquema. Este comando
+   también aplica la migración `CreateFullDomainView` que genera la vista
+   `FullDomain` consolidando las tablas **ASSESS** y **VLE**.
+   Si prefieres ejecutarla manualmente puedes correr:
+   ```bash
+   sqlcmd -S <server> -d <db> -i sql/create_full_domain.sql
+   ```
 5. Corre la aplicación en modo ETL:
    ```bash
    dotnet run -- --mode Etl --csv-dir <ruta-a-csv>
