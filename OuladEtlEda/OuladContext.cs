@@ -21,45 +21,92 @@ public class OuladContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<Course>().HasKey(c => new { c.CodeModule, c.CodePresentation });
-        modelBuilder.Entity<Assessment>().HasOne(a => a.Course)
-            .WithMany(c => c.Assessments)
-            .HasForeignKey(a => new { a.CodeModule, a.CodePresentation });
+        modelBuilder.Entity<Course>(entity =>
+        {
+            entity.HasKey(c => new { c.CodeModule, c.CodePresentation });
+            entity.Property(c => c.CodeModule).HasMaxLength(8);
+            entity.Property(c => c.CodePresentation).HasMaxLength(8);
+        });
+        modelBuilder.Entity<Assessment>(entity =>
+        {
+            entity.Property(a => a.CodeModule).HasMaxLength(8);
+            entity.Property(a => a.CodePresentation).HasMaxLength(8);
+            entity.HasOne(a => a.Course)
+                .WithMany(c => c.Assessments)
+                .HasForeignKey(a => new { a.CodeModule, a.CodePresentation })
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+        modelBuilder.Entity<Vle>(entity =>
+        {
+            entity.Property(v => v.CodeModule).HasMaxLength(8);
+            entity.Property(v => v.CodePresentation).HasMaxLength(8);
+            entity.HasOne(v => v.Course)
+                .WithMany(c => c.Vles)
+                .HasForeignKey(v => new { v.CodeModule, v.CodePresentation })
+                .OnDelete(DeleteBehavior.Restrict);
+        });
 
-        modelBuilder.Entity<Vle>().HasOne(v => v.Course)
-            .WithMany(c => c.Vles)
-            .HasForeignKey(v => new { v.CodeModule, v.CodePresentation });
+        modelBuilder.Entity<StudentInfo>(entity =>
+        {
+            entity.HasKey(s => new { s.CodeModule, s.CodePresentation, s.IdStudent });
+            entity.Property(s => s.CodeModule).HasMaxLength(8);
+            entity.Property(s => s.CodePresentation).HasMaxLength(8);
+            entity.HasOne(s => s.Course)
+                .WithMany(c => c.Students)
+                .HasForeignKey(s => new { s.CodeModule, s.CodePresentation })
+                .OnDelete(DeleteBehavior.Restrict);
+        });
 
-        modelBuilder.Entity<StudentInfo>().HasKey(s => new { s.CodeModule, s.CodePresentation, s.IdStudent });
-        modelBuilder.Entity<StudentInfo>().HasOne(s => s.Course)
-            .WithMany(c => c.Students)
-            .HasForeignKey(s => new { s.CodeModule, s.CodePresentation });
+        modelBuilder.Entity<StudentRegistration>(entity =>
+        {
+            entity.HasKey(r => new { r.CodeModule, r.CodePresentation, r.IdStudent });
+            entity.Property(r => r.CodeModule).HasMaxLength(8);
+            entity.Property(r => r.CodePresentation).HasMaxLength(8);
+            entity.HasOne(r => r.Course)
+                .WithMany(c => c.Registrations)
+                .HasForeignKey(r => new { r.CodeModule, r.CodePresentation })
+                .OnDelete(DeleteBehavior.Restrict);
+            entity.HasOne(r => r.StudentInfo)
+                .WithMany(s => s.Registrations)
+                .HasForeignKey(r => new { r.CodeModule, r.CodePresentation, r.IdStudent })
+                .OnDelete(DeleteBehavior.Restrict);
+        });
 
-        modelBuilder.Entity<StudentRegistration>().HasKey(r => new { r.CodeModule, r.CodePresentation, r.IdStudent });
-        modelBuilder.Entity<StudentRegistration>().HasOne(r => r.Course)
-            .WithMany(c => c.Registrations)
-            .HasForeignKey(r => new { r.CodeModule, r.CodePresentation });
-        modelBuilder.Entity<StudentRegistration>().HasOne(r => r.StudentInfo)
-            .WithMany(s => s.Registrations)
-            .HasForeignKey(r => new { r.CodeModule, r.CodePresentation, r.IdStudent });
+        modelBuilder.Entity<StudentAssessment>(entity =>
+        {
+            entity.HasKey(sa => new { sa.IdAssessment, sa.IdStudent, sa.CodeModule, sa.CodePresentation });
+            entity.Property(sa => sa.CodeModule).HasMaxLength(8);
+            entity.Property(sa => sa.CodePresentation).HasMaxLength(8);
+            entity.HasOne(sa => sa.Assessment)
+                .WithMany(a => a.StudentAssessments)
+                .HasForeignKey(sa => sa.IdAssessment)
+                .OnDelete(DeleteBehavior.Restrict);
+            entity.HasOne(sa => sa.StudentInfo)
+                .WithMany(si => si.Assessments)
+                .HasForeignKey(sa => new { sa.CodeModule, sa.CodePresentation, sa.IdStudent })
+                .OnDelete(DeleteBehavior.Restrict);
+        });
 
-        modelBuilder.Entity<StudentAssessment>().HasKey(sa => new { sa.IdAssessment, sa.IdStudent, sa.CodeModule, sa.CodePresentation });
-        modelBuilder.Entity<StudentAssessment>().HasOne(sa => sa.Assessment)
-            .WithMany(a => a.StudentAssessments)
-            .HasForeignKey(sa => sa.IdAssessment)
-            .OnDelete(DeleteBehavior.Restrict);
-        modelBuilder.Entity<StudentAssessment>().HasOne(sa => sa.StudentInfo)
-            .WithMany(si => si.Assessments)
-            .HasForeignKey(sa => new { sa.CodeModule, sa.CodePresentation, sa.IdStudent })
-            .OnDelete(DeleteBehavior.Restrict);
+        modelBuilder.Entity<StudentVle>(entity =>
+        {
+            entity.HasKey(sv => new { sv.IdSite, sv.IdStudent, sv.CodeModule, sv.CodePresentation });
+            entity.Property(sv => sv.CodeModule).HasMaxLength(8);
+            entity.Property(sv => sv.CodePresentation).HasMaxLength(8);
+            entity.HasOne(sv => sv.Vle)
+                .WithMany(v => v.StudentVles)
+                .HasForeignKey(sv => sv.IdSite)
+                .OnDelete(DeleteBehavior.Restrict);
+            entity.HasOne(sv => sv.StudentInfo)
+                .WithMany(si => si.StudentVles)
+                .HasForeignKey(sv => new { sv.CodeModule, sv.CodePresentation, sv.IdStudent })
+                .OnDelete(DeleteBehavior.Restrict);
+        });
 
-        modelBuilder.Entity<StudentVle>().HasKey(sv => new { sv.IdSite, sv.IdStudent, sv.CodeModule, sv.CodePresentation });
-        modelBuilder.Entity<StudentVle>().HasOne(sv => sv.Vle)
-            .WithMany(v => v.StudentVles)
-            .HasForeignKey(sv => sv.IdSite);
-        modelBuilder.Entity<StudentVle>().HasOne(sv => sv.StudentInfo)
-            .WithMany(si => si.StudentVles)
-            .HasForeignKey(sv => new { sv.CodeModule, sv.CodePresentation, sv.IdStudent });
+        modelBuilder.Entity<Vle>(entity =>
+        {
+            entity.Property(v => v.CodeModule).HasMaxLength(8);
+            entity.Property(v => v.CodePresentation).HasMaxLength(8);
+        });
 
         // store enums as integers
         modelBuilder.Entity<StudentInfo>().Property(s => s.Gender).HasConversion<int>();
