@@ -155,7 +155,7 @@ public class EtlPipeline
 
         foreach (var table in tables)
         {
-            await _context.Database.ExecuteSqlRawAsync($"TRUNCATE TABLE [{table}]");
+            await _context.Database.ExecuteSqlRawAsync($"DELETE FROM [{table}];");
         }
     }
 
