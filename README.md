@@ -63,6 +63,7 @@ APA, un resumen técnico de 250 palabras, capturas y enlaces al repositorio.
    ```bash
    dotnet run -- --mode Eda
    ```
+7. Ejecuta `./test.sh` para construir y correr todas las pruebas.
 
 ## 📚 Referencias
 - [Entity Framework Core Docs](https://learn.microsoft.com/ef/)
