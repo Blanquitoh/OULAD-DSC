@@ -22,7 +22,7 @@ internal class Program
             .CreateLogger();
 
         var modeOption = new Option<string>("--mode", () => "etl", "Execution mode");
-        var csvDirOption = new Option<string>("--csv-dir", "Directory containing CSV files")
+        var csvDirOption = new Option<string>("--csv-dir", "C:\\csv")
         {
             IsRequired = true
         };
