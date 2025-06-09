@@ -33,7 +33,7 @@ namespace OuladEtlEda.Migrations
                     CodePresentation = table.Column<string>(type: "varchar(8)", unicode: false, maxLength: 8, nullable: false),
                     AssessmentType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Date = table.Column<int>(type: "int", nullable: true),
-                    Weight = table.Column<int>(type: "int", nullable: false)
+                    Weight = table.Column<decimal>(type: "decimal(5,2)", nullable: false)
                 },
                 constraints: table =>
                 {
