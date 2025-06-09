@@ -12,16 +12,16 @@ public class AssessDomainValidator : IDomainValidator<Assessment>
     public Task ValidateAsync(Assessment entity)
     {
         if (entity == null)
-            throw new ArgumentNullException(nameof(entity));
+            throw new DomainException("Entity cannot be null");
 
         if (string.IsNullOrWhiteSpace(entity.CodeModule))
-            throw new ArgumentException("CodeModule is required", nameof(entity));
+            throw new DomainException("CodeModule is required");
 
         if (string.IsNullOrWhiteSpace(entity.CodePresentation))
-            throw new ArgumentException("CodePresentation is required", nameof(entity));
+            throw new DomainException("CodePresentation is required");
 
         if (entity.Weight < 0)
-            throw new ArgumentException("Weight cannot be negative", nameof(entity));
+            throw new DomainException("Weight cannot be negative");
 
         return Task.CompletedTask;
     }
