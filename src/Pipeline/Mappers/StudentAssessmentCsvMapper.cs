@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using OuladEtlEda.DataAccess;
 using OuladEtlEda.DataImport.Models;
 using OuladEtlEda.Domain;
+using Serilog;
 
 namespace OuladEtlEda.Pipeline.Mappers;
 
@@ -16,12 +17,15 @@ public class StudentAssessmentCsvMapper : ICsvEntityMapper<StudentAssessmentCsv,
         _context = context;
     }
 
-    public StudentAssessment Map(StudentAssessmentCsv csv)
+    public StudentAssessment? Map(StudentAssessmentCsv csv)
     {
         var idAssessment = _mapper.GetOrAdd("assessment_id", csv.IdAssessment.ToString());
         var assessment = _context.Assessments.AsNoTracking().FirstOrDefault(a => a.IdAssessment == idAssessment);
         if (assessment == null)
-            throw new InvalidOperationException($"Assessment {csv.IdAssessment} not found");
+        {
+            Log.Warning("Assessment {AssessmentId} not found for student {StudentId}", csv.IdAssessment, csv.IdStudent);
+            return null;
+        }
 
         return new StudentAssessment
         {
