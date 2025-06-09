@@ -1,12 +1,16 @@
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace OuladEtlEda.Migrations;
+#nullable disable
 
-public partial class CreateFullDomainView : Migration
+namespace OuladEtlEda.Migrations
 {
-    protected override void Up(MigrationBuilder migrationBuilder)
+    /// <inheritdoc />
+    public partial class CreateFullDomainView : Migration
     {
-        var sql = @"CREATE VIEW dbo.FullDomain AS
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            var sql = @"CREATE VIEW dbo.FullDomain AS
 SELECT
     sa.CodeModule,
     sa.CodePresentation,
@@ -78,11 +82,13 @@ JOIN vle v ON sv.IdSite = v.IdSite
 JOIN studentInfo si ON sv.CodeModule = si.CodeModule
     AND sv.CodePresentation = si.CodePresentation
     AND sv.IdStudent = si.IdStudent";
-        migrationBuilder.Sql(sql);
-    }
+            migrationBuilder.Sql(sql);
+        }
 
-    protected override void Down(MigrationBuilder migrationBuilder)
-    {
-        migrationBuilder.Sql("DROP VIEW IF EXISTS dbo.FullDomain;");
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.Sql("DROP VIEW IF EXISTS dbo.FullDomain;");
+        }
     }
 }
