@@ -59,8 +59,10 @@ APA, un resumen técnico de 250 palabras, capturas y enlaces al repositorio.
    ```bash
    dotnet run -- --mode etl --csv-dir <ruta-a-csv>
    ```
-6. Realiza el análisis exploratorio de datos con los scripts en C# que
-   encontrarás en `src/`.
+6. Para el análisis exploratorio ejecuta:
+   ```bash
+   dotnet run -- --mode eda
+   ```
 
 ## 📚 Referencias
 - [Entity Framework Core Docs](https://learn.microsoft.com/ef/)
