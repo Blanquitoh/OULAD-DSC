@@ -361,3 +361,11 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/src/anonymisedData/assessments.csv
+/src/anonymisedData/courses.csv
+/src/anonymisedData/Database-schema-of-OULAD-dataset-online-available-at.png
+/src/anonymisedData/studentAssessment.csv
+/src/anonymisedData/studentInfo.csv
+/src/anonymisedData/studentRegistration.csv
+/src/anonymisedData/studentVle.csv
+/src/anonymisedData/vle.csv
