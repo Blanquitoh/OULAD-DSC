@@ -90,7 +90,7 @@ internal class Program
                     await pipeline.RunAsync();
                     break;
                 case ExecutionMode.Eda:
-                    BasicEda.Run(context);
+                    ExtendedEda.Run(context);
                     break;
             }
         }, modeOption, csvDirOption, connectionStringOption, logLevelOption);
