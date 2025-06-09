@@ -11,9 +11,7 @@ public class StudentAssessment
     [ForeignKey(nameof(Assessment))]
     public int IdAssessment { get; set; }
 
-    [Key]
-    [Column(Order = 1)]
-    public int IdStudent { get; set; }
+    [Key] [Column(Order = 1)] public int IdStudent { get; set; }
 
     [Key]
     [Column(Order = 2, TypeName = "varchar(8)")]

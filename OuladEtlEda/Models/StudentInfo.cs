@@ -16,9 +16,7 @@ public class StudentInfo
     [MaxLength(8)]
     public string CodePresentation { get; set; } = null!;
 
-    [Key]
-    [Column(Order = 2)]
-    public int IdStudent { get; set; }
+    [Key] [Column(Order = 2)] public int IdStudent { get; set; }
 
     public Gender Gender { get; set; }
 
@@ -40,6 +38,7 @@ public class StudentInfo
 
     [ForeignKey("CodeModule,CodePresentation")]
     public Course? Course { get; set; }
+
     public ICollection<StudentRegistration> Registrations { get; set; } = new List<StudentRegistration>();
     public ICollection<StudentAssessment> Assessments { get; set; } = new List<StudentAssessment>();
     public ICollection<StudentVle> StudentVles { get; set; } = new List<StudentVle>();

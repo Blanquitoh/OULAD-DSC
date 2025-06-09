@@ -5,6 +5,10 @@ namespace OuladEtlEda;
 
 public class OuladContext : DbContext
 {
+    public OuladContext(DbContextOptions<OuladContext> options) : base(options)
+    {
+    }
+
     public DbSet<Course> Courses => Set<Course>();
     public DbSet<Assessment> Assessments => Set<Assessment>();
     public DbSet<StudentAssessment> StudentAssessments => Set<StudentAssessment>();
@@ -12,10 +16,6 @@ public class OuladContext : DbContext
     public DbSet<StudentRegistration> StudentRegistrations => Set<StudentRegistration>();
     public DbSet<Vle> Vles => Set<Vle>();
     public DbSet<StudentVle> StudentVles => Set<StudentVle>();
-
-    public OuladContext(DbContextOptions<OuladContext> options) : base(options)
-    {
-    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

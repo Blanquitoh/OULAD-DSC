@@ -6,8 +6,7 @@ namespace OuladEtlEda.Models;
 [Table("vle")]
 public class Vle
 {
-    [Key]
-    public int IdSite { get; set; }
+    [Key] public int IdSite { get; set; }
 
     [MaxLength(8)]
     [Column(TypeName = "varchar(8)")]
@@ -25,5 +24,6 @@ public class Vle
 
     [ForeignKey("CodeModule,CodePresentation")]
     public Course? Course { get; set; }
+
     public ICollection<StudentVle> StudentVles { get; set; } = new List<StudentVle>();
 }

@@ -6,8 +6,7 @@ namespace OuladEtlEda.Models;
 [Table("assessments")]
 public class Assessment
 {
-    [Key]
-    public int IdAssessment { get; set; }
+    [Key] public int IdAssessment { get; set; }
 
     [MaxLength(8)]
     [Column(TypeName = "varchar(8)")]
@@ -25,5 +24,6 @@ public class Assessment
 
     [ForeignKey("CodeModule,CodePresentation")]
     public Course? Course { get; set; }
+
     public ICollection<StudentAssessment> StudentAssessments { get; set; } = new List<StudentAssessment>();
 }
