@@ -22,6 +22,8 @@ capas claras:
 - **Infrastructure** – Utilidades de logging y carga masiva de datos.
 - **Pipeline** – Implementación del proceso ETL orquestado.
 - **Tests** – Conjunto de pruebas unitarias para validadores y mapeadores.
+- **Eda** – `ExtendedEda` genera matrices de confusión y correlación, además de
+  boxplots, histogramas y gráficas de dispersión usando OxyPlot.
 
 ## 🧰 Stack Tecnológico
 
@@ -69,6 +71,7 @@ APA, un resumen técnico de 250 palabras, capturas y enlaces al repositorio.
    ```bash
    dotnet run -- --mode Eda
    ```
+   Las gráficas generadas por `ExtendedEda` se guardarán en la carpeta `plots`.
 7. Ejecuta `./test.sh` para construir y correr todas las pruebas.
 
 ## 📚 Referencias
