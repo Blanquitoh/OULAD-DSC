@@ -8,6 +8,7 @@ using OuladEtlEda.Pipeline;
 using OuladEtlEda.DataAccess;
 using OuladEtlEda.Eda;
 using Serilog;
+using Serilog.Events;
 
 namespace OuladEtlEda;
 
@@ -15,25 +16,39 @@ internal class Program
 {
     private static async Task<int> Main(string[] args)
     {
-        var config = new ConfigurationBuilder()
-            .AddJsonFile("logging.json", true)
-            .Build();
-        Log.Logger = new LoggerConfiguration()
-            .ReadFrom.Configuration(config)
-            .CreateLogger();
-
         var modeOption = new Option<ExecutionMode>("--mode", () => ExecutionMode.Etl,
             "Execution mode (Etl or Eda)");
         var csvDirOption = new Option<string>("--csv-dir", () => "C:\\csv",
             "Directory containing CSV files");
-        var root = new RootCommand { modeOption, csvDirOption };
+        var connectionStringOption = new Option<string>("--connection-string",
+            () => ConnectionStrings.Default,
+            "Database connection string");
+        var logLevelOption = new Option<LogEventLevel>("--log-level",
+            () => LogEventLevel.Information,
+            "Serilog minimum log level");
 
-        root.SetHandler(async (mode, csvDir) =>
+        var root = new RootCommand
         {
+            modeOption,
+            csvDirOption,
+            connectionStringOption,
+            logLevelOption
+        };
+
+        root.SetHandler(async (mode, csvDir, connectionString, logLevel) =>
+        {
+            var config = new ConfigurationBuilder()
+                .AddJsonFile("logging.json", true)
+                .Build();
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(config)
+                .MinimumLevel.Is(logLevel)
+                .CreateLogger();
+
             Log.Information("Execution mode: {Mode}", mode);
 
             var options = new DbContextOptionsBuilder<OuladContext>()
-                .UseSqlServer(ConnectionStrings.Default)
+                .UseSqlServer(connectionString)
                 .Options;
 
             using var context = new OuladContext(options);
@@ -76,7 +91,7 @@ internal class Program
                     BasicEda.Run(context);
                     break;
             }
-        }, modeOption, csvDirOption);
+        }, modeOption, csvDirOption, connectionStringOption, logLevelOption);
 
         return await root.InvokeAsync(args);
     }
