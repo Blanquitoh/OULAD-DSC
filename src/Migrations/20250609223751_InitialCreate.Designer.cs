@@ -11,7 +11,7 @@ using OuladEtlEda.DataAccess;
 namespace OuladEtlEda.Migrations
 {
     [DbContext(typeof(OuladContext))]
-    [Migration("20250609024905_InitialCreate")]
+    [Migration("20250609223751_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -34,6 +34,9 @@ namespace OuladEtlEda.Migrations
 
                     b.Property<string>("AssessmentType")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("AssessmentTypeOrdinal")
+                        .HasColumnType("int");
 
                     b.Property<string>("CodeModule")
                         .IsRequired()
@@ -156,11 +159,17 @@ namespace OuladEtlEda.Migrations
                     b.Property<string>("ImdBand")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ImdBandOrdinal")
+                        .HasColumnType("int");
+
                     b.Property<int>("NumOfPrevAttempts")
                         .HasColumnType("int");
 
                     b.Property<string>("Region")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("RegionOrdinal")
+                        .HasColumnType("int");
 
                     b.Property<int>("StudiedCredits")
                         .HasColumnType("int");
@@ -244,6 +253,9 @@ namespace OuladEtlEda.Migrations
 
                     b.Property<string>("ActivityType")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ActivityTypeOrdinal")
+                        .HasColumnType("int");
 
                     b.Property<string>("CodeModule")
                         .IsRequired()

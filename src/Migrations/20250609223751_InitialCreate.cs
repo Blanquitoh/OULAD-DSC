@@ -29,11 +29,12 @@ namespace OuladEtlEda.Migrations
                 {
                     IdAssessment = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CodeModule = table.Column<string>(type: "varchar(8)", unicode: false, maxLength: 8, nullable: false),
-                    CodePresentation = table.Column<string>(type: "varchar(8)", unicode: false, maxLength: 8, nullable: false),
                     AssessmentType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AssessmentTypeOrdinal = table.Column<int>(type: "int", nullable: true),
                     Date = table.Column<int>(type: "int", nullable: true),
-                    Weight = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Weight = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    CodeModule = table.Column<string>(type: "varchar(8)", unicode: false, maxLength: 8, nullable: false),
+                    CodePresentation = table.Column<string>(type: "varchar(8)", unicode: false, maxLength: 8, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -55,8 +56,10 @@ namespace OuladEtlEda.Migrations
                     IdStudent = table.Column<int>(type: "int", nullable: false),
                     Gender = table.Column<int>(type: "int", nullable: false),
                     Region = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RegionOrdinal = table.Column<int>(type: "int", nullable: true),
                     HighestEducation = table.Column<int>(type: "int", nullable: false),
                     ImdBand = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImdBandOrdinal = table.Column<int>(type: "int", nullable: true),
                     AgeBand = table.Column<int>(type: "int", nullable: false),
                     NumOfPrevAttempts = table.Column<int>(type: "int", nullable: false),
                     StudiedCredits = table.Column<int>(type: "int", nullable: false),
@@ -80,11 +83,12 @@ namespace OuladEtlEda.Migrations
                 {
                     IdSite = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CodeModule = table.Column<string>(type: "varchar(8)", unicode: false, maxLength: 8, nullable: false),
-                    CodePresentation = table.Column<string>(type: "varchar(8)", unicode: false, maxLength: 8, nullable: false),
                     ActivityType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ActivityTypeOrdinal = table.Column<int>(type: "int", nullable: true),
                     WeekFrom = table.Column<int>(type: "int", nullable: true),
-                    WeekTo = table.Column<int>(type: "int", nullable: true)
+                    WeekTo = table.Column<int>(type: "int", nullable: true),
+                    CodeModule = table.Column<string>(type: "varchar(8)", unicode: false, maxLength: 8, nullable: false),
+                    CodePresentation = table.Column<string>(type: "varchar(8)", unicode: false, maxLength: 8, nullable: false)
                 },
                 constraints: table =>
                 {
