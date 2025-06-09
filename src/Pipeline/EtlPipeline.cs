@@ -2,6 +2,8 @@ using OuladEtlEda.DataImport.Readers;
 using OuladEtlEda.Domain;
 using OuladEtlEda.Domain.Validators;
 using OuladEtlEda.DataAccess;
+using OuladEtlEda.DataImport;
+using OuladEtlEda.DataImport.Models;
 using OuladEtlEda.Infrastructure;
 using Serilog;
 

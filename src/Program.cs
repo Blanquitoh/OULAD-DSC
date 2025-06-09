@@ -6,6 +6,8 @@ using OuladEtlEda.Domain.Validators;
 using OuladEtlEda.Infrastructure;
 using OuladEtlEda.Pipeline;
 using OuladEtlEda.DataAccess;
+using OuladEtlEda.DataImport;
+using OuladEtlEda.DataImport.Models;
 using OuladEtlEda.Eda;
 using Serilog;
 using Serilog.Events;
