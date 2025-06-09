@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using OuladEtlEda.DataAccess;
 using OuladEtlEda.DataImport;
 using OuladEtlEda.DataImport.Models;
@@ -111,6 +112,7 @@ public class EtlPipeline
     {
         try
         {
+            await TruncateTablesAsync();
             await LoadCoursesAsync();
             await LoadAssessmentsAsync();
             await LoadStudentInfoAsync();
@@ -122,6 +124,38 @@ public class EtlPipeline
         catch (DomainException ex)
         {
             throw new EtlException("Domain validation failed", ex);
+        }
+    }
+
+    private async Task TruncateTablesAsync()
+    {
+        if (!_context.Database.IsRelational())
+        {
+            _context.StudentVles.RemoveRange(_context.StudentVles);
+            _context.StudentAssessments.RemoveRange(_context.StudentAssessments);
+            _context.StudentRegistrations.RemoveRange(_context.StudentRegistrations);
+            _context.Vles.RemoveRange(_context.Vles);
+            _context.StudentInfos.RemoveRange(_context.StudentInfos);
+            _context.Assessments.RemoveRange(_context.Assessments);
+            _context.Courses.RemoveRange(_context.Courses);
+            await _context.SaveChangesAsync();
+            return;
+        }
+
+        var tables = new[]
+        {
+            "studentVle",
+            "studentAssessment",
+            "studentRegistration",
+            "vle",
+            "studentInfo",
+            "assessments",
+            "courses"
+        };
+
+        foreach (var table in tables)
+        {
+            await _context.Database.ExecuteSqlRawAsync($"TRUNCATE TABLE [{table}]");
         }
     }
 
