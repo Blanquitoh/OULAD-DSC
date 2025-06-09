@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace OuladEtlEda.DataAccess.Migrations
+namespace OuladEtlEda.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration

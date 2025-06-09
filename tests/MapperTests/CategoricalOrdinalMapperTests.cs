@@ -1,3 +1,4 @@
+using OuladEtlEda.Pipeline;
 using Xunit;
 
 namespace OuladEtlEda.Tests.MapperTests;
