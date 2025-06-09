@@ -1,7 +1,13 @@
+using Microsoft.Extensions.Configuration;
+
 namespace OuladEtlEda.Infrastructure;
 
 public static class ConnectionStrings
 {
-    public const string Default =
-        "Data Source=BLANQUITOH-SERV;User ID=Blanquitoh;Password=welc0me;Database=Oulad;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False";
+    private static readonly IConfigurationRoot Config = new ConfigurationBuilder()
+        .AddJsonFile("appsettings.json", optional: true)
+        .AddJsonFile("appsettings.sample.json", optional: true)
+        .Build();
+
+    public static string Default => Config.GetConnectionString("Default")!;
 }
