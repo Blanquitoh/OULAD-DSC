@@ -35,6 +35,13 @@ capas claras:
 | EDA             | C# (.NET), ML.NET, OxyPlot       |
 | IDE             | Visual Studio 2022 / VS Code     |
 
+## 📂 Obtención del dataset
+
+El proyecto no incluye los archivos CSV de **OULAD**. Puedes descargarlos de la
+[página oficial del Open University Learning Analytics Dataset](https://analyse.kmi.open.ac.uk/open_dataset/).
+Descomprime el contenido en una carpeta local y especifica esa ruta al ejecutar
+el modo ETL.
+
 ## ✅ Criterios de evaluación cubiertos
 
 | Criterio                                                     | Cumplimiento |
@@ -54,9 +61,10 @@ APA, un resumen técnico de 250 palabras, capturas y enlaces al repositorio.
 
 ## 🚀 Cómo ejecutar el proyecto
 1. Clona este repositorio.
-2. Ejecuta `./setup.sh` para instalar el SDK de .NET si aún no está disponible.
-3. Ejecuta `dotnet restore` en la raíz para descargar las dependencias.
-4. Crea la base de datos destino y ajusta la cadena de conexión en `Program.cs`.
+2. Copia `src/appsettings.sample.json` a `src/appsettings.json` y edita la
+   cadena de conexión a tu servidor SQL Server.
+3. Ejecuta `./setup.sh` para instalar el SDK de .NET si aún no está disponible.
+4. Ejecuta `dotnet restore` en la raíz para descargar las dependencias.
 5. Ejecuta `dotnet ef database update` para generar el esquema. Este comando
    también aplica la migración `CreateFullDomainView` que genera la vista
    `FullDomain` consolidando las tablas **ASSESS** y **VLE**.
@@ -78,3 +86,8 @@ APA, un resumen técnico de 250 palabras, capturas y enlaces al repositorio.
 ## 📚 Referencias
 - [Entity Framework Core Docs](https://learn.microsoft.com/ef/)
 - [SQL Server Documentation](https://learn.microsoft.com/sql/)
+
+## ⚖️ Licencia y contribuciones
+Este proyecto se distribuye bajo la [Licencia MIT](LICENSE). Las contribuciones
+se aceptan mediante *issues* y *pull requests* siguiendo las buenas prácticas de
+GitHub.
