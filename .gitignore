@@ -372,3 +372,4 @@ FodyWeavers.xsd
 
 # Local configuration
 /appsettings.json
+/src/appsettings.json
