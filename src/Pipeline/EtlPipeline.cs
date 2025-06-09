@@ -1,4 +1,4 @@
-using OuladEtlEda.DataImport;
+using OuladEtlEda.DataImport.Readers;
 using OuladEtlEda.Domain;
 using OuladEtlEda.Domain.Validators;
 using OuladEtlEda.DataAccess;

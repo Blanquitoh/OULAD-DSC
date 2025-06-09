@@ -1,7 +1,7 @@
 using System.CommandLine;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using OuladEtlEda.DataImport;
+using OuladEtlEda.DataImport.Readers;
 using OuladEtlEda.Domain.Validators;
 using OuladEtlEda.Infrastructure;
 using OuladEtlEda.Pipeline;

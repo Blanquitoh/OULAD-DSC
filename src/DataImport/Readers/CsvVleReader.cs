@@ -1,6 +1,7 @@
+using OuladEtlEda.DataImport.Models;
 using CsvHelper.Configuration;
 
-namespace OuladEtlEda.DataImport;
+namespace OuladEtlEda.DataImport.Readers;
 
 public class CsvVleReader : CsvReaderBase<VleCsv>
 {
