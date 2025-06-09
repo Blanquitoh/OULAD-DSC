@@ -97,6 +97,11 @@ public class EtlPipeline
         await foreach (var csv in reader.ReadAsync())
         {
             var entity = map(csv);
+            if (entity == null)
+            {
+                Log.Warning("Skipping record for {Entity} due to mapping failure", typeof(TEntity).Name);
+                continue;
+            }
             await validator.ValidateAsync(entity);
             entities.Add(entity);
             count++;
