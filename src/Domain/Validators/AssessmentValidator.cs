@@ -1,5 +1,3 @@
-using OuladEtlEda.Domain;
-
 namespace OuladEtlEda.Domain.Validators;
 
 public class AssessmentValidator : CourseEntityValidator<Assessment>

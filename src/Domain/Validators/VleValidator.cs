@@ -4,4 +4,3 @@ public class VleValidator : CourseEntityValidator<Vle>
 {
     // inherits base behavior
 }
-

@@ -13,6 +13,15 @@ public class StudentVle : ICourseEntity
 
     [Key] [Column(Order = 1)] public int IdStudent { get; set; }
 
+    public int? Date { get; set; }
+
+    public int SumClick { get; set; }
+
+    public Vle? Vle { get; set; }
+
+    [ForeignKey("CodeModule,CodePresentation,IdStudent")]
+    public StudentInfo? StudentInfo { get; set; }
+
     [Key]
     [Column(Order = 2, TypeName = "varchar(8)")]
     [MaxLength(8)]
@@ -22,13 +31,4 @@ public class StudentVle : ICourseEntity
     [Column(Order = 3, TypeName = "varchar(8)")]
     [MaxLength(8)]
     public string CodePresentation { get; set; } = null!;
-
-    public int? Date { get; set; }
-
-    public int SumClick { get; set; }
-
-    public Vle? Vle { get; set; }
-
-    [ForeignKey("CodeModule,CodePresentation,IdStudent")]
-    public StudentInfo? StudentInfo { get; set; }
 }

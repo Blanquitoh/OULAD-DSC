@@ -1,9 +1,9 @@
+using OuladEtlEda.DataAccess;
+using OuladEtlEda.Domain;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using OxyPlot.SkiaSharp;
-using OuladEtlEda.DataAccess;
-using OuladEtlEda.Domain;
 
 namespace OuladEtlEda.Eda;
 
@@ -43,7 +43,7 @@ public static class ExtendedEda
             Data = matrix
         };
         model.Series.Add(heatMap);
-        PngExporter.Export(model, path, 600, 400, 96);
+        PngExporter.Export(model, path, 600, 400);
     }
 
     public static void PlotCorrelationMatrix(OuladContext ctx, string path)
@@ -58,8 +58,8 @@ public static class ExtendedEda
 
         var cols = 3;
         var matrix = new double[cols, cols];
-        for (int i = 0; i < cols; i++)
-        for (int j = 0; j < cols; j++)
+        for (var i = 0; i < cols; i++)
+        for (var j = 0; j < cols; j++)
             matrix[i, j] = Pearson(rows.Select(r => r[i]), rows.Select(r => r[j]));
 
         var model = new PlotModel { Title = "Correlation Matrix", Background = OxyColors.White };
@@ -76,7 +76,7 @@ public static class ExtendedEda
             Data = matrix
         };
         model.Series.Add(heatMap);
-        PngExporter.Export(model, path, 600, 400, 96);
+        PngExporter.Export(model, path, 600, 400);
 
         static double Pearson(IEnumerable<double> xs, IEnumerable<double> ys)
         {
@@ -86,7 +86,7 @@ public static class ExtendedEda
             var meanX = x.Average();
             var meanY = y.Average();
             double sumXY = 0, sumX2 = 0, sumY2 = 0;
-            for (int i = 0; i < x.Length; i++)
+            for (var i = 0; i < x.Length; i++)
             {
                 var dx = x[i] - meanX;
                 var dy = y[i] - meanY;
@@ -104,7 +104,7 @@ public static class ExtendedEda
         var model = new PlotModel { Title = "StudiedCredits by Age", Background = OxyColors.White };
         var series = new BoxPlotSeries();
         var ageBands = Enum.GetValues<AgeBand>();
-        int x = 0;
+        var x = 0;
         foreach (var band in ageBands)
         {
             var values = ctx.StudentInfos.Where(s => s.AgeBand == band).Select(s => (double)s.StudiedCredits)
@@ -115,12 +115,12 @@ public static class ExtendedEda
                 continue;
             }
 
-            double q1 = Percentile(values, 0.25);
-            double median = Percentile(values, 0.5);
-            double q3 = Percentile(values, 0.75);
-            double iqr = q3 - q1;
-            double lower = values.Where(v => v >= q1 - 1.5 * iqr).DefaultIfEmpty(values.First()).First();
-            double upper = values.Where(v => v <= q3 + 1.5 * iqr).DefaultIfEmpty(values.Last()).Last();
+            var q1 = Percentile(values, 0.25);
+            var median = Percentile(values, 0.5);
+            var q3 = Percentile(values, 0.75);
+            var iqr = q3 - q1;
+            var lower = values.Where(v => v >= q1 - 1.5 * iqr).DefaultIfEmpty(values.First()).First();
+            var upper = values.Where(v => v <= q3 + 1.5 * iqr).DefaultIfEmpty(values.Last()).Last();
             var item = new BoxPlotItem(x, lower, q1, median, q3, upper);
             foreach (var v in values.Where(v => v < lower || v > upper))
                 item.Outliers.Add(v);
@@ -132,14 +132,14 @@ public static class ExtendedEda
         model.Axes.Add(new CategoryAxis
             { Position = AxisPosition.Bottom, ItemsSource = ageBands.Select(a => a.ToString()).ToList() });
         model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
-        PngExporter.Export(model, path, 600, 400, 96);
+        PngExporter.Export(model, path, 600, 400);
 
         static double Percentile(IList<double> ordered, double p)
         {
             if (ordered.Count == 0) return 0;
-            double i = (ordered.Count - 1) * p;
-            int lo = (int)Math.Floor(i);
-            int hi = (int)Math.Ceiling(i);
+            var i = (ordered.Count - 1) * p;
+            var lo = (int)Math.Floor(i);
+            var hi = (int)Math.Ceiling(i);
             if (lo == hi) return ordered[lo];
             return ordered[lo] + (ordered[hi] - ordered[lo]) * (i - lo);
         }
@@ -158,19 +158,19 @@ public static class ExtendedEda
         var binWidth = (max - min) / bins;
 
         var hist = new BarSeries { Title = "Histogram" };
-        for (int i = 0; i < bins; i++)
+        for (var i = 0; i < bins; i++)
         {
-            double start = min + i * binWidth;
-            double end = start + binWidth;
+            var start = min + i * binWidth;
+            var end = start + binWidth;
             var count = values.Count(v => v >= start && v < end);
             hist.Items.Add(new BarItem(count));
         }
 
         var normal = new LineSeries { Title = "Normal" };
-        for (int i = 0; i <= 100; i++)
+        for (var i = 0; i <= 100; i++)
         {
-            double x = min + (max - min) * i / 100.0;
-            double y = Normal(x, mean, std) * values.Count * binWidth;
+            var x = min + (max - min) * i / 100.0;
+            var y = Normal(x, mean, std) * values.Count * binWidth;
             normal.Points.Add(new DataPoint(x, y));
         }
 
@@ -179,10 +179,12 @@ public static class ExtendedEda
         model.Series.Add(normal);
         model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
         model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
-        PngExporter.Export(model, path, 600, 400, 96);
+        PngExporter.Export(model, path, 600, 400);
 
         static double Normal(double x, double mu, double sigma)
-            => 1.0 / (Math.Sqrt(2 * Math.PI) * sigma) * Math.Exp(-Math.Pow(x - mu, 2) / (2 * sigma * sigma));
+        {
+            return 1.0 / (Math.Sqrt(2 * Math.PI) * sigma) * Math.Exp(-Math.Pow(x - mu, 2) / (2 * sigma * sigma));
+        }
     }
 
     public static void PlotScatter(OuladContext ctx, string path)
@@ -194,6 +196,6 @@ public static class ExtendedEda
         model.Series.Add(series);
         model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "Attempts" });
         model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Credits" });
-        PngExporter.Export(model, path, 600, 400, 96);
+        PngExporter.Export(model, path, 600, 400);
     }
 }

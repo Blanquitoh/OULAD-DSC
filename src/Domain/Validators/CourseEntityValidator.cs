@@ -1,5 +1,3 @@
-using System.Threading.Tasks;
-
 namespace OuladEtlEda.Domain.Validators;
 
 public class CourseEntityValidator<T> : IDomainValidator<T> where T : ICourseEntity

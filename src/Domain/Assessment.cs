@@ -8,14 +8,6 @@ public class Assessment : ICourseEntity
 {
     [Key] public int IdAssessment { get; set; }
 
-    [MaxLength(8)]
-    [Column(TypeName = "varchar(8)")]
-    public string CodeModule { get; set; } = null!;
-
-    [MaxLength(8)]
-    [Column(TypeName = "varchar(8)")]
-    public string CodePresentation { get; set; } = null!;
-
     public string? AssessmentType { get; set; }
 
     public int? AssessmentTypeOrdinal { get; set; }
@@ -28,4 +20,12 @@ public class Assessment : ICourseEntity
     public Course? Course { get; set; }
 
     public ICollection<StudentAssessment> StudentAssessments { get; set; } = new List<StudentAssessment>();
+
+    [MaxLength(8)]
+    [Column(TypeName = "varchar(8)")]
+    public string CodeModule { get; set; } = null!;
+
+    [MaxLength(8)]
+    [Column(TypeName = "varchar(8)")]
+    public string CodePresentation { get; set; } = null!;
 }

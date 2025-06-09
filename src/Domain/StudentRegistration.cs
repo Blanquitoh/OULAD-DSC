@@ -6,16 +6,6 @@ namespace OuladEtlEda.Domain;
 [Table("studentRegistration")]
 public class StudentRegistration : ICourseEntity
 {
-    [Key]
-    [Column(Order = 0, TypeName = "varchar(8)")]
-    [MaxLength(8)]
-    public string CodeModule { get; set; } = null!;
-
-    [Key]
-    [Column(Order = 1, TypeName = "varchar(8)")]
-    [MaxLength(8)]
-    public string CodePresentation { get; set; } = null!;
-
     [Key] [Column(Order = 2)] public int IdStudent { get; set; }
 
     public int? DateRegistration { get; set; }
@@ -27,4 +17,14 @@ public class StudentRegistration : ICourseEntity
 
     [ForeignKey("CodeModule,CodePresentation,IdStudent")]
     public StudentInfo? StudentInfo { get; set; }
+
+    [Key]
+    [Column(Order = 0, TypeName = "varchar(8)")]
+    [MaxLength(8)]
+    public string CodeModule { get; set; } = null!;
+
+    [Key]
+    [Column(Order = 1, TypeName = "varchar(8)")]
+    [MaxLength(8)]
+    public string CodePresentation { get; set; } = null!;
 }

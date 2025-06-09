@@ -1,4 +1,3 @@
-using System.Linq;
 using OuladEtlEda.DataAccess;
 
 namespace OuladEtlEda.Eda;

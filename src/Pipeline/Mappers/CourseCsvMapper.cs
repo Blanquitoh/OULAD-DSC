@@ -5,10 +5,13 @@ namespace OuladEtlEda.Pipeline.Mappers;
 
 public class CourseCsvMapper : ICsvEntityMapper<CourseCsv, Course>
 {
-    public Course Map(CourseCsv csv) => new()
+    public Course Map(CourseCsv csv)
     {
-        CodeModule = csv.CodeModule,
-        CodePresentation = csv.CodePresentation,
-        ModulePresentationLength = csv.ModulePresentationLength
-    };
+        return new Course
+        {
+            CodeModule = csv.CodeModule,
+            CodePresentation = csv.CodePresentation,
+            ModulePresentationLength = csv.ModulePresentationLength
+        };
+    }
 }

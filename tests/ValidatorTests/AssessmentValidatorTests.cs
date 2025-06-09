@@ -1,8 +1,7 @@
 using System.Threading.Tasks;
 using OuladEtlEda.Domain;
-using Xunit;
-
 using OuladEtlEda.Domain.Validators;
+using Xunit;
 
 namespace OuladEtlEda.Tests.ValidatorTests;
 

@@ -4,4 +4,3 @@ public class StudentAssessmentValidator : CourseEntityValidator<StudentAssessmen
 {
     // inherits base behavior
 }
-

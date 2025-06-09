@@ -1,5 +1,5 @@
-using OuladEtlEda.DataImport.Models;
 using CsvHelper.Configuration;
+using OuladEtlEda.DataImport.Models;
 
 namespace OuladEtlEda.DataImport.Readers;
 
