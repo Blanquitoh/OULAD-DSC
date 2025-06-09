@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace OuladEtlEda.Domain;
 
 [Table("studentInfo")]
-public class StudentInfo
+public class StudentInfo : ICourseEntity
 {
     [Key]
     [Column(Order = 0, TypeName = "varchar(8)")]

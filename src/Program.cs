@@ -32,8 +32,7 @@ internal class Program
             Log.Information("Execution mode: {Mode}", mode);
 
             var options = new DbContextOptionsBuilder<OuladContext>()
-                .UseSqlServer(
-                    "Data Source=BLANQUITOH-SERV;User ID=Blanquitoh;Password=welc0me;Database=Oulad;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False")
+                .UseSqlServer(ConnectionStrings.Default)
                 .Options;
 
             using var context = new OuladContext(options);

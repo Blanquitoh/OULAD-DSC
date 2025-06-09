@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace OuladEtlEda.Domain;
 
 [Table("assessments")]
-public class Assessment
+public class Assessment : ICourseEntity
 {
     [Key] public int IdAssessment { get; set; }
 
