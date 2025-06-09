@@ -369,3 +369,6 @@ FodyWeavers.xsd
 /src/anonymisedData/studentRegistration.csv
 /src/anonymisedData/studentVle.csv
 /src/anonymisedData/vle.csv
+
+# Local configuration
+/appsettings.json
