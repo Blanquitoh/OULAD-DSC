@@ -133,6 +133,9 @@ public class EtlPipeline
                 CodeModule = csv.CodeModule,
                 CodePresentation = csv.CodePresentation,
                 AssessmentType = csv.AssessmentType,
+                AssessmentTypeOrdinal = csv.AssessmentType == null
+                    ? null
+                    : _mapper.GetOrAdd("assessment_type", csv.AssessmentType),
                 Date = csv.Date,
                 Weight = csv.Weight
             },
@@ -182,8 +185,14 @@ public class EtlPipeline
                 IdStudent = csv.IdStudent,
                 Gender = ParseGender(csv.Gender),
                 Region = csv.Region,
+                RegionOrdinal = csv.Region == null
+                    ? null
+                    : _mapper.GetOrAdd("region", csv.Region),
                 HighestEducation = ParseEducation(csv.HighestEducation),
                 ImdBand = csv.ImdBand,
+                ImdBandOrdinal = csv.ImdBand == null
+                    ? null
+                    : _mapper.GetOrAdd("imd_band", csv.ImdBand),
                 AgeBand = ParseAgeBand(csv.AgeBand),
                 NumOfPrevAttempts = csv.NumOfPrevAttempts,
                 StudiedCredits = csv.StudiedCredits,
@@ -229,6 +238,9 @@ public class EtlPipeline
                 CodeModule = csv.CodeModule,
                 CodePresentation = csv.CodePresentation,
                 ActivityType = csv.ActivityType,
+                ActivityTypeOrdinal = csv.ActivityType == null
+                    ? null
+                    : _mapper.GetOrAdd("activity_type", csv.ActivityType),
                 WeekFrom = csv.WeekFrom,
                 WeekTo = csv.WeekTo
             },

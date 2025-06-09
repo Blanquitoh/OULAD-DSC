@@ -18,6 +18,8 @@ public class Assessment : ICourseEntity
 
     public string? AssessmentType { get; set; }
 
+    public int? AssessmentTypeOrdinal { get; set; }
+
     public int? Date { get; set; }
 
     public decimal Weight { get; set; }

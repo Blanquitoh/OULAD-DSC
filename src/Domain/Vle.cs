@@ -18,6 +18,8 @@ public class Vle : ICourseEntity
 
     public string? ActivityType { get; set; }
 
+    public int? ActivityTypeOrdinal { get; set; }
+
     public int? WeekFrom { get; set; }
 
     public int? WeekTo { get; set; }
