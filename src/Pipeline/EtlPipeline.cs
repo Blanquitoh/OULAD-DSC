@@ -3,6 +3,7 @@ using OuladEtlEda.Domain;
 using OuladEtlEda.Domain.Validators;
 using OuladEtlEda.DataAccess;
 using OuladEtlEda.Infrastructure;
+using Serilog;
 
 namespace OuladEtlEda.Pipeline;
 
@@ -65,17 +66,46 @@ public class EtlPipeline
         _context = context;
     }
 
+    private async Task LoadAsync<TCsv, TEntity>(
+        CsvReaderBase<TCsv> reader,
+        Func<TCsv, TEntity> map,
+        IDomainValidator<TEntity> validator,
+        int logInterval = 1000) where TEntity : class
+    {
+        var entities = new List<TEntity>();
+        var count = 0;
+        await foreach (var csv in reader.ReadAsync())
+        {
+            var entity = map(csv);
+            await validator.ValidateAsync(entity);
+            entities.Add(entity);
+            count++;
+            if (count % logInterval == 0)
+            {
+                Log.Information("Processed {Count} records for {Entity}", count, typeof(TEntity).Name);
+            }
+        }
+
+        await _loader.BulkInsertAsync(_context, entities);
+        Log.Information("Inserted {Count} records for {Entity}", count, typeof(TEntity).Name);
+    }
+
     public async Task RunAsync()
     {
         try
         {
-            await LoadCoursesAsync();
-            await LoadAssessmentsAsync();
-            await LoadStudentInfoAsync();
-            await LoadRegistrationsAsync();
-            await LoadStudentAssessmentsAsync();
-            await LoadVleAsync();
-            await LoadStudentVleAsync();
+            var tasks = new[]
+            {
+                LoadCoursesAsync(),
+                LoadAssessmentsAsync(),
+                LoadStudentInfoAsync(),
+                LoadRegistrationsAsync(),
+                LoadStudentAssessmentsAsync(),
+                LoadVleAsync(),
+                LoadStudentVleAsync()
+            };
+
+            await Task.WhenAll(tasks);
         }
         catch (DomainException ex)
         {
@@ -83,29 +113,21 @@ public class EtlPipeline
         }
     }
 
-    private async Task LoadCoursesAsync()
-    {
-        var entities = new List<Course>();
-        await foreach (var csv in _courseReader.ReadAsync())
-        {
-            var entity = new Course
+    private Task LoadCoursesAsync() =>
+        LoadAsync(
+            _courseReader,
+            csv => new Course
             {
                 CodeModule = csv.CodeModule,
                 CodePresentation = csv.CodePresentation,
                 ModulePresentationLength = csv.ModulePresentationLength
-            };
-            await _courseValidator.ValidateAsync(entity);
-            entities.Add(entity);
-        }
-        await _loader.BulkInsertAsync(_context, entities);
-    }
+            },
+            _courseValidator);
 
-    private async Task LoadAssessmentsAsync()
-    {
-        var entities = new List<Assessment>();
-        await foreach (var csv in _assessmentReader.ReadAsync())
-        {
-            var entity = new Assessment
+    private Task LoadAssessmentsAsync() =>
+        LoadAsync(
+            _assessmentReader,
+            csv => new Assessment
             {
                 IdAssessment = _mapper.GetOrAdd("assessment_id", csv.IdAssessment.ToString()),
                 CodeModule = csv.CodeModule,
@@ -113,12 +135,8 @@ public class EtlPipeline
                 AssessmentType = csv.AssessmentType,
                 Date = csv.Date,
                 Weight = csv.Weight
-            };
-            await _assessmentValidator.ValidateAsync(entity);
-            entities.Add(entity);
-        }
-        await _loader.BulkInsertAsync(_context, entities);
-    }
+            },
+            _assessmentValidator);
 
     private static Gender ParseGender(string value) => value.Trim().ToUpper() switch
     {
@@ -154,12 +172,10 @@ public class EtlPipeline
         return EducationLevel.NoFormalQual;
     }
 
-    private async Task LoadStudentInfoAsync()
-    {
-        var entities = new List<StudentInfo>();
-        await foreach (var csv in _studentInfoReader.ReadAsync())
-        {
-            var entity = new StudentInfo
+    private Task LoadStudentInfoAsync() =>
+        LoadAsync(
+            _studentInfoReader,
+            csv => new StudentInfo
             {
                 CodeModule = csv.CodeModule,
                 CodePresentation = csv.CodePresentation,
@@ -173,38 +189,26 @@ public class EtlPipeline
                 StudiedCredits = csv.StudiedCredits,
                 Disability = ParseDisability(csv.Disability),
                 FinalResult = ParseFinalResult(csv.FinalResult)
-            };
-            await _studentInfoValidator.ValidateAsync(entity);
-            entities.Add(entity);
-        }
-        await _loader.BulkInsertAsync(_context, entities);
-    }
+            },
+            _studentInfoValidator);
 
-    private async Task LoadRegistrationsAsync()
-    {
-        var entities = new List<StudentRegistration>();
-        await foreach (var csv in _registrationReader.ReadAsync())
-        {
-            var entity = new StudentRegistration
+    private Task LoadRegistrationsAsync() =>
+        LoadAsync(
+            _registrationReader,
+            csv => new StudentRegistration
             {
                 CodeModule = csv.CodeModule,
                 CodePresentation = csv.CodePresentation,
                 IdStudent = csv.IdStudent,
                 DateRegistration = csv.DateRegistration,
                 DateUnregistration = csv.DateUnregistration
-            };
-            await _registrationValidator.ValidateAsync(entity);
-            entities.Add(entity);
-        }
-        await _loader.BulkInsertAsync(_context, entities);
-    }
+            },
+            _registrationValidator);
 
-    private async Task LoadStudentAssessmentsAsync()
-    {
-        var entities = new List<StudentAssessment>();
-        await foreach (var csv in _studentAssessmentReader.ReadAsync())
-        {
-            var entity = new StudentAssessment
+    private Task LoadStudentAssessmentsAsync() =>
+        LoadAsync(
+            _studentAssessmentReader,
+            csv => new StudentAssessment
             {
                 IdAssessment = _mapper.GetOrAdd("assessment_id", csv.IdAssessment.ToString()),
                 IdStudent = csv.IdStudent,
@@ -213,19 +217,13 @@ public class EtlPipeline
                 DateSubmitted = csv.DateSubmitted,
                 IsBanked = csv.IsBanked,
                 Score = csv.Score
-            };
-            await _studentAssessmentValidator.ValidateAsync(entity);
-            entities.Add(entity);
-        }
-        await _loader.BulkInsertAsync(_context, entities);
-    }
+            },
+            _studentAssessmentValidator);
 
-    private async Task LoadVleAsync()
-    {
-        var entities = new List<Vle>();
-        await foreach (var csv in _vleReader.ReadAsync())
-        {
-            var entity = new Vle
+    private Task LoadVleAsync() =>
+        LoadAsync(
+            _vleReader,
+            csv => new Vle
             {
                 IdSite = csv.IdSite,
                 CodeModule = csv.CodeModule,
@@ -233,19 +231,13 @@ public class EtlPipeline
                 ActivityType = csv.ActivityType,
                 WeekFrom = csv.WeekFrom,
                 WeekTo = csv.WeekTo
-            };
-            await _vleValidator.ValidateAsync(entity);
-            entities.Add(entity);
-        }
-        await _loader.BulkInsertAsync(_context, entities);
-    }
+            },
+            _vleValidator);
 
-    private async Task LoadStudentVleAsync()
-    {
-        var entities = new List<StudentVle>();
-        await foreach (var csv in _studentVleReader.ReadAsync())
-        {
-            var entity = new StudentVle
+    private Task LoadStudentVleAsync() =>
+        LoadAsync(
+            _studentVleReader,
+            csv => new StudentVle
             {
                 IdSite = csv.IdSite,
                 IdStudent = csv.IdStudent,
@@ -253,10 +245,6 @@ public class EtlPipeline
                 CodePresentation = csv.CodePresentation,
                 Date = csv.Date,
                 SumClick = csv.SumClick
-            };
-            await _studentVleValidator.ValidateAsync(entity);
-            entities.Add(entity);
-        }
-        await _loader.BulkInsertAsync(_context, entities);
-    }
+            },
+            _studentVleValidator);
 }
