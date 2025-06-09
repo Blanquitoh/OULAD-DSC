@@ -142,21 +142,13 @@ public class EtlPipeline
             return;
         }
 
-        var tables = new[]
-        {
-            "studentVle",
-            "studentAssessment",
-            "studentRegistration",
-            "vle",
-            "studentInfo",
-            "assessments",
-            "courses"
-        };
-
-        foreach (var table in tables)
-        {
-            await _context.Database.ExecuteSqlRawAsync($"DELETE FROM [{table}];");
-        }
+        await _context.StudentVles.ExecuteDeleteAsync();
+        await _context.StudentAssessments.ExecuteDeleteAsync();
+        await _context.StudentRegistrations.ExecuteDeleteAsync();
+        await _context.Vles.ExecuteDeleteAsync();
+        await _context.StudentInfos.ExecuteDeleteAsync();
+        await _context.Assessments.ExecuteDeleteAsync();
+        await _context.Courses.ExecuteDeleteAsync();
     }
 
     private Task LoadCoursesAsync()
