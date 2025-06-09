@@ -29,8 +29,10 @@ public static class ExtendedEda
             matrix[(int)s.Gender, (int)s.FinalResult]++;
 
         var model = new PlotModel { Title = "Confusion Matrix", Background = OxyColors.White };
-        model.Axes.Add(new CategoryAxis { Position = AxisPosition.Left, Key = "y", ItemsSource = genders.Select(g => g.ToString()).ToList() });
-        model.Axes.Add(new CategoryAxis { Position = AxisPosition.Bottom, Key = "x", ItemsSource = results.Select(r => r.ToString()).ToList() });
+        model.Axes.Add(new CategoryAxis
+            { Position = AxisPosition.Left, Key = "y", ItemsSource = genders.Select(g => g.ToString()).ToList() });
+        model.Axes.Add(new CategoryAxis
+            { Position = AxisPosition.Bottom, Key = "x", ItemsSource = results.Select(r => r.ToString()).ToList() });
 
         var heatMap = new HeatMapSeries
         {
@@ -57,12 +59,14 @@ public static class ExtendedEda
         var cols = 3;
         var matrix = new double[cols, cols];
         for (int i = 0; i < cols; i++)
-            for (int j = 0; j < cols; j++)
-                matrix[i, j] = Pearson(rows.Select(r => r[i]), rows.Select(r => r[j]));
+        for (int j = 0; j < cols; j++)
+            matrix[i, j] = Pearson(rows.Select(r => r[i]), rows.Select(r => r[j]));
 
         var model = new PlotModel { Title = "Correlation Matrix", Background = OxyColors.White };
-        model.Axes.Add(new CategoryAxis { Position = AxisPosition.Left, ItemsSource = new[] { "Age", "Attempts", "Credits" } });
-        model.Axes.Add(new CategoryAxis { Position = AxisPosition.Bottom, ItemsSource = new[] { "Age", "Attempts", "Credits" } });
+        model.Axes.Add(new CategoryAxis
+            { Position = AxisPosition.Left, ItemsSource = new[] { "Age", "Attempts", "Credits" } });
+        model.Axes.Add(new CategoryAxis
+            { Position = AxisPosition.Bottom, ItemsSource = new[] { "Age", "Attempts", "Credits" } });
         var heatMap = new HeatMapSeries
         {
             X0 = 0,
@@ -90,6 +94,7 @@ public static class ExtendedEda
                 sumX2 += dx * dx;
                 sumY2 += dy * dy;
             }
+
             return sumXY / Math.Sqrt(sumX2 * sumY2);
         }
     }
@@ -102,8 +107,14 @@ public static class ExtendedEda
         int x = 0;
         foreach (var band in ageBands)
         {
-            var values = ctx.StudentInfos.Where(s => s.AgeBand == band).Select(s => (double)s.StudiedCredits).OrderBy(v => v).ToList();
-            if (values.Count == 0) { x++; continue; }
+            var values = ctx.StudentInfos.Where(s => s.AgeBand == band).Select(s => (double)s.StudiedCredits)
+                .OrderBy(v => v).ToList();
+            if (values.Count == 0)
+            {
+                x++;
+                continue;
+            }
+
             double q1 = Percentile(values, 0.25);
             double median = Percentile(values, 0.5);
             double q3 = Percentile(values, 0.75);
@@ -116,8 +127,10 @@ public static class ExtendedEda
             series.Items.Add(item);
             x++;
         }
+
         model.Series.Add(series);
-        model.Axes.Add(new CategoryAxis { Position = AxisPosition.Bottom, ItemsSource = ageBands.Select(a => a.ToString()).ToList() });
+        model.Axes.Add(new CategoryAxis
+            { Position = AxisPosition.Bottom, ItemsSource = ageBands.Select(a => a.ToString()).ToList() });
         model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
         PngExporter.Export(model, path, 600, 400, 96);
 
@@ -144,13 +157,13 @@ public static class ExtendedEda
         var max = values.Max();
         var binWidth = (max - min) / bins;
 
-        var hist = new ColumnSeries { Title = "Histogram" };
+        var hist = new BarSeries { Title = "Histogram" };
         for (int i = 0; i < bins; i++)
         {
             double start = min + i * binWidth;
             double end = start + binWidth;
             var count = values.Count(v => v >= start && v < end);
-            hist.Items.Add(new ColumnItem(count));
+            hist.Items.Add(new BarItem(count));
         }
 
         var normal = new LineSeries { Title = "Normal" };
