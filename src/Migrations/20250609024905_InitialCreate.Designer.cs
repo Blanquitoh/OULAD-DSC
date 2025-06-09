@@ -11,7 +11,7 @@ using OuladEtlEda.DataAccess;
 namespace OuladEtlEda.Migrations
 {
     [DbContext(typeof(OuladContext))]
-    [Migration("20250609023225_InitialCreate")]
+    [Migration("20250609024905_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -51,7 +51,7 @@ namespace OuladEtlEda.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Weight")
-                        .HasColumnType("decimal(5,2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("IdAssessment");
 

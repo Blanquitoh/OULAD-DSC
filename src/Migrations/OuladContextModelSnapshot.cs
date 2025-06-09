@@ -48,7 +48,7 @@ namespace OuladEtlEda.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Weight")
-                        .HasColumnType("decimal(5,2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("IdAssessment");
 
