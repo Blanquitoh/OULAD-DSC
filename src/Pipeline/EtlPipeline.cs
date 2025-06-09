@@ -80,7 +80,7 @@ public class EtlPipeline
         _assessmentMapper = new AssessmentCsvMapper(mapper);
         _studentInfoMapper = new StudentInfoCsvMapper(mapper);
         _registrationMapper = new StudentRegistrationCsvMapper();
-        _studentAssessmentMapper = new StudentAssessmentCsvMapper(mapper);
+        _studentAssessmentMapper = new StudentAssessmentCsvMapper(mapper, context);
         _vleMapper = new VleCsvMapper(mapper);
         _studentVleMapper = new StudentVleCsvMapper();
     }
