@@ -8,6 +8,8 @@ public class Vle : ICourseEntity
 {
     [Key] public int IdSite { get; set; }
 
+    [MaxLength(32)]
+    [Column(TypeName = "varchar(32)")]
     public string? ActivityType { get; set; }
 
     public int? ActivityTypeOrdinal { get; set; }
