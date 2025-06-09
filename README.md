@@ -54,25 +54,26 @@ APA, un resumen técnico de 250 palabras, capturas y enlaces al repositorio.
 
 ## 🚀 Cómo ejecutar el proyecto
 1. Clona este repositorio.
-2. Ejecuta `dotnet restore` en la raíz para descargar las dependencias.
-3. Crea la base de datos destino y ajusta la cadena de conexión en `Program.cs`.
-4. Ejecuta `dotnet ef database update` para generar el esquema. Este comando
+2. Ejecuta `./setup.sh` para instalar el SDK de .NET si aún no está disponible.
+3. Ejecuta `dotnet restore` en la raíz para descargar las dependencias.
+4. Crea la base de datos destino y ajusta la cadena de conexión en `Program.cs`.
+5. Ejecuta `dotnet ef database update` para generar el esquema. Este comando
    también aplica la migración `CreateFullDomainView` que genera la vista
    `FullDomain` consolidando las tablas **ASSESS** y **VLE**.
    Si prefieres ejecutarla manualmente puedes correr:
    ```bash
    sqlcmd -S <server> -d <db> -i sql/create_full_domain.sql
    ```
-5. Corre la aplicación en modo ETL:
+6. Corre la aplicación en modo ETL:
    ```bash
    dotnet run -- --mode Etl --csv-dir <ruta-a-csv>
    ```
-6. Para el análisis exploratorio ejecuta:
+7. Para el análisis exploratorio ejecuta:
    ```bash
    dotnet run -- --mode Eda
    ```
    Las gráficas generadas por `ExtendedEda` se guardarán en la carpeta `plots`.
-7. Ejecuta `./test.sh` para construir y correr todas las pruebas.
+8. Ejecuta `./test.sh` para construir y correr todas las pruebas.
 
 ## 📚 Referencias
 - [Entity Framework Core Docs](https://learn.microsoft.com/ef/)
