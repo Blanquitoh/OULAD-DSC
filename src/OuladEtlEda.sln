@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36202.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OuladEtlEda", "OuladEtlEda.csproj", "{FAC66D19-CF02-8FE0-C2F6-550AE105DD6F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OuladEtlEda.Tests", "..\tests\OuladEtlEda.Tests.csproj", "{8C8C9A50-5D0A-4F13-82E1-100064F4E36E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FAC66D19-CF02-8FE0-C2F6-550AE105DD6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAC66D19-CF02-8FE0-C2F6-550AE105DD6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAC66D19-CF02-8FE0-C2F6-550AE105DD6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C8C9A50-5D0A-4F13-82E1-100064F4E36E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C8C9A50-5D0A-4F13-82E1-100064F4E36E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C8C9A50-5D0A-4F13-82E1-100064F4E36E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C8C9A50-5D0A-4F13-82E1-100064F4E36E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4ADB310F-D8E2-41CB-BBCD-E98F58855237}
+	EndGlobalSection
+EndGlobal

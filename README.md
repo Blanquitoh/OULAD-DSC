@@ -19,3 +19,18 @@ the schema in a database run the standard EF Core commands:
 dotnet ef migrations add InitialCreate
 dotnet ef database update
 ```
+
+## Project Structure
+
+The repository is organized into two top-level directories:
+
+- `src` &mdash; application code
+- `tests` &mdash; unit tests
+
+Within `src` the layers are grouped into folders:
+
+- `Domain` &mdash; entity models and validation
+- `DataAccess` &mdash; EF Core context and migrations
+- `DataImport` &mdash; CSV readers
+- `Infrastructure` &mdash; logging and bulk loading helpers
+- `Pipeline` &mdash; ETL pipeline implementation
