@@ -6,6 +6,7 @@ using OuladEtlEda.Domain.Validators;
 using OuladEtlEda.Infrastructure;
 using OuladEtlEda.Pipeline;
 using OuladEtlEda.DataAccess;
+using OuladEtlEda.Eda;
 using Serilog;
 
 namespace OuladEtlEda;
@@ -28,7 +29,7 @@ internal class Program
 
         root.SetHandler(async (mode, csvDir) =>
         {
-            Log.Information("ETL started");
+            Log.Information("Execution mode: {Mode}", mode);
 
             var options = new DbContextOptionsBuilder<OuladContext>()
                 .UseSqlServer(
@@ -39,12 +40,40 @@ internal class Program
 
             if (mode == "etl")
             {
-                var reader = new CsvAssessmentReader(Path.Combine(csvDir, "assessments.csv"));
+                var courseReader = new CsvCourseReader(Path.Combine(csvDir, "courses.csv"));
+                var assessmentReader = new CsvAssessmentReader(Path.Combine(csvDir, "assessments.csv"));
+                var studentInfoReader = new CsvStudentInfoReader(Path.Combine(csvDir, "studentInfo.csv"));
+                var registrationReader = new CsvStudentRegistrationReader(Path.Combine(csvDir, "studentRegistration.csv"));
+                var studentAssessmentReader = new CsvStudentAssessmentReader(Path.Combine(csvDir, "studentAssessment.csv"));
+                var vleReader = new CsvVleReader(Path.Combine(csvDir, "vle.csv"));
+                var studentVleReader = new CsvStudentVleReader(Path.Combine(csvDir, "studentVle.csv"));
+
                 var mapper = new CategoricalOrdinalMapper();
-                var validator = new AssessmentValidator();
-                var loader = new BulkLoader();
-                var pipeline = new EtlPipeline(reader, mapper, validator, loader, context);
+
+                var pipeline = new EtlPipeline(
+                    courseReader,
+                    assessmentReader,
+                    studentInfoReader,
+                    registrationReader,
+                    studentAssessmentReader,
+                    vleReader,
+                    studentVleReader,
+                    mapper,
+                    new CourseValidator(),
+                    new AssessmentValidator(),
+                    new StudentInfoValidator(),
+                    new StudentRegistrationValidator(),
+                    new StudentAssessmentValidator(),
+                    new VleValidator(),
+                    new StudentVleValidator(),
+                    new BulkLoader(),
+                    context);
+
                 await pipeline.RunAsync();
+            }
+            else if (mode == "eda")
+            {
+                BasicEda.Run(context);
             }
         }, modeOption, csvDirOption);
 
