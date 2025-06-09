@@ -55,7 +55,7 @@ internal class Program
 
             switch (mode)
             {
-
+                case ExecutionMode.Etl:
                     var courseReader = new CsvReader<CourseCsv>(Path.Combine(csvDir, "courses.csv"));
                     var assessmentReader = new CsvReader<AssessmentCsv>(Path.Combine(csvDir, "assessments.csv"));
                     var studentInfoReader = new CsvReader<StudentInfoCsv>(Path.Combine(csvDir, "studentInfo.csv"));
