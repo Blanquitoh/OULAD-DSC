@@ -20,7 +20,7 @@ public class Assessment
 
     public int? Date { get; set; }
 
-    public int Weight { get; set; }
+    public decimal Weight { get; set; }
 
     [ForeignKey("CodeModule,CodePresentation")]
     public Course? Course { get; set; }

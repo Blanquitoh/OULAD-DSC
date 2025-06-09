@@ -14,5 +14,5 @@ public class AssessmentCsv
 
     [Name("date")] public int? Date { get; set; }
 
-    [Name("weight")] public int Weight { get; set; }
+    [Name("weight")] public decimal Weight { get; set; }
 }
