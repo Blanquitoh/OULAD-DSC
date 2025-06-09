@@ -8,12 +8,10 @@ public class StudentInfo
 {
     [Key]
     [Column(Order = 0)]
-    [ForeignKey(nameof(Course))]
     public string CodeModule { get; set; } = null!;
 
     [Key]
     [Column(Order = 1)]
-    [ForeignKey(nameof(Course))]
     public string CodePresentation { get; set; } = null!;
 
     [Key]
@@ -38,6 +36,7 @@ public class StudentInfo
 
     public FinalResult FinalResult { get; set; }
 
+    [ForeignKey("CodeModule,CodePresentation")]
     public Course? Course { get; set; }
     public ICollection<StudentRegistration> Registrations { get; set; } = new List<StudentRegistration>();
     public ICollection<StudentAssessment> Assessments { get; set; } = new List<StudentAssessment>();
