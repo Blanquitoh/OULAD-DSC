@@ -17,10 +17,12 @@ public class StudentAssessment
 
     [Key]
     [Column(Order = 2)]
+    [MaxLength(8)]
     public string CodeModule { get; set; } = null!;
 
     [Key]
     [Column(Order = 3)]
+    [MaxLength(8)]
     public string CodePresentation { get; set; } = null!;
 
     public int? DateSubmitted { get; set; }

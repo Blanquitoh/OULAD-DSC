@@ -8,10 +8,12 @@ public class StudentRegistration
 {
     [Key]
     [Column(Order = 0)]
+    [MaxLength(8)]
     public string CodeModule { get; set; } = null!;
 
     [Key]
     [Column(Order = 1)]
+    [MaxLength(8)]
     public string CodePresentation { get; set; } = null!;
 
     [Key]
