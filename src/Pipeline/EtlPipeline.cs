@@ -5,6 +5,7 @@ using OuladEtlEda.DataAccess;
 using OuladEtlEda.DataImport;
 using OuladEtlEda.DataImport.Models;
 using OuladEtlEda.Infrastructure;
+using OuladEtlEda.Pipeline.Mappers;
 using Serilog;
 
 namespace OuladEtlEda.Pipeline;
@@ -29,6 +30,14 @@ public class EtlPipeline
     private readonly StudentAssessmentValidator _studentAssessmentValidator;
     private readonly VleValidator _vleValidator;
     private readonly StudentVleValidator _studentVleValidator;
+
+    private readonly CourseCsvMapper _courseMapper;
+    private readonly AssessmentCsvMapper _assessmentMapper;
+    private readonly StudentInfoCsvMapper _studentInfoMapper;
+    private readonly StudentRegistrationCsvMapper _registrationMapper;
+    private readonly StudentAssessmentCsvMapper _studentAssessmentMapper;
+    private readonly VleCsvMapper _vleMapper;
+    private readonly StudentVleCsvMapper _studentVleMapper;
 
     public EtlPipeline(
         CsvReader<CourseCsv> courseReader,
@@ -66,6 +75,14 @@ public class EtlPipeline
         _studentVleValidator = studentVleValidator;
         _loader = loader;
         _context = context;
+
+        _courseMapper = new CourseCsvMapper();
+        _assessmentMapper = new AssessmentCsvMapper(mapper);
+        _studentInfoMapper = new StudentInfoCsvMapper(mapper);
+        _registrationMapper = new StudentRegistrationCsvMapper();
+        _studentAssessmentMapper = new StudentAssessmentCsvMapper(mapper);
+        _vleMapper = new VleCsvMapper(mapper);
+        _studentVleMapper = new StudentVleCsvMapper();
     }
 
     private async Task LoadAsync<TCsv, TEntity>(
@@ -96,18 +113,13 @@ public class EtlPipeline
     {
         try
         {
-            var tasks = new[]
-            {
-                LoadCoursesAsync(),
-                LoadAssessmentsAsync(),
-                LoadStudentInfoAsync(),
-                LoadRegistrationsAsync(),
-                LoadStudentAssessmentsAsync(),
-                LoadVleAsync(),
-                LoadStudentVleAsync()
-            };
-
-            await Task.WhenAll(tasks);
+            await LoadCoursesAsync();
+            await LoadAssessmentsAsync();
+            await LoadStudentInfoAsync();
+            await LoadRegistrationsAsync();
+            await LoadStudentAssessmentsAsync();
+            await LoadVleAsync();
+            await LoadStudentVleAsync();
         }
         catch (DomainException ex)
         {
@@ -118,147 +130,43 @@ public class EtlPipeline
     private Task LoadCoursesAsync() =>
         LoadAsync(
             _courseReader,
-            csv => new Course
-            {
-                CodeModule = csv.CodeModule,
-                CodePresentation = csv.CodePresentation,
-                ModulePresentationLength = csv.ModulePresentationLength
-            },
+            _courseMapper.Map,
             _courseValidator);
 
     private Task LoadAssessmentsAsync() =>
         LoadAsync(
             _assessmentReader,
-            csv => new Assessment
-            {
-                IdAssessment = _mapper.GetOrAdd("assessment_id", csv.IdAssessment.ToString()),
-                CodeModule = csv.CodeModule,
-                CodePresentation = csv.CodePresentation,
-                AssessmentType = csv.AssessmentType,
-                AssessmentTypeOrdinal = csv.AssessmentType == null
-                    ? null
-                    : _mapper.GetOrAdd("assessment_type", csv.AssessmentType),
-                Date = csv.Date,
-                Weight = csv.Weight
-            },
+            _assessmentMapper.Map,
             _assessmentValidator);
 
-    private static Gender ParseGender(string value) => value.Trim().ToUpper() switch
-    {
-        "M" => Gender.Male,
-        "F" => Gender.Female,
-        _ => Enum.TryParse<Gender>(value, true, out var g) ? g : Gender.Female
-    };
-
-    private static AgeBand ParseAgeBand(string value) => value.Trim() switch
-    {
-        "0-35" => AgeBand.Under35,
-        "35-55" => AgeBand.From35To55,
-        _ => AgeBand.Over55
-    };
-
-    private static Disability ParseDisability(string value) => value.Trim().ToUpper() switch
-    {
-        "N" => Disability.No,
-        "Y" => Disability.Yes,
-        _ => Disability.No
-    };
-
-    private static FinalResult ParseFinalResult(string value) => Enum.TryParse<FinalResult>(value.Replace(" ", ""), true, out var r) ? r : FinalResult.Fail;
-
-    private static EducationLevel ParseEducation(string value)
-    {
-        var v = value.ToLower();
-        if (v.StartsWith("no formal")) return EducationLevel.NoFormalQual;
-        if (v.StartsWith("lower")) return EducationLevel.LowerThanAlevel;
-        if (v.StartsWith("a level")) return EducationLevel.ALevelOrEquivalent;
-        if (v.StartsWith("he")) return EducationLevel.HEQualification;
-        if (v.StartsWith("post")) return EducationLevel.PostGraduate;
-        return EducationLevel.NoFormalQual;
-    }
 
     private Task LoadStudentInfoAsync() =>
         LoadAsync(
             _studentInfoReader,
-            csv => new StudentInfo
-            {
-                CodeModule = csv.CodeModule,
-                CodePresentation = csv.CodePresentation,
-                IdStudent = csv.IdStudent,
-                Gender = ParseGender(csv.Gender),
-                Region = csv.Region,
-                RegionOrdinal = csv.Region == null
-                    ? null
-                    : _mapper.GetOrAdd("region", csv.Region),
-                HighestEducation = ParseEducation(csv.HighestEducation),
-                ImdBand = csv.ImdBand,
-                ImdBandOrdinal = csv.ImdBand == null
-                    ? null
-                    : _mapper.GetOrAdd("imd_band", csv.ImdBand),
-                AgeBand = ParseAgeBand(csv.AgeBand),
-                NumOfPrevAttempts = csv.NumOfPrevAttempts,
-                StudiedCredits = csv.StudiedCredits,
-                Disability = ParseDisability(csv.Disability),
-                FinalResult = ParseFinalResult(csv.FinalResult)
-            },
+            _studentInfoMapper.Map,
             _studentInfoValidator);
 
     private Task LoadRegistrationsAsync() =>
         LoadAsync(
             _registrationReader,
-            csv => new StudentRegistration
-            {
-                CodeModule = csv.CodeModule,
-                CodePresentation = csv.CodePresentation,
-                IdStudent = csv.IdStudent,
-                DateRegistration = csv.DateRegistration,
-                DateUnregistration = csv.DateUnregistration
-            },
+            _registrationMapper.Map,
             _registrationValidator);
 
     private Task LoadStudentAssessmentsAsync() =>
         LoadAsync(
             _studentAssessmentReader,
-            csv => new StudentAssessment
-            {
-                IdAssessment = _mapper.GetOrAdd("assessment_id", csv.IdAssessment.ToString()),
-                IdStudent = csv.IdStudent,
-                CodeModule = csv.CodeModule,
-                CodePresentation = csv.CodePresentation,
-                DateSubmitted = csv.DateSubmitted,
-                IsBanked = csv.IsBanked,
-                Score = csv.Score
-            },
+            _studentAssessmentMapper.Map,
             _studentAssessmentValidator);
 
     private Task LoadVleAsync() =>
         LoadAsync(
             _vleReader,
-            csv => new Vle
-            {
-                IdSite = csv.IdSite,
-                CodeModule = csv.CodeModule,
-                CodePresentation = csv.CodePresentation,
-                ActivityType = csv.ActivityType,
-                ActivityTypeOrdinal = csv.ActivityType == null
-                    ? null
-                    : _mapper.GetOrAdd("activity_type", csv.ActivityType),
-                WeekFrom = csv.WeekFrom,
-                WeekTo = csv.WeekTo
-            },
+            _vleMapper.Map,
             _vleValidator);
 
     private Task LoadStudentVleAsync() =>
         LoadAsync(
             _studentVleReader,
-            csv => new StudentVle
-            {
-                IdSite = csv.IdSite,
-                IdStudent = csv.IdStudent,
-                CodeModule = csv.CodeModule,
-                CodePresentation = csv.CodePresentation,
-                Date = csv.Date,
-                SumClick = csv.SumClick
-            },
+            _studentVleMapper.Map,
             _studentVleValidator);
 }
