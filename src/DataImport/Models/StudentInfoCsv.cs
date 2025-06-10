@@ -8,9 +8,9 @@ public class StudentInfoCsv
     [Name("code_presentation")] public string CodePresentation { get; set; } = null!;
     [Name("id_student")] public int IdStudent { get; set; }
     [Name("gender")] public string Gender { get; set; } = null!;
-    [Name("region")] public string? Region { get; set; }
+    [Name("region")] public string Region { get; set; } = null!;
     [Name("highest_education")] public string HighestEducation { get; set; } = null!;
-    [Name("imd_band")] public string? ImdBand { get; set; }
+    [Name("imd_band")] public string ImdBand { get; set; } = null!;
     [Name("age_band")] public string AgeBand { get; set; } = null!;
     [Name("num_of_prev_attempts")] public int NumOfPrevAttempts { get; set; }
     [Name("studied_credits")] public int StudiedCredits { get; set; }

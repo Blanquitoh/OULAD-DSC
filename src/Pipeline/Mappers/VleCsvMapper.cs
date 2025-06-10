@@ -13,7 +13,7 @@ public class VleCsvMapper(CategoricalOrdinalMapper mapper) : ICsvEntityMapper<Vl
             CodeModule = csv.CodeModule,
             CodePresentation = csv.CodePresentation,
             ActivityType = csv.ActivityType,
-            ActivityTypeOrdinal = csv.ActivityType == null ? null : mapper.GetOrAdd("activity_type", csv.ActivityType),
+            ActivityTypeOrdinal = mapper.GetOrAdd("activity_type", csv.ActivityType),
             WeekFrom = csv.WeekFrom,
             WeekTo = csv.WeekTo
         };

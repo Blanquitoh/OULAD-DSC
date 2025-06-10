@@ -14,9 +14,7 @@ public class AssessmentCsvMapper(CategoricalOrdinalMapper mapper) : ICsvEntityMa
             CodePresentation = csv.CodePresentation,
             AssessmentType = csv.AssessmentType,
             AssessmentTypeEnum = ParseAssessmentType(csv.AssessmentType),
-            AssessmentTypeOrdinal = csv.AssessmentType == null
-                ? null
-                : mapper.GetOrAdd("assessment_type", csv.AssessmentType),
+            AssessmentTypeOrdinal = mapper.GetOrAdd("assessment_type", csv.AssessmentType),
             Date = csv.Date,
             Weight = csv.Weight
         };

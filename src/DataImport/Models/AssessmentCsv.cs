@@ -10,7 +10,7 @@ public class AssessmentCsv
 
     [Name("code_presentation")] public string CodePresentation { get; set; } = null!;
 
-    [Name("assessment_type")] public string? AssessmentType { get; set; }
+    [Name("assessment_type")] public string AssessmentType { get; set; } = null!;
 
     [Name("date")] public int? Date { get; set; }
 
