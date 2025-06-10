@@ -37,7 +37,7 @@ capas claras:
 
 ## 📂 Obtención del dataset
 
-<img src="https://raw.githubusercontent.com/Blanquitoh/OULAD-DSC/refs/heads/master/src/Images/Database-schema-of-OULAD-dataset-online-available-at.png" alt="Schema" width="300" height="300">
+<img src="https://raw.githubusercontent.com/Blanquitoh/OULAD-DSC/refs/heads/master/src/Images/Database-schema-of-OULAD-dataset-online-available-at.png" alt="Schema" width="425" height="400">
 
 
 El proyecto no incluye los archivos CSV de **OULAD**. Puedes descargarlos de la
@@ -92,11 +92,11 @@ APA, un resumen técnico de 250 palabras, capturas y enlaces al repositorio.
 
 ## 📊 Ejemplos de Resultados EDA:
 
-<img src="https://raw.githubusercontent.com/Blanquitoh/OULAD-DSC/refs/heads/master/src/Images/Plots/boxplot.png" alt="Boxplot" width="200" height="200">
-<img src="https://raw.githubusercontent.com/Blanquitoh/OULAD-DSC/refs/heads/master/src/Images/Plots/confusion.png" alt="Confusion" width="200" height="200">
-<img src="https://raw.githubusercontent.com/Blanquitoh/OULAD-DSC/refs/heads/master/src/Images/Plots/correlation.png" alt="Correlation" width="200" height="200">
-<img src="https://raw.githubusercontent.com/Blanquitoh/OULAD-DSC/refs/heads/master/src/Images/Plots/normal.png" alt="Normal" width="200" height="200">
-<img src="https://raw.githubusercontent.com/Blanquitoh/OULAD-DSC/refs/heads/master/src/Images/Plots/scatter.png" alt="Scatter" width="200" height="200">
+<img src="https://raw.githubusercontent.com/Blanquitoh/OULAD-DSC/refs/heads/master/src/Images/Plots/boxplot.png" alt="Boxplot" width="300" height="200">
+<img src="https://raw.githubusercontent.com/Blanquitoh/OULAD-DSC/refs/heads/master/src/Images/Plots/confusion.png" alt="Confusion" width="300" height="200">
+<img src="https://raw.githubusercontent.com/Blanquitoh/OULAD-DSC/refs/heads/master/src/Images/Plots/correlation.png" alt="Correlation" width="300" height="200">
+<img src="https://raw.githubusercontent.com/Blanquitoh/OULAD-DSC/refs/heads/master/src/Images/Plots/normal.png" alt="Normal" width="300" height="200">
+<img src="https://raw.githubusercontent.com/Blanquitoh/OULAD-DSC/refs/heads/master/src/Images/Plots/scatter.png" alt="Scatter" width="300" height="200">
 
 ## ⚖️ Licencia y contribuciones
 Este proyecto se distribuye bajo la [Licencia MIT](LICENSE). Las contribuciones
