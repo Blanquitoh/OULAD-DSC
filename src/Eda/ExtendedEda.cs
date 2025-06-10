@@ -5,7 +5,7 @@ using OxyPlot.Annotations;
 using OxyPlot.Axes;
 using OxyPlot.Legends;
 using OxyPlot.Series;
-using OxyPlot.SkiaSharp;
+using static OuladEtlEda.Eda.EdaUtils;
 using Serilog;
 
 namespace OuladEtlEda.Eda;
@@ -24,13 +24,7 @@ public static class ExtendedEda
         PlotScatter(context, Path.Combine("plots", "scatter.png"));
 
         Log.Information("Extended EDA completed");
-    }
-
-    private static void Export(PlotModel model, string path)
-    {
-        using var stream = File.Create(path);
-        new PngExporter { Width = 600, Height = 400 }
-            .Export(model, stream);
+        OpenDirectory("plots");
     }
 
     public static void PlotConfusionMatrix(OuladContext ctx, string path)
@@ -103,7 +97,7 @@ public static class ExtendedEda
             });
         }
 
-        Export(model, path);
+        ExportPlot(model, path);
     }
 
     public static void PlotCorrelationMatrix(OuladContext ctx, string path)
@@ -188,26 +182,7 @@ public static class ExtendedEda
             });
         }
 
-        Export(model, path);
-
-        static double Pearson(IEnumerable<double> xs, IEnumerable<double> ys)
-        {
-            var x = xs.ToArray();
-            var y = ys.ToArray();
-            if (x.Length == 0) return 0;
-            double meanX = x.Average(), meanY = y.Average();
-            double cov = 0, varX = 0, varY = 0;
-            for (var i = 0; i < x.Length; i++)
-            {
-                var dx = x[i] - meanX;
-                var dy = y[i] - meanY;
-                cov += dx * dy;
-                varX += dx * dx;
-                varY += dy * dy;
-            }
-
-            return cov / Math.Sqrt(varX * varY);
-        }
+        ExportPlot(model, path);
     }
 
     public static void PlotBoxplot(OuladContext db, string path)
@@ -273,16 +248,7 @@ public static class ExtendedEda
             x++;
         }
 
-        Export(model, path);
-
-        static double Quantile(IList<double> sorted, double p)
-        {
-            var pos = (sorted.Count - 1) * p;
-            int lo = (int)Math.Floor(pos), hi = (int)Math.Ceiling(pos);
-            return lo == hi
-                ? sorted[lo]
-                : sorted[lo] + (sorted[hi] - sorted[lo]) * (pos - lo);
-        }
+        ExportPlot(model, path);
     }
 
     public static void PlotNormalDistribution(OuladContext ctx, string path)
@@ -346,41 +312,11 @@ public static class ExtendedEda
         model.Series.Add(hist);
         model.Series.Add(norm);
 
-        AddVert(mean, model, "μ");
-        AddVert(mean + std, model, "μ + σ");
-        AddVert(mean - std, model, "μ – σ");
+        model.AddVerticalLine(mean, "μ");
+        model.AddVerticalLine(mean + std, "μ + σ");
+        model.AddVerticalLine(mean - std, "μ – σ");
 
-        Export(model, path);
-
-        static double NormalPdf(double x, double m, double s)
-        {
-            return 1.0 / (Math.Sqrt(2 * Math.PI) * s) *
-                   Math.Exp(-Math.Pow(x - m, 2) / (2 * s * s));
-        }
-
-        static double Percentile(IReadOnlyList<double> list, double p)
-        {
-            var sorted = list.OrderBy(v => v).ToList();
-            var pos = (sorted.Count - 1) * p;
-            int lo = (int)Math.Floor(pos), hi = (int)Math.Ceiling(pos);
-            return lo == hi
-                ? sorted[lo]
-                : sorted[lo] + (sorted[hi] - sorted[lo]) * (pos - lo);
-        }
-
-        static void AddVert(double x, PlotModel m, string t)
-        {
-            m.Annotations.Add(new LineAnnotation
-            {
-                Type = LineAnnotationType.Vertical,
-                X = x,
-                LineStyle = LineStyle.Dash,
-                Color = OxyColors.Gray,
-                Text = t,
-                TextVerticalAlignment = VerticalAlignment.Bottom,
-                FontSize = 8
-            });
-        }
+        ExportPlot(model, path);
     }
 
     public static void PlotScatter(OuladContext ctx, string path)
@@ -452,6 +388,6 @@ public static class ExtendedEda
         model.Series.Add(scatter);
         if (trend.Points.Count == 2) model.Series.Add(trend);
 
-        Export(model, path);
+        ExportPlot(model, path);
     }
 }
