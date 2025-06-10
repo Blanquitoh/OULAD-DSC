@@ -29,7 +29,10 @@ public class StudentAssessmentCsvMapperTests
         });
         context.SaveChanges();
 
-        var csvMapper = new StudentAssessmentCsvMapper(mapper, context);
+        var assessments = context.Assessments
+            .AsNoTracking()
+            .ToDictionary(a => a.IdAssessment);
+        var csvMapper = new StudentAssessmentCsvMapper(mapper, assessments);
         var csv = new StudentAssessmentCsv
         {
             IdAssessment = 1,

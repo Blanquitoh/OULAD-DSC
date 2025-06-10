@@ -1,19 +1,19 @@
-using Microsoft.EntityFrameworkCore;
-using OuladEtlEda.DataAccess;
+using System.Collections.Generic;
 using OuladEtlEda.DataImport.Models;
 using OuladEtlEda.Domain;
 using Serilog;
 
 namespace OuladEtlEda.Pipeline.Mappers;
 
-public class StudentAssessmentCsvMapper(CategoricalOrdinalMapper mapper, OuladContext context)
+public class StudentAssessmentCsvMapper(
+    CategoricalOrdinalMapper mapper,
+    IReadOnlyDictionary<int, Assessment> assessments)
     : ICsvEntityMapper<StudentAssessmentCsv, StudentAssessment>
 {
     public StudentAssessment? Map(StudentAssessmentCsv csv)
     {
         var idAssessment = mapper.GetOrAdd("assessment_id", csv.IdAssessment.ToString());
-        var assessment = context.Assessments.AsNoTracking().FirstOrDefault(a => a.IdAssessment == idAssessment);
-        if (assessment != null)
+        if (assessments.TryGetValue(idAssessment, out var assessment))
             return new StudentAssessment
             {
                 IdAssessment = idAssessment,
