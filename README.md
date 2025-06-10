@@ -90,6 +90,8 @@ APA, un resumen técnico de 250 palabras, capturas y enlaces al repositorio.
 - [SQL Server Documentation](https://learn.microsoft.com/sql/)
 
 ## 📊 Ejemplos de Resultados EDA:
+- ttest: t-statistic: 3.2518
+- anova: F-statistic: 83.4006
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Blanquitoh/OULAD-DSC/refs/heads/master/src/Images/Plots/boxplot.png" alt="Boxplot" width="300" height="200">
@@ -97,6 +99,7 @@ APA, un resumen técnico de 250 palabras, capturas y enlaces al repositorio.
   <img src="https://raw.githubusercontent.com/Blanquitoh/OULAD-DSC/refs/heads/master/src/Images/Plots/correlation.png" alt="Correlation" width="300" height="200">
   <img src="https://raw.githubusercontent.com/Blanquitoh/OULAD-DSC/refs/heads/master/src/Images/Plots/normal.png" alt="Normal" width="300" height="200">
   <img src="https://raw.githubusercontent.com/Blanquitoh/OULAD-DSC/refs/heads/master/src/Images/Plots/scatter.png" alt="Scatter" width="300" height="200">
+  <img src="https://raw.githubusercontent.com/Blanquitoh/OULAD-DSC/refs/heads/master/src/Images/Plots/barchart.png" alt="Scatter" width="300" height="200">
 </p>
 
 ## ⚖️ Licencia y contribuciones
