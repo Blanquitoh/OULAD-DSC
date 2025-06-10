@@ -42,7 +42,7 @@ public class EtlPipeline(
 
     private async Task LoadAsync<TCsv, TEntity>(
         CsvReaderBase<TCsv> reader,
-        Func<TCsv, TEntity> map,
+        Func<TCsv, TEntity?> map,
         IDomainValidator<TEntity> validator,
         int logInterval = 1000) where TEntity : class
     {
@@ -56,6 +56,7 @@ public class EtlPipeline(
                 Log.Warning("Skipping record for {Entity} due to mapping failure", typeof(TEntity).Name);
                 continue;
             }
+
             await validator.ValidateAsync(entity);
             entities.Add(entity);
             count++;
@@ -101,13 +102,13 @@ public class EtlPipeline(
             return;
         }
 
-        await _context.StudentVles.ExecuteDeleteAsync();
-        await _context.StudentAssessments.ExecuteDeleteAsync();
-        await _context.StudentRegistrations.ExecuteDeleteAsync();
-        await _context.Vles.ExecuteDeleteAsync();
-        await _context.StudentInfos.ExecuteDeleteAsync();
-        await _context.Assessments.ExecuteDeleteAsync();
-        await _context.Courses.ExecuteDeleteAsync();
+        await context.StudentVles.ExecuteDeleteAsync();
+        await context.StudentAssessments.ExecuteDeleteAsync();
+        await context.StudentRegistrations.ExecuteDeleteAsync();
+        await context.Vles.ExecuteDeleteAsync();
+        await context.StudentInfos.ExecuteDeleteAsync();
+        await context.Assessments.ExecuteDeleteAsync();
+        await context.Courses.ExecuteDeleteAsync();
     }
 
     private Task LoadCoursesAsync()

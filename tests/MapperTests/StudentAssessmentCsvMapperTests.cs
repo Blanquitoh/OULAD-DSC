@@ -39,7 +39,7 @@ public class StudentAssessmentCsvMapperTests
             Score = 75
         };
 
-        var result = csvMapper.Map(csv);
+        var result = csvMapper.Map(csv)!;
 
         Assert.Equal("AAA", result.CodeModule);
         Assert.Equal("2021", result.CodePresentation);
