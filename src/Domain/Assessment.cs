@@ -25,7 +25,6 @@ public class Assessment : ICourseEntity
     [ForeignKey("CodeModule,CodePresentation")]
     public Course? Course { get; set; }
 
-    public ICollection<StudentAssessment> StudentAssessments { get; set; } = new List<StudentAssessment>();
 
     [Column(Order = 0, TypeName = "varchar(45)")]
     [MaxLength(45)]
