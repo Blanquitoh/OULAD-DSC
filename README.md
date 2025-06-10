@@ -37,7 +37,9 @@ capas claras:
 
 ## 📂 Obtención del dataset
 
-<img src="https://raw.githubusercontent.com/Blanquitoh/OULAD-DSC/refs/heads/master/src/Images/Database-schema-of-OULAD-dataset-online-available-at.png" alt="Schema" width="425" height="400" align="right">
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Blanquitoh/OULAD-DSC/refs/heads/master/src/Images/Database-schema-of-OULAD-dataset-online-available-at.png" alt="Schema" width="425" height="400">
+</p>
 
 
 El proyecto no incluye los archivos CSV de **OULAD**. Puedes descargarlos de la
