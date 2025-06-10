@@ -81,7 +81,7 @@ public class OuladContext(DbContextOptions<OuladContext> options) : DbContext(op
 
         modelBuilder.Entity<StudentVle>(entity =>
         {
-            entity.HasKey(sv => new { sv.CodeModule, sv.CodePresentation, sv.IdStudent });
+            entity.HasKey(sv => new { sv.IdSite, sv.CodeModule, sv.CodePresentation, sv.IdStudent });
             entity.ConfigureCourseEntity();
             entity.HasOne(sv => sv.Vle)
                 .WithMany(v => v.StudentVles)

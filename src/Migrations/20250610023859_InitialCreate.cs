@@ -169,7 +169,7 @@ namespace OuladEtlEda.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_studentVle", x => new { x.CodeModule, x.CodePresentation, x.IdStudent });
+                    table.PrimaryKey("PK_studentVle", x => new { x.IdSite, x.CodeModule, x.CodePresentation, x.IdStudent });
                     table.ForeignKey(
                         name: "FK_studentVle_studentInfo_CodeModule_CodePresentation_IdStudent",
                         columns: x => new { x.CodeModule, x.CodePresentation, x.IdStudent },

@@ -180,7 +180,7 @@ namespace OuladEtlEda.Migrations
                     b.Property<int>("StudiedCredits")
                         .HasColumnType("int");
 
-                    b.HasKey("CodeModule", "CodePresentation", "IdStudent");
+                    b.HasKey("IdSite", "CodeModule", "CodePresentation", "IdStudent");
 
                     b.ToTable("studentInfo");
                 });
@@ -209,7 +209,7 @@ namespace OuladEtlEda.Migrations
                     b.Property<int?>("DateUnregistration")
                         .HasColumnType("int");
 
-                    b.HasKey("CodeModule", "CodePresentation", "IdStudent");
+                    b.HasKey("IdSite", "CodeModule", "CodePresentation", "IdStudent");
 
                     b.ToTable("studentRegistration");
                 });
@@ -242,7 +242,7 @@ namespace OuladEtlEda.Migrations
                     b.Property<int>("SumClick")
                         .HasColumnType("int");
 
-                    b.HasKey("CodeModule", "CodePresentation", "IdStudent");
+                    b.HasKey("IdSite", "CodeModule", "CodePresentation", "IdStudent");
 
                     b.HasIndex("IdSite", "CodeModule", "CodePresentation");
 
