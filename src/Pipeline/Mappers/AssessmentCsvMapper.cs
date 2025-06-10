@@ -13,11 +13,22 @@ public class AssessmentCsvMapper(CategoricalOrdinalMapper mapper) : ICsvEntityMa
             CodeModule = csv.CodeModule,
             CodePresentation = csv.CodePresentation,
             AssessmentType = csv.AssessmentType,
+            AssessmentTypeEnum = ParseAssessmentType(csv.AssessmentType),
             AssessmentTypeOrdinal = csv.AssessmentType == null
                 ? null
                 : mapper.GetOrAdd("assessment_type", csv.AssessmentType),
             Date = csv.Date,
             Weight = csv.Weight
+        };
+    }
+
+    private static AssessmentType ParseAssessmentType(string? value)
+    {
+        return value?.Trim().ToUpper() switch
+        {
+            "TMA" => AssessmentType.Tma,
+            "CMA" => AssessmentType.Cma,
+            _ => AssessmentType.Exam
         };
     }
 }

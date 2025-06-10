@@ -14,6 +14,8 @@ public class Assessment : ICourseEntity
     [Column(TypeName = "varchar(20)")]
     public string AssessmentType { get; set; } = null!;
 
+    public AssessmentType AssessmentTypeEnum { get; set; }
+
     public int? AssessmentTypeOrdinal { get; set; }
 
     public int? Date { get; set; }

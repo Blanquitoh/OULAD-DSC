@@ -99,5 +99,6 @@ public class OuladContext(DbContextOptions<OuladContext> options) : DbContext(op
         modelBuilder.Entity<StudentInfo>().Property(s => s.Disability).HasConversion<int>();
         modelBuilder.Entity<StudentInfo>().Property(s => s.FinalResult).HasConversion<int>();
         modelBuilder.Entity<StudentInfo>().Property(s => s.HighestEducation).HasConversion<int>();
+        modelBuilder.Entity<Assessment>().Property(a => a.AssessmentTypeEnum).HasConversion<int>();
     }
 }
