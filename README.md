@@ -37,7 +37,8 @@ capas claras:
 
 ## 📂 Obtención del dataset
 
-<img src="https://raw.githubusercontent.com/Blanquitoh/OULAD-DSC/refs/heads/master/src/Database-schema-of-OULAD-dataset-online-available-at.png" alt="Schema">
+<img src="https://raw.githubusercontent.com/Blanquitoh/OULAD-DSC/refs/heads/master/src/Images/Database-schema-of-OULAD-dataset-online-available-at.png" alt="Schema" width="100" height="100">
+
 
 El proyecto no incluye los archivos CSV de **OULAD**. Puedes descargarlos de la
 [página oficial del Open University Learning Analytics Dataset](https://analyse.kmi.open.ac.uk/open_dataset/).
@@ -88,6 +89,14 @@ APA, un resumen técnico de 250 palabras, capturas y enlaces al repositorio.
 ## 📚 Referencias
 - [Entity Framework Core Docs](https://learn.microsoft.com/ef/)
 - [SQL Server Documentation](https://learn.microsoft.com/sql/)
+
+## 📊 Ejemplos de Resultados EDA:
+
+<img src="https://raw.githubusercontent.com/Blanquitoh/OULAD-DSC/refs/heads/master/src/Images/Plots/boxplot.png" alt="Boxplot" width="100" height="100">
+<img src="https://raw.githubusercontent.com/Blanquitoh/OULAD-DSC/refs/heads/master/src/Images/Plots/confusion.png" alt="Confusion" width="100" height="100">
+<img src="https://raw.githubusercontent.com/Blanquitoh/OULAD-DSC/refs/heads/master/src/Images/Plots/correlation.png" alt="Correlation" width="100" height="100">
+<img src="https://raw.githubusercontent.com/Blanquitoh/OULAD-DSC/refs/heads/master/src/Images/Plots/normal.png" alt="Normal" width="100" height="100">
+<img src="https://raw.githubusercontent.com/Blanquitoh/OULAD-DSC/refs/heads/master/src/Images/Plots/scatter.png" alt="Scatter" width="100" height="100">
 
 ## ⚖️ Licencia y contribuciones
 Este proyecto se distribuye bajo la [Licencia MIT](LICENSE). Las contribuciones
