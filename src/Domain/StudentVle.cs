@@ -17,7 +17,7 @@ public class StudentVle : ICourseEntity
 
     public int SumClick { get; set; }
 
-    [ForeignKey("CodeModule,CodePresentation,IdSite")]
+    [ForeignKey("IdSite,CodeModule,CodePresentation")]
     public Vle? Vle { get; set; }
 
     [ForeignKey("CodeModule,CodePresentation,IdStudent")]
