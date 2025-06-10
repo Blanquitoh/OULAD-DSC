@@ -14,7 +14,7 @@ internal class Program
 {
     private static async Task<int> Main(string[] args)
     {
-        var modeOption = new Option<ExecutionMode>("--mode", () => ExecutionMode.Etl,
+        var modeOption = new Option<ExecutionMode>("--mode", () => ExecutionMode.Eda,
             "Execution mode (Etl or Eda)");
         var csvDirOption = new Option<string>("--csv-dir", () => "C:\\csv",
             "Directory containing CSV files");
