@@ -42,6 +42,7 @@ El proyecto no incluye los archivos CSV de **OULAD**. Puedes descargarlos de la
 [página oficial del Open University Learning Analytics Dataset](https://analyse.kmi.open.ac.uk/open_dataset/).
 Descomprime el contenido en una carpeta local y especifica esa ruta al ejecutar
 el modo ETL.
+
 <img src="https://raw.githubusercontent.com/Blanquitoh/OULAD-DSC/refs/heads/master/src/Images/Database-schema-of-OULAD-dataset-online-available-at.png" alt="Schema" width="425" height="400"/>
 </p>
 
