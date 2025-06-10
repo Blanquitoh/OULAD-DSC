@@ -90,26 +90,61 @@ public class EtlPipeline(
     private async Task TruncateTablesAsync()
     {
         Log.Information("Truncating tables");
+
+        var previousTimeout = context.Database.GetCommandTimeout();
+        // Increase timeout to avoid failures when removing large volumes of data
+        context.Database.SetCommandTimeout(TimeSpan.FromMinutes(5));
+
         if (!context.Database.IsRelational())
         {
+            Log.Information("Truncating {Table}", nameof(context.StudentVles));
             context.StudentVles.RemoveRange(context.StudentVles);
+
+            Log.Information("Truncating {Table}", nameof(context.StudentAssessments));
             context.StudentAssessments.RemoveRange(context.StudentAssessments);
+
+            Log.Information("Truncating {Table}", nameof(context.StudentRegistrations));
             context.StudentRegistrations.RemoveRange(context.StudentRegistrations);
+
+            Log.Information("Truncating {Table}", nameof(context.Vles));
             context.Vles.RemoveRange(context.Vles);
+
+            Log.Information("Truncating {Table}", nameof(context.StudentInfos));
             context.StudentInfos.RemoveRange(context.StudentInfos);
+
+            Log.Information("Truncating {Table}", nameof(context.Assessments));
             context.Assessments.RemoveRange(context.Assessments);
+
+            Log.Information("Truncating {Table}", nameof(context.Courses));
             context.Courses.RemoveRange(context.Courses);
+
             await context.SaveChangesAsync();
+            context.Database.SetCommandTimeout(previousTimeout);
             return;
         }
 
+        Log.Information("Truncating {Table}", nameof(context.StudentVles));
         await context.StudentVles.ExecuteDeleteAsync();
+
+        Log.Information("Truncating {Table}", nameof(context.StudentAssessments));
         await context.StudentAssessments.ExecuteDeleteAsync();
+
+        Log.Information("Truncating {Table}", nameof(context.StudentRegistrations));
         await context.StudentRegistrations.ExecuteDeleteAsync();
+
+        Log.Information("Truncating {Table}", nameof(context.Vles));
         await context.Vles.ExecuteDeleteAsync();
+
+        Log.Information("Truncating {Table}", nameof(context.StudentInfos));
         await context.StudentInfos.ExecuteDeleteAsync();
+
+        Log.Information("Truncating {Table}", nameof(context.Assessments));
         await context.Assessments.ExecuteDeleteAsync();
+
+        Log.Information("Truncating {Table}", nameof(context.Courses));
         await context.Courses.ExecuteDeleteAsync();
+
+        context.Database.SetCommandTimeout(previousTimeout);
     }
 
     private Task LoadCoursesAsync()
