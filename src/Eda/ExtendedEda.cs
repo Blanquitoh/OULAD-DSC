@@ -5,8 +5,8 @@ using OxyPlot.Annotations;
 using OxyPlot.Axes;
 using OxyPlot.Legends;
 using OxyPlot.Series;
-using static OuladEtlEda.Eda.EdaUtils;
 using Serilog;
+using static OuladEtlEda.Eda.EdaUtils;
 
 namespace OuladEtlEda.Eda;
 
@@ -399,31 +399,54 @@ public static class ExtendedEda
     {
         Log.Information("Generating bar chart: {Path}", path);
 
-        var bands = Enum.GetValues<AgeBand>();
-        var results = Enum.GetValues<FinalResult>();
+        var ageBands = Enum.GetValues<AgeBand>();
+        var finalResults = Enum.GetValues<FinalResult>();
 
         var model = new PlotModel
         {
             Title = "Final result by age band",
             Background = OxyColors.White
         };
-        model.Legends.Add(new Legend { LegendPosition = LegendPosition.TopRight, LegendBorderThickness = 0 });
-
-        var catAxis = new CategoryAxis { Position = AxisPosition.Bottom, Title = "Age band" };
-        foreach (var band in bands) catAxis.Labels.Add(band.ToString());
-        model.Axes.Add(catAxis);
-        model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Number of students", MinimumPadding = 0, AbsoluteMinimum = 0 });
-
-        var palette = OxyPalettes.HueDistinct(results.Length);
-        for (var i = 0; i < results.Length; i++)
+        model.Legends.Add(new Legend
         {
-            var res = results[i];
-            var series = new ColumnSeries { Title = res.ToString(), FillColor = palette.Colors[i] };
-            foreach (var band in bands)
+            LegendPosition = LegendPosition.TopRight,
+            LegendBorderThickness = 0
+        });
+
+        var catAxis = new CategoryAxis
+        {
+            Position = AxisPosition.Left,
+            Title = "Age band",
+            ItemsSource = ageBands.Select(b => b.ToString()).ToList()
+        };
+        model.Axes.Add(catAxis);
+        model.Axes.Add(new LinearAxis
+        {
+            Position = AxisPosition.Bottom,
+            Title = "Number of students",
+            MinimumPadding = 0,
+            AbsoluteMinimum = 0
+        });
+
+        var palette = OxyPalettes.HueDistinct(finalResults.Length);
+
+        for (var i = 0; i < finalResults.Length; i++)
+        {
+            var result = finalResults[i];
+            var series = new BarSeries
             {
-                var count = ctx.StudentInfos.Count(s => s.AgeBand == band && s.FinalResult == res);
-                series.Items.Add(new ColumnItem(count));
+                Title = result.ToString(),
+                FillColor = palette.Colors[i],
+                StrokeThickness = 0,
+                BarWidth = 0.8
+            };
+
+            foreach (var band in ageBands)
+            {
+                var count = ctx.StudentInfos.Count(s => s.AgeBand == band && s.FinalResult == result);
+                series.Items.Add(new BarItem(count));
             }
+
             model.Series.Add(series);
         }
 
