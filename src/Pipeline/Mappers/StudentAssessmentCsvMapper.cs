@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using OuladEtlEda.DataImport.Models;
 using OuladEtlEda.Domain;
 using Serilog;
