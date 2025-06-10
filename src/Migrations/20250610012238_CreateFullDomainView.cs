@@ -43,6 +43,8 @@ SELECT
     si.FinalResult
 FROM studentAssessment sa
 JOIN assessments a ON sa.IdAssessment = a.IdAssessment
+    AND sa.CodeModule = a.CodeModule
+    AND sa.CodePresentation = a.CodePresentation
 JOIN studentInfo si ON sa.CodeModule = si.CodeModule
     AND sa.CodePresentation = si.CodePresentation
     AND sa.IdStudent = si.IdStudent
@@ -79,6 +81,8 @@ SELECT
     si.FinalResult
 FROM studentVle sv
 JOIN vle v ON sv.IdSite = v.IdSite
+    AND sv.CodeModule = v.CodeModule
+    AND sv.CodePresentation = v.CodePresentation
 JOIN studentInfo si ON sv.CodeModule = si.CodeModule
     AND sv.CodePresentation = si.CodePresentation
     AND sv.IdStudent = si.IdStudent";

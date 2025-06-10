@@ -24,10 +24,20 @@ namespace OuladEtlEda.Migrations
             modelBuilder.Entity("OuladEtlEda.Domain.Assessment", b =>
                 {
                     b.Property<int>("IdAssessment")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdAssessment"));
+                    b.Property<string>("CodeModule")
+                        .HasMaxLength(8)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(8)")
+                        .HasColumnOrder(1);
+
+                    b.Property<string>("CodePresentation")
+                        .HasMaxLength(8)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(8)")
+                        .HasColumnOrder(2);
 
                     b.Property<string>("AssessmentType")
                         .HasMaxLength(20)
@@ -36,25 +46,13 @@ namespace OuladEtlEda.Migrations
                     b.Property<int?>("AssessmentTypeOrdinal")
                         .HasColumnType("int");
 
-                    b.Property<string>("CodeModule")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(8)");
-
-                    b.Property<string>("CodePresentation")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(8)");
-
                     b.Property<int?>("Date")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Weight")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("IdAssessment");
+                    b.HasKey("IdAssessment", "CodeModule", "CodePresentation");
 
                     b.HasIndex("CodeModule", "CodePresentation");
 
@@ -117,6 +115,8 @@ namespace OuladEtlEda.Migrations
                     b.HasKey("IdAssessment", "IdStudent", "CodeModule", "CodePresentation");
 
                     b.HasIndex("CodeModule", "CodePresentation", "IdStudent");
+
+                    b.HasIndex("IdAssessment", "CodeModule", "CodePresentation");
 
                     b.ToTable("studentAssessment");
                 });
@@ -210,35 +210,35 @@ namespace OuladEtlEda.Migrations
 
             modelBuilder.Entity("OuladEtlEda.Domain.StudentVle", b =>
                 {
-                    b.Property<int>("IdSite")
-                        .HasColumnType("int")
-                        .HasColumnOrder(0);
-
-                    b.Property<int>("IdStudent")
-                        .HasColumnType("int")
-                        .HasColumnOrder(1);
-
                     b.Property<string>("CodeModule")
                         .HasMaxLength(8)
                         .IsUnicode(false)
                         .HasColumnType("varchar(8)")
-                        .HasColumnOrder(2);
+                        .HasColumnOrder(0);
 
                     b.Property<string>("CodePresentation")
                         .HasMaxLength(8)
                         .IsUnicode(false)
                         .HasColumnType("varchar(8)")
-                        .HasColumnOrder(3);
+                        .HasColumnOrder(1);
+
+                    b.Property<int>("IdStudent")
+                        .HasColumnType("int")
+                        .HasColumnOrder(2);
 
                     b.Property<int?>("Date")
                         .HasColumnType("int");
 
+                    b.Property<int>("IdSite")
+                        .HasColumnType("int")
+                        .HasColumnOrder(3);
+
                     b.Property<int>("SumClick")
                         .HasColumnType("int");
 
-                    b.HasKey("IdSite", "IdStudent", "CodeModule", "CodePresentation");
+                    b.HasKey("CodeModule", "CodePresentation", "IdStudent");
 
-                    b.HasIndex("CodeModule", "CodePresentation", "IdStudent");
+                    b.HasIndex("IdSite", "CodeModule", "CodePresentation");
 
                     b.ToTable("studentVle");
                 });
@@ -246,10 +246,20 @@ namespace OuladEtlEda.Migrations
             modelBuilder.Entity("OuladEtlEda.Domain.Vle", b =>
                 {
                     b.Property<int>("IdSite")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdSite"));
+                    b.Property<string>("CodeModule")
+                        .HasMaxLength(8)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(8)")
+                        .HasColumnOrder(1);
+
+                    b.Property<string>("CodePresentation")
+                        .HasMaxLength(8)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(8)")
+                        .HasColumnOrder(2);
 
                     b.Property<string>("ActivityType")
                         .HasMaxLength(32)
@@ -258,25 +268,13 @@ namespace OuladEtlEda.Migrations
                     b.Property<int?>("ActivityTypeOrdinal")
                         .HasColumnType("int");
 
-                    b.Property<string>("CodeModule")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(8)");
-
-                    b.Property<string>("CodePresentation")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(8)");
-
                     b.Property<int?>("WeekFrom")
                         .HasColumnType("int");
 
                     b.Property<int?>("WeekTo")
                         .HasColumnType("int");
 
-                    b.HasKey("IdSite");
+                    b.HasKey("IdSite", "CodeModule", "CodePresentation");
 
                     b.HasIndex("CodeModule", "CodePresentation");
 
@@ -296,15 +294,15 @@ namespace OuladEtlEda.Migrations
 
             modelBuilder.Entity("OuladEtlEda.Domain.StudentAssessment", b =>
                 {
-                    b.HasOne("OuladEtlEda.Domain.Assessment", "Assessment")
-                        .WithMany("StudentAssessments")
-                        .HasForeignKey("IdAssessment")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("OuladEtlEda.Domain.StudentInfo", "StudentInfo")
                         .WithMany("Assessments")
                         .HasForeignKey("CodeModule", "CodePresentation", "IdStudent")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("OuladEtlEda.Domain.Assessment", "Assessment")
+                        .WithMany("StudentAssessments")
+                        .HasForeignKey("IdAssessment", "CodeModule", "CodePresentation")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -345,15 +343,15 @@ namespace OuladEtlEda.Migrations
 
             modelBuilder.Entity("OuladEtlEda.Domain.StudentVle", b =>
                 {
-                    b.HasOne("OuladEtlEda.Domain.Vle", "Vle")
-                        .WithMany("StudentVles")
-                        .HasForeignKey("IdSite")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("OuladEtlEda.Domain.StudentInfo", "StudentInfo")
                         .WithMany("StudentVles")
                         .HasForeignKey("CodeModule", "CodePresentation", "IdStudent")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("OuladEtlEda.Domain.Vle", "Vle")
+                        .WithMany("StudentVles")
+                        .HasForeignKey("IdSite", "CodeModule", "CodePresentation")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 

@@ -27,18 +27,17 @@ namespace OuladEtlEda.Migrations
                 name: "assessments",
                 columns: table => new
                 {
-                    IdAssessment = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AssessmentType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IdAssessment = table.Column<int>(type: "int", nullable: false),
+                    CodeModule = table.Column<string>(type: "varchar(8)", unicode: false, maxLength: 8, nullable: false),
+                    CodePresentation = table.Column<string>(type: "varchar(8)", unicode: false, maxLength: 8, nullable: false),
+                    AssessmentType = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true),
                     AssessmentTypeOrdinal = table.Column<int>(type: "int", nullable: true),
                     Date = table.Column<int>(type: "int", nullable: true),
-                    Weight = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    CodeModule = table.Column<string>(type: "varchar(8)", unicode: false, maxLength: 8, nullable: false),
-                    CodePresentation = table.Column<string>(type: "varchar(8)", unicode: false, maxLength: 8, nullable: false)
+                    Weight = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_assessments", x => x.IdAssessment);
+                    table.PrimaryKey("PK_assessments", x => new { x.IdAssessment, x.CodeModule, x.CodePresentation });
                     table.ForeignKey(
                         name: "FK_assessments_courses_CodeModule_CodePresentation",
                         columns: x => new { x.CodeModule, x.CodePresentation },
@@ -55,10 +54,10 @@ namespace OuladEtlEda.Migrations
                     CodePresentation = table.Column<string>(type: "varchar(8)", unicode: false, maxLength: 8, nullable: false),
                     IdStudent = table.Column<int>(type: "int", nullable: false),
                     Gender = table.Column<int>(type: "int", nullable: false),
-                    Region = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Region = table.Column<string>(type: "varchar(32)", maxLength: 32, nullable: true),
                     RegionOrdinal = table.Column<int>(type: "int", nullable: true),
                     HighestEducation = table.Column<int>(type: "int", nullable: false),
-                    ImdBand = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImdBand = table.Column<string>(type: "varchar(32)", maxLength: 32, nullable: true),
                     ImdBandOrdinal = table.Column<int>(type: "int", nullable: true),
                     AgeBand = table.Column<int>(type: "int", nullable: false),
                     NumOfPrevAttempts = table.Column<int>(type: "int", nullable: false),
@@ -81,18 +80,17 @@ namespace OuladEtlEda.Migrations
                 name: "vle",
                 columns: table => new
                 {
-                    IdSite = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ActivityType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IdSite = table.Column<int>(type: "int", nullable: false),
+                    CodeModule = table.Column<string>(type: "varchar(8)", unicode: false, maxLength: 8, nullable: false),
+                    CodePresentation = table.Column<string>(type: "varchar(8)", unicode: false, maxLength: 8, nullable: false),
+                    ActivityType = table.Column<string>(type: "varchar(32)", maxLength: 32, nullable: true),
                     ActivityTypeOrdinal = table.Column<int>(type: "int", nullable: true),
                     WeekFrom = table.Column<int>(type: "int", nullable: true),
-                    WeekTo = table.Column<int>(type: "int", nullable: true),
-                    CodeModule = table.Column<string>(type: "varchar(8)", unicode: false, maxLength: 8, nullable: false),
-                    CodePresentation = table.Column<string>(type: "varchar(8)", unicode: false, maxLength: 8, nullable: false)
+                    WeekTo = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_vle", x => x.IdSite);
+                    table.PrimaryKey("PK_vle", x => new { x.IdSite, x.CodeModule, x.CodePresentation });
                     table.ForeignKey(
                         name: "FK_vle_courses_CodeModule_CodePresentation",
                         columns: x => new { x.CodeModule, x.CodePresentation },
@@ -117,10 +115,10 @@ namespace OuladEtlEda.Migrations
                 {
                     table.PrimaryKey("PK_studentAssessment", x => new { x.IdAssessment, x.IdStudent, x.CodeModule, x.CodePresentation });
                     table.ForeignKey(
-                        name: "FK_studentAssessment_assessments_IdAssessment",
-                        column: x => x.IdAssessment,
+                        name: "FK_studentAssessment_assessments_IdAssessment_CodeModule_CodePresentation",
+                        columns: x => new { x.IdAssessment, x.CodeModule, x.CodePresentation },
                         principalTable: "assessments",
-                        principalColumn: "IdAssessment",
+                        principalColumns: new[] { "IdAssessment", "CodeModule", "CodePresentation" },
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_studentAssessment_studentInfo_CodeModule_CodePresentation_IdStudent",
@@ -161,16 +159,16 @@ namespace OuladEtlEda.Migrations
                 name: "studentVle",
                 columns: table => new
                 {
-                    IdSite = table.Column<int>(type: "int", nullable: false),
-                    IdStudent = table.Column<int>(type: "int", nullable: false),
                     CodeModule = table.Column<string>(type: "varchar(8)", unicode: false, maxLength: 8, nullable: false),
                     CodePresentation = table.Column<string>(type: "varchar(8)", unicode: false, maxLength: 8, nullable: false),
+                    IdStudent = table.Column<int>(type: "int", nullable: false),
+                    IdSite = table.Column<int>(type: "int", nullable: false),
                     Date = table.Column<int>(type: "int", nullable: true),
                     SumClick = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_studentVle", x => new { x.IdSite, x.IdStudent, x.CodeModule, x.CodePresentation });
+                    table.PrimaryKey("PK_studentVle", x => new { x.CodeModule, x.CodePresentation, x.IdStudent });
                     table.ForeignKey(
                         name: "FK_studentVle_studentInfo_CodeModule_CodePresentation_IdStudent",
                         columns: x => new { x.CodeModule, x.CodePresentation, x.IdStudent },
@@ -178,10 +176,10 @@ namespace OuladEtlEda.Migrations
                         principalColumns: new[] { "CodeModule", "CodePresentation", "IdStudent" },
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_studentVle_vle_IdSite",
-                        column: x => x.IdSite,
+                        name: "FK_studentVle_vle_IdSite_CodeModule_CodePresentation",
+                        columns: x => new { x.IdSite, x.CodeModule, x.CodePresentation },
                         principalTable: "vle",
-                        principalColumn: "IdSite",
+                        principalColumns: new[] { "IdSite", "CodeModule", "CodePresentation" },
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -196,9 +194,14 @@ namespace OuladEtlEda.Migrations
                 columns: new[] { "CodeModule", "CodePresentation", "IdStudent" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_studentVle_CodeModule_CodePresentation_IdStudent",
+                name: "IX_studentAssessment_IdAssessment_CodeModule_CodePresentation",
+                table: "studentAssessment",
+                columns: new[] { "IdAssessment", "CodeModule", "CodePresentation" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_studentVle_IdSite_CodeModule_CodePresentation",
                 table: "studentVle",
-                columns: new[] { "CodeModule", "CodePresentation", "IdStudent" });
+                columns: new[] { "IdSite", "CodeModule", "CodePresentation" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_vle_CodeModule_CodePresentation",
