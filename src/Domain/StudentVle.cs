@@ -16,10 +16,10 @@ public class StudentVle : ICourseEntity
 
     public int SumClick { get; set; }
 
-    [ForeignKey("IdSite,CodeModule,CodePresentation")]
+    [ForeignKey("IdSite")]
     public Vle? Vle { get; set; }
 
-    [ForeignKey("CodeModule,CodePresentation,IdStudent")]
+    [ForeignKey("IdStudent")]
     public StudentInfo? StudentInfo { get; set; }
 
     [Column(Order = 2, TypeName = "varchar(45)")]

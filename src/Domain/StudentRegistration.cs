@@ -15,7 +15,7 @@ public class StudentRegistration : ICourseEntity
     [ForeignKey("CodeModule,CodePresentation")]
     public Course? Course { get; set; }
 
-    [ForeignKey("CodeModule,CodePresentation,IdStudent")]
+    [ForeignKey("IdStudent")]
     public StudentInfo? StudentInfo { get; set; }
 
     [Column(Order = 0, TypeName = "varchar(45)")]
