@@ -26,6 +26,5 @@ public class StudentAssessmentCsvMapper(
 
         Log.Warning("Assessment {AssessmentId} not found for student {StudentId}", csv.IdAssessment, csv.IdStudent);
         return null;
-
     }
 }

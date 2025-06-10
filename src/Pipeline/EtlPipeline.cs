@@ -30,16 +30,15 @@ public class EtlPipeline(
     BulkLoader loader,
     OuladContext context)
 {
-    private readonly CategoricalOrdinalMapper _mapper = mapper;
     private readonly AssessmentCsvMapper _assessmentMapper = new(mapper);
 
     private readonly CourseCsvMapper _courseMapper = new();
 
     private readonly StudentRegistrationCsvMapper _registrationMapper = new();
-    private StudentAssessmentCsvMapper? _studentAssessmentMapper;
     private readonly StudentInfoCsvMapper _studentInfoMapper = new(mapper);
     private readonly StudentVleCsvMapper _studentVleMapper = new();
     private readonly VleCsvMapper _vleMapper = new(mapper);
+    private StudentAssessmentCsvMapper? _studentAssessmentMapper;
 
     private async Task LoadAsync<TCsv, TEntity>(
         CsvReaderBase<TCsv> reader,
@@ -66,7 +65,8 @@ public class EtlPipeline(
             if (entities.Count >= batchSize)
             {
                 await loader.BulkInsertAsync(context, entities);
-                Log.Information("Inserted batch of {BatchSize} records for {Entity}", entities.Count, typeof(TEntity).Name);
+                Log.Information("Inserted batch of {BatchSize} records for {Entity}", entities.Count,
+                    typeof(TEntity).Name);
                 entities.Clear();
             }
 
@@ -90,7 +90,7 @@ public class EtlPipeline(
             await TruncateTablesAsync();
             await LoadCoursesAsync();
             var assessments = await LoadAssessmentsAsync();
-            _studentAssessmentMapper = new StudentAssessmentCsvMapper(_mapper, assessments);
+            _studentAssessmentMapper = new StudentAssessmentCsvMapper(mapper, assessments);
             await LoadStudentInfoAsync();
             await LoadRegistrationsAsync();
             await LoadStudentAssessmentsAsync();

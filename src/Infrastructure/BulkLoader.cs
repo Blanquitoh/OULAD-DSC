@@ -1,7 +1,7 @@
+using System.Linq.Expressions;
 using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
-using System.Linq.Expressions;
 
 namespace OuladEtlEda.Infrastructure;
 
@@ -33,6 +33,7 @@ public class BulkLoader
                         .ToList();
                     _getterCache[typeof(T)] = cached;
                 }
+
                 getters = cached.Cast<Func<T, object?>>().ToList();
             }
 
@@ -42,14 +43,11 @@ public class BulkLoader
             {
                 var key = string.Join('|', getters.Select(g => g(entity)?.ToString()));
                 if (seen.Add(key))
-                {
                     deduped.Add(entity);
-                }
                 else
-                {
                     Log.Information("Skipping duplicate {EntityType} with key {Key}", typeof(T).Name, key);
-                }
             }
+
             entities = deduped;
         }
 

@@ -6,9 +6,7 @@ namespace OuladEtlEda.Domain;
 [Table("vle")]
 public class Vle : ICourseEntity
 {
-    [Key]
-    [Column(Order = 0)]
-    public int IdSite { get; set; }
+    [Key] [Column(Order = 0)] public int IdSite { get; set; }
 
     [MaxLength(45)]
     [Column(TypeName = "varchar(45)")]

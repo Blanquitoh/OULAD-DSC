@@ -6,9 +6,7 @@ namespace OuladEtlEda.Domain;
 [Table("assessments")]
 public class Assessment : ICourseEntity
 {
-    [Key]
-    [Column(Order = 3)]
-    public int IdAssessment { get; set; }
+    [Key] [Column(Order = 3)] public int IdAssessment { get; set; }
 
     [MaxLength(20)]
     [Column(TypeName = "varchar(20)")]

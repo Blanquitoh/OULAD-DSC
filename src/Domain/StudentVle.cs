@@ -6,11 +6,9 @@ namespace OuladEtlEda.Domain;
 [Table("studentVle")]
 public class StudentVle : ICourseEntity
 {
-    [Column(Order = 0)]
-    public int IdSite { get; set; }
+    [Column(Order = 0)] public int IdSite { get; set; }
 
-    [Column(Order = 1)]
-    public int IdStudent { get; set; }
+    [Column(Order = 1)] public int IdStudent { get; set; }
 
     public int? Date { get; set; }
 
