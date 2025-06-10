@@ -47,6 +47,7 @@ public static class ExtendedEda
             Data = matrix
         };
         model.Series.Add(heatMap);
+        model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right });
         PngExporter.Export(model, path, 600, 400);
     }
 
@@ -85,6 +86,7 @@ public static class ExtendedEda
             Data = matrix
         };
         model.Series.Add(heatMap);
+        model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right });
         PngExporter.Export(model, path, 600, 400);
 
         static double Pearson(IEnumerable<double> xs, IEnumerable<double> ys)
@@ -168,7 +170,7 @@ public static class ExtendedEda
         var max = values.Max();
         var binWidth = (max - min) / bins;
 
-        var hist = new BarSeries { Title = "Histogram" };
+        var hist = new BarSeries { Title = "Histogram", XAxisKey = "x", YAxisKey = "y" };
         for (var i = 0; i < bins; i++)
         {
             var start = min + i * binWidth;
@@ -188,8 +190,11 @@ public static class ExtendedEda
         var model = new PlotModel { Title = "Normal Distribution", Background = OxyColors.White };
         model.Series.Add(hist);
         model.Series.Add(normal);
-        model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
-        model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+        var catAxis = new CategoryAxis { Position = AxisPosition.Bottom, Key = "x" };
+        for (var i = 0; i < bins; i++)
+            catAxis.Labels.Add(string.Empty);
+        model.Axes.Add(catAxis);
+        model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Key = "y" });
         PngExporter.Export(model, path, 600, 400);
 
         static double Normal(double x, double mu, double sigma)
