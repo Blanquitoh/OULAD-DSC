@@ -66,13 +66,14 @@ APA, un resumen técnico de 250 palabras, capturas y enlaces al repositorio.
 2. Copia `src/appsettings.sample.json` a `src/appsettings.json` y edita la
    cadena de conexión a tu servidor SQL Server.
 3. Ejecuta `./setup.sh` para instalar el SDK de .NET si aún no está disponible.
-4. Ejecuta `dotnet restore` en la raíz para descargar las dependencias.
-5. Ejecuta `dotnet ef database update` para generar el esquema. Este comando
-   también aplica la migración `CreateFullDomainView` que genera la vista
-   `FullDomain` consolidando las tablas **ASSESS** y **VLE**.
+4. Navega a la carpeta `src` y ejecuta `dotnet restore` para descargar las
+   dependencias.
+5. Desde esa misma ruta corre `dotnet ef database update` para generar el
+   esquema. Este comando también aplica la migración `CreateFullDomainView` que
+   genera la vista `FullDomain` consolidando las tablas **ASSESS** y **VLE**.
    Si prefieres ejecutarla manualmente puedes correr:
    ```bash
-   sqlcmd -S <server> -d <db> -i sql/create_full_domain.sql
+   sqlcmd -S <server> -d <db> -i src/sql/create_full_domain.sql
    ```
 6. Corre la aplicación en modo ETL:
    ```bash
@@ -84,6 +85,9 @@ APA, un resumen técnico de 250 palabras, capturas y enlaces al repositorio.
    ```
    Las gráficas generadas por `ExtendedEda` se guardarán en la carpeta `plots`.
 8. Ejecuta `./test.sh` para construir y correr todas las pruebas.
+9. `Program.cs` acepta los parámetros opcionales `--connection-string` para
+   definir la conexión a la base de datos y `--log-level` para ajustar la
+   verbosidad de Serilog.
 
 ## 📚 Referencias
 - [Entity Framework Core Docs](https://learn.microsoft.com/ef/)
