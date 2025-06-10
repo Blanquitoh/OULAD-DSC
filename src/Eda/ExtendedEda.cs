@@ -1,4 +1,5 @@
-﻿using OuladEtlEda.DataAccess;
+﻿using MathNet.Numerics.Distributions;
+using OuladEtlEda.DataAccess;
 using OuladEtlEda.Domain;
 using OxyPlot;
 using OxyPlot.Annotations;
@@ -455,53 +456,72 @@ public static class ExtendedEda
 
     public static string PerformTTest(OuladContext ctx)
     {
-        var males = ctx.StudentInfos
-            .Where(s => s.Gender == Gender.Male)
-            .Select(s => (double)s.StudiedCredits)
-            .ToArray();
-        var females = ctx.StudentInfos
-            .Where(s => s.Gender == Gender.Female)
-            .Select(s => (double)s.StudiedCredits)
-            .ToArray();
+        var males = ctx.StudentInfos.Where(s => s.Gender == Gender.Male)
+            .Select(s => (double)s.StudiedCredits).ToArray();
+        var females = ctx.StudentInfos.Where(s => s.Gender == Gender.Female)
+            .Select(s => (double)s.StudiedCredits).ToArray();
 
-        if (males.Length == 0 || females.Length == 0) return "Insufficient data";
+        if (males.Length == 0 || females.Length == 0)
+            return "Insufficient data for t-test.";
 
-        var meanM = Mean(males);
-        var meanF = Mean(females);
-        var varM = males.Sum(v => (v - meanM) * (v - meanM)) / (males.Length - 1);
-        var varF = females.Sum(v => (v - meanF) * (v - meanF)) / (females.Length - 1);
+        // sample means & variances
+        var mM = males.Average();
+        var mF = females.Average();
+        var vM = males.Select(v => (v - mM) * (v - mM)).Sum() / (males.Length - 1);
+        var vF = females.Select(v => (v - mF) * (v - mF)).Sum() / (females.Length - 1);
 
-        var se = Math.Sqrt(varM / males.Length + varF / females.Length);
-        if (se == 0) return "No variance";
-        var t = (meanM - meanF) / se;
-        return $"t-statistic: {t:F4}";
+        // Welch standard error
+        var se = Math.Sqrt(vM / males.Length + vF / females.Length);
+        if (se == 0) return "No variance in at least one group.";
+
+        // Welch degrees of freedom
+        var dfNum = Math.Pow(vM / males.Length + vF / females.Length, 2);
+        var dfDen = Math.Pow(vM / males.Length, 2) / (males.Length - 1) +
+                    Math.Pow(vF / females.Length, 2) / (females.Length - 1);
+        var df = dfNum / dfDen;
+
+        var t = (mM - mF) / se;
+        var p = 2 * (1 - StudentT.CDF(0, 1, df, Math.Abs(t))); // two-tailed
+
+        // Cohen's d (pooled SD, classic version)
+        var sp = Math.Sqrt(((males.Length - 1) * vM + (females.Length - 1) * vF) /
+                           (males.Length + females.Length - 2));
+        var d = (mM - mF) / sp;
+
+        return $"Welch t({df:F1}) = {t:F3}, p = {p:E2}, Cohen d = {d:F2}";
     }
 
     public static string PerformAnova(OuladContext ctx)
     {
-        var groups = Enum.GetValues<AgeBand>()
+        var ageGroups = Enum.GetValues<AgeBand>()
             .Select(b => ctx.StudentInfos.Where(s => s.AgeBand == b)
                 .Select(s => (double)s.StudiedCredits).ToArray())
             .Where(g => g.Length > 0)
             .ToArray();
 
-        if (groups.Length < 2) return "Insufficient data";
+        if (ageGroups.Length < 2)
+            return "Insufficient data for ANOVA.";
 
-        var grand = groups.SelectMany(g => g).Average();
+        var grandMean = ageGroups.SelectMany(g => g).Average();
+
         double ssBetween = 0, ssWithin = 0;
-        foreach (var g in groups)
+        foreach (var g in ageGroups)
         {
             var mean = g.Average();
-            ssBetween += g.Length * (mean - grand) * (mean - grand);
-            ssWithin += g.Sum(v => (v - mean) * (v - mean));
+            ssBetween += g.Length * Math.Pow(mean - grandMean, 2);
+            ssWithin += g.Select(v => Math.Pow(v - mean, 2)).Sum();
         }
 
-        var dfBetween = groups.Length - 1;
-        var dfWithin = groups.Sum(g => g.Length) - groups.Length;
-        if (dfWithin == 0) return "Insufficient data";
-        var msBetween = ssBetween / dfBetween;
-        var msWithin = ssWithin / dfWithin;
+        var dfB = ageGroups.Length - 1;
+        var dfW = ageGroups.Sum(g => g.Length) - ageGroups.Length;
+        if (dfW <= 0) return "Insufficient within-group df.";
+
+        var msBetween = ssBetween / dfB;
+        var msWithin = ssWithin / dfW;
         var f = msBetween / msWithin;
-        return $"F-statistic: {f:F4}";
+
+        var p = 1 - FisherSnedecor.CDF(dfB, dfW, f);
+
+        return $"F({dfB}, {dfW}) = {f:F3}, p = {p:E2}";
     }
 }
