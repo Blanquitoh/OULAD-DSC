@@ -10,17 +10,17 @@ public class StudentInfo : ICourseEntity
 
     public Gender Gender { get; set; }
 
-    [MaxLength(32)]
-    [Column(TypeName = "varchar(32)")]
-    public string? Region { get; set; }
+    [MaxLength(45)]
+    [Column(TypeName = "varchar(45)")]
+    public string Region { get; set; } = null!;
 
     public int? RegionOrdinal { get; set; }
 
     public EducationLevel HighestEducation { get; set; }
 
-    [MaxLength(32)]
-    [Column(TypeName = "varchar(32)")]
-    public string? ImdBand { get; set; }
+    [MaxLength(16)]
+    [Column(TypeName = "varchar(16)")]
+    public string ImdBand { get; set; } = null!;
 
     public int? ImdBandOrdinal { get; set; }
 
@@ -41,13 +41,11 @@ public class StudentInfo : ICourseEntity
     public ICollection<StudentAssessment> Assessments { get; set; } = new List<StudentAssessment>();
     public ICollection<StudentVle> StudentVles { get; set; } = new List<StudentVle>();
 
-    [Key]
-    [Column(Order = 0, TypeName = "varchar(8)")]
-    [MaxLength(8)]
+    [Column(Order = 0, TypeName = "varchar(45)")]
+    [MaxLength(45)]
     public string CodeModule { get; set; } = null!;
 
-    [Key]
-    [Column(Order = 1, TypeName = "varchar(8)")]
-    [MaxLength(8)]
+    [Column(Order = 1, TypeName = "varchar(45)")]
+    [MaxLength(45)]
     public string CodePresentation { get; set; } = null!;
 }

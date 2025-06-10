@@ -8,9 +8,9 @@ public class StudentRegistration : ICourseEntity
 {
     [Key] [Column(Order = 2)] public int IdStudent { get; set; }
 
-    public int? DateRegistration { get; set; }
+    public int DateRegistration { get; set; }
 
-    public int? DateUnregistration { get; set; }
+    public int DateUnregistration { get; set; }
 
     [ForeignKey("CodeModule,CodePresentation")]
     public Course? Course { get; set; }
@@ -19,12 +19,12 @@ public class StudentRegistration : ICourseEntity
     public StudentInfo? StudentInfo { get; set; }
 
     [Key]
-    [Column(Order = 0, TypeName = "varchar(8)")]
-    [MaxLength(8)]
+    [Column(Order = 0, TypeName = "varchar(45")]
+    [MaxLength(45)]
     public string CodeModule { get; set; } = null!;
 
     [Key]
-    [Column(Order = 1, TypeName = "varchar(8)")]
-    [MaxLength(8)]
+    [Column(Order = 1, TypeName = "varchar(45)")]
+    [MaxLength(45)]
     public string CodePresentation { get; set; } = null!;
 }

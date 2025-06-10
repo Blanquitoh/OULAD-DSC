@@ -10,28 +10,26 @@ public class Vle : ICourseEntity
     [Column(Order = 0)]
     public int IdSite { get; set; }
 
-    [MaxLength(32)]
-    [Column(TypeName = "varchar(32)")]
-    public string? ActivityType { get; set; }
+    [MaxLength(45)]
+    [Column(TypeName = "varchar(45)")]
+    public string ActivityType { get; set; } = null!;
 
-    public int? ActivityTypeOrdinal { get; set; }
+    public int ActivityTypeOrdinal { get; set; }
 
-    public int? WeekFrom { get; set; }
+    public int WeekFrom { get; set; }
 
-    public int? WeekTo { get; set; }
+    public int WeekTo { get; set; }
 
     [ForeignKey("CodeModule,CodePresentation")]
     public Course? Course { get; set; }
 
     public ICollection<StudentVle> StudentVles { get; set; } = new List<StudentVle>();
 
-    [Key]
     [Column(Order = 1, TypeName = "varchar(8)")]
-    [MaxLength(8)]
+    [MaxLength(45)]
     public string CodeModule { get; set; } = null!;
 
-    [Key]
     [Column(Order = 2, TypeName = "varchar(8)")]
-    [MaxLength(8)]
+    [MaxLength(45)]
     public string CodePresentation { get; set; } = null!;
 }

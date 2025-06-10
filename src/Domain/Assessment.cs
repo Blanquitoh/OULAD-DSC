@@ -7,16 +7,16 @@ namespace OuladEtlEda.Domain;
 public class Assessment : ICourseEntity
 {
     [Key]
-    [Column(Order = 0)]
+    [Column(Order = 3)]
     public int IdAssessment { get; set; }
 
     [MaxLength(20)]
     [Column(TypeName = "varchar(20)")]
-    public string? AssessmentType { get; set; }
+    public string AssessmentType { get; set; } = null!;
 
     public int? AssessmentTypeOrdinal { get; set; }
 
-    public int? Date { get; set; }
+    public int Date { get; set; }
 
     public decimal Weight { get; set; }
 
@@ -25,13 +25,11 @@ public class Assessment : ICourseEntity
 
     public ICollection<StudentAssessment> StudentAssessments { get; set; } = new List<StudentAssessment>();
 
-    [Key]
-    [Column(Order = 1, TypeName = "varchar(8)")]
-    [MaxLength(8)]
+    [Column(Order = 0, TypeName = "varchar(45)")]
+    [MaxLength(45)]
     public string CodeModule { get; set; } = null!;
 
-    [Key]
-    [Column(Order = 2, TypeName = "varchar(8)")]
-    [MaxLength(8)]
+    [Column(Order = 1, TypeName = "varchar(45)")]
+    [MaxLength(45)]
     public string CodePresentation { get; set; } = null!;
 }

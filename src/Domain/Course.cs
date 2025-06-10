@@ -14,12 +14,12 @@ public class Course : ICourseEntity
     public ICollection<Vle> Vles { get; set; } = new List<Vle>();
 
     [Key]
-    [Column(Order = 0, TypeName = "varchar(8)")]
-    [MaxLength(8)]
+    [Column(Order = 0, TypeName = "varchar(45)")]
+    [MaxLength(45)]
     public string CodeModule { get; set; } = null!;
 
     [Key]
-    [Column(Order = 1, TypeName = "varchar(8)")]
-    [MaxLength(8)]
+    [Column(Order = 1, TypeName = "varchar(45)")]
+    [MaxLength(45)]
     public string CodePresentation { get; set; } = null!;
 }
