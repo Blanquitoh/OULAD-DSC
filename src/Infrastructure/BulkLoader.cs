@@ -21,9 +21,9 @@ public class BulkLoader
     {
         var entityType = context.Model.FindEntityType(typeof(T));
         var keyProps = entityType?.FindPrimaryKey()?.Properties;
-        List<Func<T, object?>> getters = new();
         if (keyProps != null && keyProps.Count > 0)
         {
+            List<Func<T, object?>> getters;
             lock (_getterCache)
             {
                 if (!_getterCache.TryGetValue(typeof(T), out var cached))
