@@ -6,6 +6,8 @@ if ! command -v dotnet >/dev/null; then
     exit 1
 fi
 
+pushd src >/dev/null
 dotnet restore
 dotnet build
 dotnet test
+popd >/dev/null
