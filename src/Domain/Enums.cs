@@ -35,3 +35,10 @@ public enum EducationLevel
     HEQualification = 3,
     PostGraduate = 4
 }
+
+public enum AssessmentType
+{
+    Tma = 0,
+    Cma = 1,
+    Exam = 2
+}

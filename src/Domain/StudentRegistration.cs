@@ -19,7 +19,7 @@ public class StudentRegistration : ICourseEntity
     public StudentInfo? StudentInfo { get; set; }
 
     [Key]
-    [Column(Order = 0, TypeName = "varchar(45")]
+    [Column(Order = 0, TypeName = "varchar(45)")]
     [MaxLength(45)]
     public string CodeModule { get; set; } = null!;
 
