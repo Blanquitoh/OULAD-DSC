@@ -6,7 +6,9 @@ namespace OuladEtlEda.Domain;
 [Table("assessments")]
 public class Assessment : ICourseEntity
 {
-    [Key] public int IdAssessment { get; set; }
+    [Key]
+    [Column(Order = 0)]
+    public int IdAssessment { get; set; }
 
     [MaxLength(20)]
     [Column(TypeName = "varchar(20)")]
@@ -23,11 +25,13 @@ public class Assessment : ICourseEntity
 
     public ICollection<StudentAssessment> StudentAssessments { get; set; } = new List<StudentAssessment>();
 
+    [Key]
+    [Column(Order = 1, TypeName = "varchar(8)")]
     [MaxLength(8)]
-    [Column(TypeName = "varchar(8)")]
     public string CodeModule { get; set; } = null!;
 
+    [Key]
+    [Column(Order = 2, TypeName = "varchar(8)")]
     [MaxLength(8)]
-    [Column(TypeName = "varchar(8)")]
     public string CodePresentation { get; set; } = null!;
 }

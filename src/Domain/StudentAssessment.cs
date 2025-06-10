@@ -8,7 +8,6 @@ public class StudentAssessment : ICourseEntity
 {
     [Key]
     [Column(Order = 0)]
-    [ForeignKey(nameof(Assessment))]
     public int IdAssessment { get; set; }
 
     [Key] [Column(Order = 1)] public int IdStudent { get; set; }
@@ -19,6 +18,7 @@ public class StudentAssessment : ICourseEntity
 
     public float? Score { get; set; }
 
+    [ForeignKey("IdAssessment,CodeModule,CodePresentation")]
     public Assessment? Assessment { get; set; }
 
     [ForeignKey("CodeModule,CodePresentation,IdStudent")]
