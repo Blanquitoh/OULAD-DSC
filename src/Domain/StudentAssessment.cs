@@ -20,7 +20,7 @@ public class StudentAssessment : ICourseEntity
     [ForeignKey("IdAssessment")]
     public Assessment? Assessment { get; set; }
 
-    [ForeignKey("CodeModule,CodePresentation,IdStudent")]
+    [ForeignKey("IdStudent")]
     public StudentInfo? StudentInfo { get; set; }
 
     [Column(Order = 2, TypeName = "varchar(45)")]
