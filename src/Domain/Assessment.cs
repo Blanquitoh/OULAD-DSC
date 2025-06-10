@@ -8,6 +8,8 @@ public class Assessment : ICourseEntity
 {
     [Key] public int IdAssessment { get; set; }
 
+    [MaxLength(20)]
+    [Column(TypeName = "varchar(20)")]
     public string? AssessmentType { get; set; }
 
     public int? AssessmentTypeOrdinal { get; set; }

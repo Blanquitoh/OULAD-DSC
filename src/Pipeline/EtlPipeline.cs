@@ -51,6 +51,11 @@ public class EtlPipeline(
         await foreach (var csv in reader.ReadAsync())
         {
             var entity = map(csv);
+            if (entity == null)
+            {
+                Log.Warning("Skipping record for {Entity} due to mapping failure", typeof(TEntity).Name);
+                continue;
+            }
             await validator.ValidateAsync(entity);
             entities.Add(entity);
             count++;
@@ -96,18 +101,13 @@ public class EtlPipeline(
             return;
         }
 
-        var tables = new[]
-        {
-            "studentVle",
-            "studentAssessment",
-            "studentRegistration",
-            "vle",
-            "studentInfo",
-            "assessments",
-            "courses"
-        };
-
-        foreach (var table in tables) await context.Database.ExecuteSqlRawAsync($"DELETE FROM [{table}];");
+        await _context.StudentVles.ExecuteDeleteAsync();
+        await _context.StudentAssessments.ExecuteDeleteAsync();
+        await _context.StudentRegistrations.ExecuteDeleteAsync();
+        await _context.Vles.ExecuteDeleteAsync();
+        await _context.StudentInfos.ExecuteDeleteAsync();
+        await _context.Assessments.ExecuteDeleteAsync();
+        await _context.Courses.ExecuteDeleteAsync();
     }
 
     private Task LoadCoursesAsync()
