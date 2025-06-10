@@ -14,7 +14,7 @@ public class StudentVle : ICourseEntity
     [Column(Order = 1)]
     public int IdStudent { get; set; }
 
-    public int Date { get; set; }
+    public int? Date { get; set; }
 
     public int SumClick { get; set; }
 

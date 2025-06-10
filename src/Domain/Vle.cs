@@ -14,11 +14,11 @@ public class Vle : ICourseEntity
     [Column(TypeName = "varchar(45)")]
     public string ActivityType { get; set; } = null!;
 
-    public int ActivityTypeOrdinal { get; set; }
+    public int? ActivityTypeOrdinal { get; set; }
 
-    public int WeekFrom { get; set; }
+    public int? WeekFrom { get; set; }
 
-    public int WeekTo { get; set; }
+    public int? WeekTo { get; set; }
 
     [ForeignKey("CodeModule,CodePresentation")]
     public Course? Course { get; set; }
