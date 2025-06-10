@@ -89,9 +89,7 @@ public class EtlPipeline(
         {
             await TruncateTablesAsync();
             await LoadCoursesAsync();
-            await LoadAssessmentsAsync();
-            var assessments = await context.Assessments.AsNoTracking()
-                .ToDictionaryAsync(a => a.IdAssessment);
+            var assessments = await LoadAssessmentsAsync();
             _studentAssessmentMapper = new StudentAssessmentCsvMapper(_mapper, assessments);
             await LoadStudentInfoAsync();
             await LoadRegistrationsAsync();
@@ -174,13 +172,23 @@ public class EtlPipeline(
             courseValidator);
     }
 
-    private Task LoadAssessmentsAsync()
+    private async Task<Dictionary<int, Assessment>> LoadAssessmentsAsync()
     {
         Log.Information("Loading assessments");
-        return LoadAsync(
+
+        var assessments = new Dictionary<int, Assessment>();
+
+        await LoadAsync(
             assessmentReader,
-            _assessmentMapper.Map,
+            csv =>
+            {
+                var entity = _assessmentMapper.Map(csv);
+                assessments[entity.IdAssessment] = entity;
+                return entity;
+            },
             assessmentValidator);
+
+        return assessments;
     }
 
 
