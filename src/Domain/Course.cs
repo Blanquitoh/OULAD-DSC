@@ -10,7 +10,6 @@ public class Course : ICourseEntity
 
     public ICollection<StudentInfo> Students { get; set; } = new List<StudentInfo>();
     public ICollection<Assessment> Assessments { get; set; } = new List<Assessment>();
-    public ICollection<StudentRegistration> Registrations { get; set; } = new List<StudentRegistration>();
     public ICollection<Vle> Vles { get; set; } = new List<Vle>();
 
     [Key]

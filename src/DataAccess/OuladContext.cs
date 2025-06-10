@@ -56,11 +56,11 @@ public class OuladContext(DbContextOptions<OuladContext> options) : DbContext(op
             entity.HasNoKey();
             entity.ConfigureCourseEntity();
             entity.HasOne(r => r.Course)
-                .WithMany(c => c.Registrations)
+                .WithMany()
                 .HasForeignKey(r => new { r.CodeModule, r.CodePresentation })
                 .OnDelete(DeleteBehavior.Restrict);
             entity.HasOne(r => r.StudentInfo)
-                .WithMany(s => s.Registrations)
+                .WithMany()
                 .HasForeignKey(r => new { r.CodeModule, r.CodePresentation, r.IdStudent })
                 .OnDelete(DeleteBehavior.Restrict);
         });
@@ -70,11 +70,11 @@ public class OuladContext(DbContextOptions<OuladContext> options) : DbContext(op
             entity.HasNoKey();
             entity.ConfigureCourseEntity();
             entity.HasOne(sa => sa.Assessment)
-                .WithMany(a => a.StudentAssessments)
+                .WithMany()
                 .HasForeignKey(sa => new { sa.IdAssessment, sa.CodeModule, sa.CodePresentation })
                 .OnDelete(DeleteBehavior.Restrict);
             entity.HasOne(sa => sa.StudentInfo)
-                .WithMany(si => si.Assessments)
+                .WithMany()
                 .HasForeignKey(sa => new { sa.CodeModule, sa.CodePresentation, sa.IdStudent })
                 .OnDelete(DeleteBehavior.Restrict);
         });
@@ -84,11 +84,11 @@ public class OuladContext(DbContextOptions<OuladContext> options) : DbContext(op
             entity.HasNoKey();
             entity.ConfigureCourseEntity();
             entity.HasOne(sv => sv.Vle)
-                .WithMany(v => v.StudentVles)
+                .WithMany()
                 .HasForeignKey(sv => new { sv.IdSite, sv.CodeModule, sv.CodePresentation })
                 .OnDelete(DeleteBehavior.Restrict);
             entity.HasOne(sv => sv.StudentInfo)
-                .WithMany(si => si.StudentVles)
+                .WithMany()
                 .HasForeignKey(sv => new { sv.CodeModule, sv.CodePresentation, sv.IdStudent })
                 .OnDelete(DeleteBehavior.Restrict);
         });

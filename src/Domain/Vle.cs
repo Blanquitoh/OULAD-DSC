@@ -23,7 +23,6 @@ public class Vle : ICourseEntity
     [ForeignKey("CodeModule,CodePresentation")]
     public Course? Course { get; set; }
 
-    public ICollection<StudentVle> StudentVles { get; set; } = new List<StudentVle>();
 
     [Column(Order = 1, TypeName = "varchar(45)")]
     [MaxLength(45)]

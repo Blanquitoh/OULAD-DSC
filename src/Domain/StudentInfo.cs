@@ -37,10 +37,6 @@ public class StudentInfo : ICourseEntity
     [ForeignKey("CodeModule,CodePresentation")]
     public Course? Course { get; set; }
 
-    public ICollection<StudentRegistration> Registrations { get; set; } = new List<StudentRegistration>();
-    public ICollection<StudentAssessment> Assessments { get; set; } = new List<StudentAssessment>();
-    public ICollection<StudentVle> StudentVles { get; set; } = new List<StudentVle>();
-
     [Column(Order = 0, TypeName = "varchar(45)")]
     [MaxLength(45)]
     public string CodeModule { get; set; } = null!;
