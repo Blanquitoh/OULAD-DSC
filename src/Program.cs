@@ -39,7 +39,7 @@ internal class Program
         root.SetHandler(async (mode, csvDir, connectionString, logLevel) =>
         {
             var config = new ConfigurationBuilder()
-                .AddJsonFile("logging.json", true)
+                .AddJsonFile("logging.json", false)
                 .Build();
             Log.Logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(config)

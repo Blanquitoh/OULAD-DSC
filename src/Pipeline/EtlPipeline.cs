@@ -89,6 +89,7 @@ public class EtlPipeline(
 
     private async Task TruncateTablesAsync()
     {
+        Log.Information("Truncating tables");
         if (!context.Database.IsRelational())
         {
             context.StudentVles.RemoveRange(context.StudentVles);

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OuladEtlEda.DataAccess;
 
@@ -10,9 +11,11 @@ using OuladEtlEda.DataAccess;
 namespace OuladEtlEda.Migrations
 {
     [DbContext(typeof(OuladContext))]
-    partial class OuladContextModelSnapshot : ModelSnapshot
+    [Migration("20250610005253_V1")]
+    partial class V1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
