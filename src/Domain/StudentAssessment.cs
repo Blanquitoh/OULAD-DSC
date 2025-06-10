@@ -25,12 +25,12 @@ public class StudentAssessment : ICourseEntity
     public StudentInfo? StudentInfo { get; set; }
 
     [Key]
-    [Column(Order = 2, TypeName = "varchar(8)")]
-    [MaxLength(8)]
+    [Column(Order = 2, TypeName = "varchar(45)")]
+    [MaxLength(45)]
     public string CodeModule { get; set; } = null!;
 
     [Key]
-    [Column(Order = 3, TypeName = "varchar(8)")]
-    [MaxLength(8)]
+    [Column(Order = 3, TypeName = "varchar(45)")]
+    [MaxLength(45)]
     public string CodePresentation { get; set; } = null!;
 }

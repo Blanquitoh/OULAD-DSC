@@ -11,7 +11,7 @@ using OuladEtlEda.DataAccess;
 namespace OuladEtlEda.Migrations
 {
     [DbContext(typeof(OuladContext))]
-    [Migration("20250610022840_CreateFullDomainView")]
+    [Migration("20250610023906_CreateFullDomainView")]
     partial class CreateFullDomainView
     {
         /// <inheritdoc />
@@ -31,13 +31,13 @@ namespace OuladEtlEda.Migrations
                         .HasColumnOrder(3);
 
                     b.Property<string>("CodeModule")
-                        .HasMaxLength(8)
+                        .HasMaxLength(45)
                         .IsUnicode(false)
                         .HasColumnType("varchar(45)")
                         .HasColumnOrder(0);
 
                     b.Property<string>("CodePresentation")
-                        .HasMaxLength(8)
+                        .HasMaxLength(45)
                         .IsUnicode(false)
                         .HasColumnType("varchar(45)")
                         .HasColumnOrder(1);
@@ -69,13 +69,13 @@ namespace OuladEtlEda.Migrations
             modelBuilder.Entity("OuladEtlEda.Domain.Course", b =>
                 {
                     b.Property<string>("CodeModule")
-                        .HasMaxLength(8)
+                        .HasMaxLength(45)
                         .IsUnicode(false)
                         .HasColumnType("varchar(45)")
                         .HasColumnOrder(0);
 
                     b.Property<string>("CodePresentation")
-                        .HasMaxLength(8)
+                        .HasMaxLength(45)
                         .IsUnicode(false)
                         .HasColumnType("varchar(45)")
                         .HasColumnOrder(1);
@@ -99,15 +99,15 @@ namespace OuladEtlEda.Migrations
                         .HasColumnOrder(1);
 
                     b.Property<string>("CodeModule")
-                        .HasMaxLength(8)
+                        .HasMaxLength(45)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(8)")
+                        .HasColumnType("varchar(45)")
                         .HasColumnOrder(2);
 
                     b.Property<string>("CodePresentation")
-                        .HasMaxLength(8)
+                        .HasMaxLength(45)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(8)")
+                        .HasColumnType("varchar(45)")
                         .HasColumnOrder(3);
 
                     b.Property<int?>("DateSubmitted")
@@ -131,13 +131,13 @@ namespace OuladEtlEda.Migrations
             modelBuilder.Entity("OuladEtlEda.Domain.StudentInfo", b =>
                 {
                     b.Property<string>("CodeModule")
-                        .HasMaxLength(8)
+                        .HasMaxLength(45)
                         .IsUnicode(false)
                         .HasColumnType("varchar(45)")
                         .HasColumnOrder(0);
 
                     b.Property<string>("CodePresentation")
-                        .HasMaxLength(8)
+                        .HasMaxLength(45)
                         .IsUnicode(false)
                         .HasColumnType("varchar(45)")
                         .HasColumnOrder(1);
@@ -191,13 +191,13 @@ namespace OuladEtlEda.Migrations
             modelBuilder.Entity("OuladEtlEda.Domain.StudentRegistration", b =>
                 {
                     b.Property<string>("CodeModule")
-                        .HasMaxLength(8)
+                        .HasMaxLength(45)
                         .IsUnicode(false)
                         .HasColumnType("varchar(45)")
                         .HasColumnOrder(0);
 
                     b.Property<string>("CodePresentation")
-                        .HasMaxLength(8)
+                        .HasMaxLength(45)
                         .IsUnicode(false)
                         .HasColumnType("varchar(45)")
                         .HasColumnOrder(1);
@@ -220,13 +220,13 @@ namespace OuladEtlEda.Migrations
             modelBuilder.Entity("OuladEtlEda.Domain.StudentVle", b =>
                 {
                     b.Property<string>("CodeModule")
-                        .HasMaxLength(8)
+                        .HasMaxLength(45)
                         .IsUnicode(false)
                         .HasColumnType("varchar(45)")
                         .HasColumnOrder(2);
 
                     b.Property<string>("CodePresentation")
-                        .HasMaxLength(8)
+                        .HasMaxLength(45)
                         .IsUnicode(false)
                         .HasColumnType("varchar(45)")
                         .HasColumnOrder(3);
@@ -259,15 +259,15 @@ namespace OuladEtlEda.Migrations
                         .HasColumnOrder(0);
 
                     b.Property<string>("CodeModule")
-                        .HasMaxLength(8)
+                        .HasMaxLength(45)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(8)")
+                        .HasColumnType("varchar(45)")
                         .HasColumnOrder(1);
 
                     b.Property<string>("CodePresentation")
-                        .HasMaxLength(8)
+                        .HasMaxLength(45)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(8)")
+                        .HasColumnType("varchar(45)")
                         .HasColumnOrder(2);
 
                     b.Property<string>("ActivityType")

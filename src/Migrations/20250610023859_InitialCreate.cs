@@ -14,8 +14,8 @@ namespace OuladEtlEda.Migrations
                 name: "courses",
                 columns: table => new
                 {
-                    CodeModule = table.Column<string>(type: "varchar(45)", unicode: false, maxLength: 8, nullable: false),
-                    CodePresentation = table.Column<string>(type: "varchar(45)", unicode: false, maxLength: 8, nullable: false),
+                    CodeModule = table.Column<string>(type: "varchar(45)", unicode: false, maxLength: 45, nullable: false),
+                    CodePresentation = table.Column<string>(type: "varchar(45)", unicode: false, maxLength: 45, nullable: false),
                     ModulePresentationLength = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -27,8 +27,8 @@ namespace OuladEtlEda.Migrations
                 name: "assessments",
                 columns: table => new
                 {
-                    CodeModule = table.Column<string>(type: "varchar(45)", unicode: false, maxLength: 8, nullable: false),
-                    CodePresentation = table.Column<string>(type: "varchar(45)", unicode: false, maxLength: 8, nullable: false),
+                    CodeModule = table.Column<string>(type: "varchar(45)", unicode: false, maxLength: 45, nullable: false),
+                    CodePresentation = table.Column<string>(type: "varchar(45)", unicode: false, maxLength: 45, nullable: false),
                     IdAssessment = table.Column<int>(type: "int", nullable: false),
                     AssessmentType = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false),
                     AssessmentTypeEnum = table.Column<int>(type: "int", nullable: false),
@@ -51,8 +51,8 @@ namespace OuladEtlEda.Migrations
                 name: "studentInfo",
                 columns: table => new
                 {
-                    CodeModule = table.Column<string>(type: "varchar(45)", unicode: false, maxLength: 8, nullable: false),
-                    CodePresentation = table.Column<string>(type: "varchar(45)", unicode: false, maxLength: 8, nullable: false),
+                    CodeModule = table.Column<string>(type: "varchar(45)", unicode: false, maxLength: 45, nullable: false),
+                    CodePresentation = table.Column<string>(type: "varchar(45)", unicode: false, maxLength: 45, nullable: false),
                     IdStudent = table.Column<int>(type: "int", nullable: false),
                     Gender = table.Column<int>(type: "int", nullable: false),
                     Region = table.Column<string>(type: "varchar(45)", maxLength: 45, nullable: false),
@@ -82,8 +82,8 @@ namespace OuladEtlEda.Migrations
                 columns: table => new
                 {
                     IdSite = table.Column<int>(type: "int", nullable: false),
-                    CodeModule = table.Column<string>(type: "varchar(8)", unicode: false, maxLength: 8, nullable: false),
-                    CodePresentation = table.Column<string>(type: "varchar(8)", unicode: false, maxLength: 8, nullable: false),
+                    CodeModule = table.Column<string>(type: "varchar(45)", unicode: false, maxLength: 45, nullable: false),
+                    CodePresentation = table.Column<string>(type: "varchar(45)", unicode: false, maxLength: 45, nullable: false),
                     ActivityType = table.Column<string>(type: "varchar(45)", maxLength: 45, nullable: false),
                     ActivityTypeOrdinal = table.Column<int>(type: "int", nullable: true),
                     WeekFrom = table.Column<int>(type: "int", nullable: true),
@@ -106,8 +106,8 @@ namespace OuladEtlEda.Migrations
                 {
                     IdAssessment = table.Column<int>(type: "int", nullable: false),
                     IdStudent = table.Column<int>(type: "int", nullable: false),
-                    CodeModule = table.Column<string>(type: "varchar(8)", unicode: false, maxLength: 8, nullable: false),
-                    CodePresentation = table.Column<string>(type: "varchar(8)", unicode: false, maxLength: 8, nullable: false),
+                    CodeModule = table.Column<string>(type: "varchar(45)", unicode: false, maxLength: 45, nullable: false),
+                    CodePresentation = table.Column<string>(type: "varchar(45)", unicode: false, maxLength: 45, nullable: false),
                     DateSubmitted = table.Column<int>(type: "int", nullable: true),
                     IsBanked = table.Column<bool>(type: "bit", nullable: false),
                     Score = table.Column<float>(type: "real", nullable: true)
@@ -133,8 +133,8 @@ namespace OuladEtlEda.Migrations
                 name: "studentRegistration",
                 columns: table => new
                 {
-                    CodeModule = table.Column<string>(type: "varchar(45)", unicode: false, maxLength: 8, nullable: false),
-                    CodePresentation = table.Column<string>(type: "varchar(45)", unicode: false, maxLength: 8, nullable: false),
+                    CodeModule = table.Column<string>(type: "varchar(45)", unicode: false, maxLength: 45, nullable: false),
+                    CodePresentation = table.Column<string>(type: "varchar(45)", unicode: false, maxLength: 45, nullable: false),
                     IdStudent = table.Column<int>(type: "int", nullable: false),
                     DateRegistration = table.Column<int>(type: "int", nullable: true),
                     DateUnregistration = table.Column<int>(type: "int", nullable: true)
@@ -162,8 +162,8 @@ namespace OuladEtlEda.Migrations
                 {
                     IdSite = table.Column<int>(type: "int", nullable: false),
                     IdStudent = table.Column<int>(type: "int", nullable: false),
-                    CodeModule = table.Column<string>(type: "varchar(45)", unicode: false, maxLength: 8, nullable: false),
-                    CodePresentation = table.Column<string>(type: "varchar(45)", unicode: false, maxLength: 8, nullable: false),
+                    CodeModule = table.Column<string>(type: "varchar(45)", unicode: false, maxLength: 45, nullable: false),
+                    CodePresentation = table.Column<string>(type: "varchar(45)", unicode: false, maxLength: 45, nullable: false),
                     Date = table.Column<int>(type: "int", nullable: true),
                     SumClick = table.Column<int>(type: "int", nullable: false)
                 },

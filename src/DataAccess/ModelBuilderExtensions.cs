@@ -9,10 +9,10 @@ public static class ModelBuilderExtensions
         where TEntity : class, ICourseEntity
     {
         entity.Property(e => e.CodeModule)
-            .HasMaxLength(8)
+            .HasMaxLength(45)
             .IsUnicode(false);
         entity.Property(e => e.CodePresentation)
-            .HasMaxLength(8)
+            .HasMaxLength(45)
             .IsUnicode(false);
     }
 }

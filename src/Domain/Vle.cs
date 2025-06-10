@@ -25,11 +25,11 @@ public class Vle : ICourseEntity
 
     public ICollection<StudentVle> StudentVles { get; set; } = new List<StudentVle>();
 
-    [Column(Order = 1, TypeName = "varchar(8)")]
+    [Column(Order = 1, TypeName = "varchar(45)")]
     [MaxLength(45)]
     public string CodeModule { get; set; } = null!;
 
-    [Column(Order = 2, TypeName = "varchar(8)")]
+    [Column(Order = 2, TypeName = "varchar(45)")]
     [MaxLength(45)]
     public string CodePresentation { get; set; } = null!;
 }
