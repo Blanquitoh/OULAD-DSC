@@ -30,12 +30,13 @@ public class EtlPipeline(
     BulkLoader loader,
     OuladContext context)
 {
+    private readonly CategoricalOrdinalMapper _mapper = mapper;
     private readonly AssessmentCsvMapper _assessmentMapper = new(mapper);
 
     private readonly CourseCsvMapper _courseMapper = new();
 
     private readonly StudentRegistrationCsvMapper _registrationMapper = new();
-    private readonly StudentAssessmentCsvMapper _studentAssessmentMapper = new(mapper, context);
+    private StudentAssessmentCsvMapper? _studentAssessmentMapper;
     private readonly StudentInfoCsvMapper _studentInfoMapper = new(mapper);
     private readonly StudentVleCsvMapper _studentVleMapper = new();
     private readonly VleCsvMapper _vleMapper = new(mapper);
@@ -75,6 +76,9 @@ public class EtlPipeline(
             await TruncateTablesAsync();
             await LoadCoursesAsync();
             await LoadAssessmentsAsync();
+            var assessments = await context.Assessments.AsNoTracking()
+                .ToDictionaryAsync(a => a.IdAssessment);
+            _studentAssessmentMapper = new StudentAssessmentCsvMapper(_mapper, assessments);
             await LoadStudentInfoAsync();
             await LoadRegistrationsAsync();
             await LoadStudentAssessmentsAsync();
@@ -189,7 +193,7 @@ public class EtlPipeline(
         Log.Information("Loading student assessments");
         return LoadAsync(
             studentAssessmentReader,
-            _studentAssessmentMapper.Map,
+            _studentAssessmentMapper!.Map,
             studentAssessmentValidator);
     }
 
