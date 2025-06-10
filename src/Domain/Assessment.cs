@@ -26,10 +26,12 @@ public class Assessment : ICourseEntity
     public Course? Course { get; set; }
 
 
+    [Key]
     [Column(Order = 0, TypeName = "varchar(45)")]
     [MaxLength(45)]
     public string CodeModule { get; set; } = null!;
 
+    [Key]
     [Column(Order = 1, TypeName = "varchar(45)")]
     [MaxLength(45)]
     public string CodePresentation { get; set; } = null!;

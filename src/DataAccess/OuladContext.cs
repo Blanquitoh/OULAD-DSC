@@ -24,7 +24,7 @@ public class OuladContext(DbContextOptions<OuladContext> options) : DbContext(op
         });
         modelBuilder.Entity<Assessment>(entity =>
         {
-            entity.HasKey(a => new { a.IdAssessment });
+            entity.HasKey(a => new { a.CodeModule, a.CodePresentation, a.IdAssessment });
             entity.ConfigureCourseEntity();
             entity.HasOne(a => a.Course)
                 .WithMany(c => c.Assessments)
@@ -33,7 +33,7 @@ public class OuladContext(DbContextOptions<OuladContext> options) : DbContext(op
         });
         modelBuilder.Entity<Vle>(entity =>
         {
-            entity.HasKey(v => new { v.IdSite });
+            entity.HasKey(v => new { v.IdSite, v.CodeModule, v.CodePresentation });
             entity.ConfigureCourseEntity();
             entity.HasOne(v => v.Course)
                 .WithMany(c => c.Vles)
@@ -43,7 +43,7 @@ public class OuladContext(DbContextOptions<OuladContext> options) : DbContext(op
 
         modelBuilder.Entity<StudentInfo>(entity =>
         {
-            entity.HasKey(s => new { s.IdStudent });
+            entity.HasKey(s => new { s.CodeModule, s.CodePresentation, s.IdStudent });
             entity.ConfigureCourseEntity();
             entity.HasOne(s => s.Course)
                 .WithMany(c => c.Students)
@@ -61,7 +61,7 @@ public class OuladContext(DbContextOptions<OuladContext> options) : DbContext(op
                 .OnDelete(DeleteBehavior.Restrict);
             entity.HasOne(r => r.StudentInfo)
                 .WithMany()
-                .HasForeignKey(r => r.IdStudent)
+                .HasForeignKey(r => new { r.CodeModule, r.CodePresentation, r.IdStudent })
                 .OnDelete(DeleteBehavior.Restrict);
         });
 
@@ -71,11 +71,11 @@ public class OuladContext(DbContextOptions<OuladContext> options) : DbContext(op
             entity.ConfigureCourseEntity();
             entity.HasOne(sa => sa.Assessment)
                 .WithMany()
-                .HasForeignKey(sa => sa.IdAssessment)
+                .HasForeignKey(sa => new { sa.CodeModule, sa.CodePresentation, sa.IdAssessment })
                 .OnDelete(DeleteBehavior.Restrict);
             entity.HasOne(sa => sa.StudentInfo)
                 .WithMany()
-                .HasForeignKey(sa => sa.IdStudent)
+                .HasForeignKey(sa => new { sa.CodeModule, sa.CodePresentation, sa.IdStudent })
                 .OnDelete(DeleteBehavior.Restrict);
         });
 
@@ -85,11 +85,11 @@ public class OuladContext(DbContextOptions<OuladContext> options) : DbContext(op
             entity.ConfigureCourseEntity();
             entity.HasOne(sv => sv.Vle)
                 .WithMany()
-                .HasForeignKey(sv => sv.IdSite)
+                .HasForeignKey(sv => new { sv.IdSite, sv.CodeModule, sv.CodePresentation })
                 .OnDelete(DeleteBehavior.Restrict);
             entity.HasOne(sv => sv.StudentInfo)
                 .WithMany()
-                .HasForeignKey(sv => sv.IdStudent)
+                .HasForeignKey(sv => new { sv.CodeModule, sv.CodePresentation, sv.IdStudent })
                 .OnDelete(DeleteBehavior.Restrict);
         });
 

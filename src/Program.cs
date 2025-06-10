@@ -17,7 +17,7 @@ internal class Program
 {
     private static async Task<int> Main(string[] args)
     {
-        var modeOption = new Option<ExecutionMode>("--mode", () => ExecutionMode.Etl,
+        var modeOption = new Option<ExecutionMode>("--mode", () => ExecutionMode.Eda,
             "Execution mode (Etl or Eda)");
         var csvDirOption = new Option<string>("--csv-dir", () => "C:\\csv",
             "Directory containing CSV files");
@@ -52,7 +52,7 @@ internal class Program
                 .UseSqlServer(connectionString)
                 .Options;
 
-            using var context = new OuladContext(options);
+            await using var context = new OuladContext(options);
 
             switch (mode)
             {
@@ -93,6 +93,8 @@ internal class Program
                 case ExecutionMode.Eda:
                     ExtendedEda.Run(context);
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(mode), mode, null);
             }
         }, modeOption, csvDirOption, connectionStringOption, logLevelOption);
 
