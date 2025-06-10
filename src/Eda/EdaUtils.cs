@@ -54,6 +54,38 @@ public static class EdaUtils
         return cov / Math.Sqrt(varX * varY);
     }
 
+    public static double Mean(IEnumerable<double> values)
+    {
+        var data = values as double[] ?? values.ToArray();
+        return data.Length == 0 ? 0 : data.Average();
+    }
+
+    public static double StandardDeviation(IEnumerable<double> values)
+    {
+        var data = values as double[] ?? values.ToArray();
+        if (data.Length == 0) return 0;
+        var mean = data.Average();
+        var variance = data.Sum(v => (v - mean) * (v - mean)) / data.Length;
+        return Math.Sqrt(variance);
+    }
+
+    public static double Kurtosis(IEnumerable<double> values)
+    {
+        var data = values as double[] ?? values.ToArray();
+        if (data.Length < 2) return 0;
+        var mean = data.Average();
+        double m2 = 0, m4 = 0;
+        foreach (var v in data)
+        {
+            var d = v - mean;
+            m2 += d * d;
+            m4 += d * d * d * d;
+        }
+        m2 /= data.Length;
+        m4 /= data.Length;
+        return m4 / (m2 * m2) - 3.0;
+    }
+
     public static void AddVerticalLine(this PlotModel model, double x, string text)
     {
         model.Annotations.Add(new LineAnnotation

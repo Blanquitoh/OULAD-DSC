@@ -52,11 +52,21 @@ public class ExtendedEdaTests
         var tmp3 = Path.GetTempFileName();
         var tmp4 = Path.GetTempFileName();
         var tmp5 = Path.GetTempFileName();
+        var tmp6 = Path.GetTempFileName();
 
         ExtendedEda.PlotConfusionMatrix(context, tmp1);
         ExtendedEda.PlotCorrelationMatrix(context, tmp2);
         ExtendedEda.PlotBoxplot(context, tmp3);
+        ExtendedEda.PlotBarChart(context, tmp6);
         ExtendedEda.PlotNormalDistribution(context, tmp4);
         ExtendedEda.PlotScatter(context, tmp5);
+    }
+
+    [Fact]
+    public void Statistical_methods_do_not_throw()
+    {
+        using var context = CreateContext();
+        ExtendedEda.PerformTTest(context);
+        ExtendedEda.PerformAnova(context);
     }
 }

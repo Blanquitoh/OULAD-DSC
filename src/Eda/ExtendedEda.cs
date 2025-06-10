@@ -20,8 +20,12 @@ public static class ExtendedEda
         PlotConfusionMatrix(context, Path.Combine("plots", "confusion.png"));
         PlotCorrelationMatrix(context, Path.Combine("plots", "correlation.png"));
         PlotBoxplot(context, Path.Combine("plots", "boxplot.png"));
+        PlotBarChart(context, Path.Combine("plots", "barchart.png"));
         PlotNormalDistribution(context, Path.Combine("plots", "normal.png"));
         PlotScatter(context, Path.Combine("plots", "scatter.png"));
+
+        File.WriteAllText(Path.Combine("plots", "ttest.txt"), PerformTTest(context));
+        File.WriteAllText(Path.Combine("plots", "anova.txt"), PerformAnova(context));
 
         Log.Information("Extended EDA completed");
         OpenDirectory("plots");
@@ -389,5 +393,92 @@ public static class ExtendedEda
         if (trend.Points.Count == 2) model.Series.Add(trend);
 
         ExportPlot(model, path);
+    }
+
+    public static void PlotBarChart(OuladContext ctx, string path)
+    {
+        Log.Information("Generating bar chart: {Path}", path);
+
+        var bands = Enum.GetValues<AgeBand>();
+        var results = Enum.GetValues<FinalResult>();
+
+        var model = new PlotModel
+        {
+            Title = "Final result by age band",
+            Background = OxyColors.White
+        };
+        model.Legends.Add(new Legend { LegendPosition = LegendPosition.TopRight, LegendBorderThickness = 0 });
+
+        var catAxis = new CategoryAxis { Position = AxisPosition.Bottom, Title = "Age band" };
+        foreach (var band in bands) catAxis.Labels.Add(band.ToString());
+        model.Axes.Add(catAxis);
+        model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Number of students", MinimumPadding = 0, AbsoluteMinimum = 0 });
+
+        var palette = OxyPalettes.HueDistinct(results.Length);
+        for (var i = 0; i < results.Length; i++)
+        {
+            var res = results[i];
+            var series = new ColumnSeries { Title = res.ToString(), FillColor = palette.Colors[i] };
+            foreach (var band in bands)
+            {
+                var count = ctx.StudentInfos.Count(s => s.AgeBand == band && s.FinalResult == res);
+                series.Items.Add(new ColumnItem(count));
+            }
+            model.Series.Add(series);
+        }
+
+        ExportPlot(model, path);
+    }
+
+    public static string PerformTTest(OuladContext ctx)
+    {
+        var males = ctx.StudentInfos
+            .Where(s => s.Gender == Gender.Male)
+            .Select(s => (double)s.StudiedCredits)
+            .ToArray();
+        var females = ctx.StudentInfos
+            .Where(s => s.Gender == Gender.Female)
+            .Select(s => (double)s.StudiedCredits)
+            .ToArray();
+
+        if (males.Length == 0 || females.Length == 0) return "Insufficient data";
+
+        var meanM = Mean(males);
+        var meanF = Mean(females);
+        var varM = males.Sum(v => (v - meanM) * (v - meanM)) / (males.Length - 1);
+        var varF = females.Sum(v => (v - meanF) * (v - meanF)) / (females.Length - 1);
+
+        var se = Math.Sqrt(varM / males.Length + varF / females.Length);
+        if (se == 0) return "No variance";
+        var t = (meanM - meanF) / se;
+        return $"t-statistic: {t:F4}";
+    }
+
+    public static string PerformAnova(OuladContext ctx)
+    {
+        var groups = Enum.GetValues<AgeBand>()
+            .Select(b => ctx.StudentInfos.Where(s => s.AgeBand == b)
+                .Select(s => (double)s.StudiedCredits).ToArray())
+            .Where(g => g.Length > 0)
+            .ToArray();
+
+        if (groups.Length < 2) return "Insufficient data";
+
+        var grand = groups.SelectMany(g => g).Average();
+        double ssBetween = 0, ssWithin = 0;
+        foreach (var g in groups)
+        {
+            var mean = g.Average();
+            ssBetween += g.Length * (mean - grand) * (mean - grand);
+            ssWithin += g.Sum(v => (v - mean) * (v - mean));
+        }
+
+        var dfBetween = groups.Length - 1;
+        var dfWithin = groups.Sum(g => g.Length) - groups.Length;
+        if (dfWithin == 0) return "Insufficient data";
+        var msBetween = ssBetween / dfBetween;
+        var msWithin = ssWithin / dfWithin;
+        var f = msBetween / msWithin;
+        return $"F-statistic: {f:F4}";
     }
 }
