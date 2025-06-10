@@ -113,6 +113,7 @@ public class EtlPipeline(
 
     private Task LoadCoursesAsync()
     {
+        Log.Information("Loading courses");
         return LoadAsync(
             courseReader,
             _courseMapper.Map,
@@ -121,6 +122,7 @@ public class EtlPipeline(
 
     private Task LoadAssessmentsAsync()
     {
+        Log.Information("Loading assessments");
         return LoadAsync(
             assessmentReader,
             _assessmentMapper.Map,
@@ -130,6 +132,7 @@ public class EtlPipeline(
 
     private Task LoadStudentInfoAsync()
     {
+        Log.Information("Loading student info");
         return LoadAsync(
             studentInfoReader,
             _studentInfoMapper.Map,
@@ -138,6 +141,7 @@ public class EtlPipeline(
 
     private Task LoadRegistrationsAsync()
     {
+        Log.Information("Loading registrations");
         return LoadAsync(
             registrationReader,
             _registrationMapper.Map,
@@ -146,6 +150,7 @@ public class EtlPipeline(
 
     private Task LoadStudentAssessmentsAsync()
     {
+        Log.Information("Loading student assessments");
         return LoadAsync(
             studentAssessmentReader,
             _studentAssessmentMapper.Map,
@@ -154,6 +159,7 @@ public class EtlPipeline(
 
     private Task LoadVleAsync()
     {
+        Log.Information("Loading VLE");
         return LoadAsync(
             vleReader,
             _vleMapper.Map,
@@ -162,6 +168,7 @@ public class EtlPipeline(
 
     private Task LoadStudentVleAsync()
     {
+        Log.Information("Loading student VLE interactions");
         return LoadAsync(
             studentVleReader,
             _studentVleMapper.Map,

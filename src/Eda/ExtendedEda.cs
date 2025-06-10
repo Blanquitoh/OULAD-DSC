@@ -4,6 +4,7 @@ using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using OxyPlot.SkiaSharp;
+using Serilog;
 
 namespace OuladEtlEda.Eda;
 
@@ -11,16 +12,19 @@ public static class ExtendedEda
 {
     public static void Run(OuladContext context)
     {
+        Log.Information("Running Extended EDA");
         Directory.CreateDirectory("plots");
         PlotConfusionMatrix(context, Path.Combine("plots", "confusion.png"));
         PlotCorrelationMatrix(context, Path.Combine("plots", "correlation.png"));
         PlotBoxplot(context, Path.Combine("plots", "boxplot.png"));
         PlotNormalDistribution(context, Path.Combine("plots", "normal.png"));
         PlotScatter(context, Path.Combine("plots", "scatter.png"));
+        Log.Information("Extended EDA completed");
     }
 
     public static void PlotConfusionMatrix(OuladContext ctx, string path)
     {
+        Log.Information("Generating confusion matrix: {Path}", path);
         var genders = Enum.GetValues<Gender>();
         var results = Enum.GetValues<FinalResult>();
         var matrix = new double[genders.Length, results.Length];
@@ -48,6 +52,7 @@ public static class ExtendedEda
 
     public static void PlotCorrelationMatrix(OuladContext ctx, string path)
     {
+        Log.Information("Generating correlation matrix: {Path}", path);
         var rows = ctx.StudentInfos
             .Select(s => new double[]
             {
@@ -105,6 +110,7 @@ public static class ExtendedEda
 
     public static void PlotBoxplot(OuladContext ctx, string path)
     {
+        Log.Information("Generating boxplot: {Path}", path);
         var model = new PlotModel { Title = "StudiedCredits by Age", Background = OxyColors.White };
         var series = new BoxPlotSeries();
         var ageBands = Enum.GetValues<AgeBand>();
@@ -151,6 +157,7 @@ public static class ExtendedEda
 
     public static void PlotNormalDistribution(OuladContext ctx, string path)
     {
+        Log.Information("Generating normal distribution: {Path}", path);
         var values = ctx.StudentInfos.Select(s => (double)s.StudiedCredits).ToList();
         if (values.Count == 0) return;
         var mean = values.Average();
@@ -193,6 +200,7 @@ public static class ExtendedEda
 
     public static void PlotScatter(OuladContext ctx, string path)
     {
+        Log.Information("Generating scatter plot: {Path}", path);
         var series = new ScatterSeries { MarkerType = MarkerType.Circle };
         foreach (var s in ctx.StudentInfos)
             series.Points.Add(new ScatterPoint(s.NumOfPrevAttempts, s.StudiedCredits));
