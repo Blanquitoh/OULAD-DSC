@@ -2,12 +2,9 @@ using System.CommandLine;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using OuladEtlEda.DataAccess;
-using OuladEtlEda.DataImport;
-using OuladEtlEda.DataImport.Models;
-using OuladEtlEda.Domain.Validators;
 using OuladEtlEda.Eda;
+using OuladEtlEda.Etl;
 using OuladEtlEda.Infrastructure;
-using OuladEtlEda.Pipeline;
 using Serilog;
 using Serilog.Events;
 
@@ -17,7 +14,7 @@ internal class Program
 {
     private static async Task<int> Main(string[] args)
     {
-        var modeOption = new Option<ExecutionMode>("--mode", () => ExecutionMode.Eda,
+        var modeOption = new Option<ExecutionMode>("--mode", () => ExecutionMode.Etl,
             "Execution mode (Etl or Eda)");
         var csvDirOption = new Option<string>("--csv-dir", () => "C:\\csv",
             "Directory containing CSV files");
@@ -57,38 +54,7 @@ internal class Program
             switch (mode)
             {
                 case ExecutionMode.Etl:
-                    var courseReader = new CsvReader<CourseCsv>(Path.Combine(csvDir, "courses.csv"));
-                    var assessmentReader = new CsvReader<AssessmentCsv>(Path.Combine(csvDir, "assessments.csv"));
-                    var studentInfoReader = new CsvReader<StudentInfoCsv>(Path.Combine(csvDir, "studentInfo.csv"));
-                    var registrationReader =
-                        new CsvReader<StudentRegistrationCsv>(Path.Combine(csvDir, "studentRegistration.csv"));
-                    var studentAssessmentReader =
-                        new CsvReader<StudentAssessmentCsv>(Path.Combine(csvDir, "studentAssessment.csv"));
-                    var vleReader = new CsvReader<VleCsv>(Path.Combine(csvDir, "vle.csv"));
-                    var studentVleReader = new CsvReader<StudentVleCsv>(Path.Combine(csvDir, "studentVle.csv"));
-
-                    var mapper = new CategoricalOrdinalMapper();
-
-                    var pipeline = new EtlPipeline(
-                        courseReader,
-                        assessmentReader,
-                        studentInfoReader,
-                        registrationReader,
-                        studentAssessmentReader,
-                        vleReader,
-                        studentVleReader,
-                        mapper,
-                        new CourseValidator(),
-                        new AssessmentValidator(),
-                        new StudentInfoValidator(),
-                        new StudentRegistrationValidator(),
-                        new StudentAssessmentValidator(),
-                        new VleValidator(),
-                        new StudentVleValidator(),
-                        new BulkLoader(),
-                        context);
-
-                    await pipeline.RunAsync();
+                    await MainEtl.Run(context, csvDir);
                     break;
                 case ExecutionMode.Eda:
                     ExtendedEda.Run(context);
