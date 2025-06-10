@@ -16,7 +16,7 @@ public class Assessment : ICourseEntity
 
     public int? AssessmentTypeOrdinal { get; set; }
 
-    public int Date { get; set; }
+    public int? Date { get; set; }
 
     public decimal Weight { get; set; }
 

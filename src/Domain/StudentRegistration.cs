@@ -8,9 +8,9 @@ public class StudentRegistration : ICourseEntity
 {
     [Key] [Column(Order = 2)] public int IdStudent { get; set; }
 
-    public int DateRegistration { get; set; }
+    public int? DateRegistration { get; set; }
 
-    public int DateUnregistration { get; set; }
+    public int? DateUnregistration { get; set; }
 
     [ForeignKey("CodeModule,CodePresentation")]
     public Course? Course { get; set; }

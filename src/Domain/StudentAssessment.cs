@@ -12,7 +12,7 @@ public class StudentAssessment : ICourseEntity
 
     [Key] [Column(Order = 1)] public int IdStudent { get; set; }
 
-    public int DateSubmitted { get; set; }
+    public int? DateSubmitted { get; set; }
 
     public bool IsBanked { get; set; }
 
