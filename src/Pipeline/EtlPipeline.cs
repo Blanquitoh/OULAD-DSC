@@ -45,9 +45,10 @@ public class EtlPipeline(
         CsvReaderBase<TCsv> reader,
         Func<TCsv, TEntity?> map,
         IDomainValidator<TEntity> validator,
-        int logInterval = 1000) where TEntity : class
+        int logInterval = 1000,
+        int batchSize = 10000) where TEntity : class
     {
-        var entities = new List<TEntity>();
+        var entities = new List<TEntity>(batchSize);
         var count = 0;
         await foreach (var csv in reader.ReadAsync())
         {
@@ -61,11 +62,24 @@ public class EtlPipeline(
             await validator.ValidateAsync(entity);
             entities.Add(entity);
             count++;
+
+            if (entities.Count >= batchSize)
+            {
+                await loader.BulkInsertAsync(context, entities);
+                Log.Information("Inserted batch of {BatchSize} records for {Entity}", entities.Count, typeof(TEntity).Name);
+                entities.Clear();
+            }
+
             if (count % logInterval == 0)
                 Log.Information("Processed {Count} records for {Entity}", count, typeof(TEntity).Name);
         }
 
-        await loader.BulkInsertAsync(context, entities);
+        if (entities.Count > 0)
+        {
+            await loader.BulkInsertAsync(context, entities);
+            Log.Information("Inserted remaining {Count} records for {Entity}", entities.Count, typeof(TEntity).Name);
+        }
+
         Log.Information("Inserted {Count} records for {Entity}", count, typeof(TEntity).Name);
     }
 
