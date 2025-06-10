@@ -6,7 +6,9 @@ namespace OuladEtlEda.Domain;
 [Table("vle")]
 public class Vle : ICourseEntity
 {
-    [Key] public int IdSite { get; set; }
+    [Key]
+    [Column(Order = 0)]
+    public int IdSite { get; set; }
 
     [MaxLength(32)]
     [Column(TypeName = "varchar(32)")]
@@ -23,11 +25,13 @@ public class Vle : ICourseEntity
 
     public ICollection<StudentVle> StudentVles { get; set; } = new List<StudentVle>();
 
+    [Key]
+    [Column(Order = 1, TypeName = "varchar(8)")]
     [MaxLength(8)]
-    [Column(TypeName = "varchar(8)")]
     public string CodeModule { get; set; } = null!;
 
+    [Key]
+    [Column(Order = 2, TypeName = "varchar(8)")]
     [MaxLength(8)]
-    [Column(TypeName = "varchar(8)")]
     public string CodePresentation { get; set; } = null!;
 }

@@ -24,6 +24,7 @@ public class OuladContext(DbContextOptions<OuladContext> options) : DbContext(op
         });
         modelBuilder.Entity<Assessment>(entity =>
         {
+            entity.HasKey(a => new { a.IdAssessment, a.CodeModule, a.CodePresentation });
             entity.ConfigureCourseEntity();
             entity.HasOne(a => a.Course)
                 .WithMany(c => c.Assessments)
@@ -32,6 +33,7 @@ public class OuladContext(DbContextOptions<OuladContext> options) : DbContext(op
         });
         modelBuilder.Entity<Vle>(entity =>
         {
+            entity.HasKey(v => new { v.IdSite, v.CodeModule, v.CodePresentation });
             entity.ConfigureCourseEntity();
             entity.HasOne(v => v.Course)
                 .WithMany(c => c.Vles)
@@ -69,7 +71,7 @@ public class OuladContext(DbContextOptions<OuladContext> options) : DbContext(op
             entity.ConfigureCourseEntity();
             entity.HasOne(sa => sa.Assessment)
                 .WithMany(a => a.StudentAssessments)
-                .HasForeignKey(sa => sa.IdAssessment)
+                .HasForeignKey(sa => new { sa.IdAssessment, sa.CodeModule, sa.CodePresentation })
                 .OnDelete(DeleteBehavior.Restrict);
             entity.HasOne(sa => sa.StudentInfo)
                 .WithMany(si => si.Assessments)
@@ -79,11 +81,11 @@ public class OuladContext(DbContextOptions<OuladContext> options) : DbContext(op
 
         modelBuilder.Entity<StudentVle>(entity =>
         {
-            entity.HasKey(sv => new { sv.IdSite, sv.IdStudent, sv.CodeModule, sv.CodePresentation });
+            entity.HasKey(sv => new { sv.CodeModule, sv.CodePresentation, sv.IdStudent });
             entity.ConfigureCourseEntity();
             entity.HasOne(sv => sv.Vle)
                 .WithMany(v => v.StudentVles)
-                .HasForeignKey(sv => sv.IdSite)
+                .HasForeignKey(sv => new { sv.CodeModule, sv.CodePresentation, sv.IdSite })
                 .OnDelete(DeleteBehavior.Restrict);
             entity.HasOne(sv => sv.StudentInfo)
                 .WithMany(si => si.StudentVles)
