@@ -179,7 +179,7 @@ public static class ExtendedEda
             hist.Items.Add(new BarItem(count));
         }
 
-        var normal = new LineSeries { Title = "Normal" };
+        var normal = new LineSeries { Title = "Normal", XAxisKey = "x", YAxisKey = "y" };
         for (var i = 0; i <= 100; i++)
         {
             var x = min + (max - min) * i / 100.0;
@@ -190,11 +190,11 @@ public static class ExtendedEda
         var model = new PlotModel { Title = "Normal Distribution", Background = OxyColors.White };
         model.Series.Add(hist);
         model.Series.Add(normal);
-        var catAxis = new CategoryAxis { Position = AxisPosition.Bottom, Key = "x" };
+        var catAxis = new CategoryAxis { Position = AxisPosition.Left, Key = "y" };
         for (var i = 0; i < bins; i++)
             catAxis.Labels.Add(string.Empty);
         model.Axes.Add(catAxis);
-        model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Key = "y" });
+        model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Key = "x" });
         PngExporter.Export(model, path, 600, 400);
 
         static double Normal(double x, double mu, double sigma)
