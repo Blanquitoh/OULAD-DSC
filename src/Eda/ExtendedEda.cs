@@ -60,7 +60,11 @@ public static class ExtendedEda
         var matrix = new double[cols, cols];
         for (var i = 0; i < cols; i++)
         for (var j = 0; j < cols; j++)
-            matrix[i, j] = Pearson(rows.Select(r => r[i]), rows.Select(r => r[j]));
+        {
+            var i1 = i;
+            var j1 = j;
+            matrix[i, j] = Pearson(rows.Select(r => r[i1]), rows.Select(r => r[j1]));
+        }
 
         var model = new PlotModel { Title = "Correlation Matrix", Background = OxyColors.White };
         model.Axes.Add(new CategoryAxis

@@ -5,21 +5,13 @@ using OuladEtlEda.Domain;
 
 namespace OuladEtlEda.Pipeline.Mappers;
 
-public class StudentAssessmentCsvMapper : ICsvEntityMapper<StudentAssessmentCsv, StudentAssessment>
+public class StudentAssessmentCsvMapper(CategoricalOrdinalMapper mapper, OuladContext context)
+    : ICsvEntityMapper<StudentAssessmentCsv, StudentAssessment>
 {
-    private readonly CategoricalOrdinalMapper _mapper;
-    private readonly OuladContext _context;
-
-    public StudentAssessmentCsvMapper(CategoricalOrdinalMapper mapper, OuladContext context)
-    {
-        _mapper = mapper;
-        _context = context;
-    }
-
     public StudentAssessment Map(StudentAssessmentCsv csv)
     {
-        var idAssessment = _mapper.GetOrAdd("assessment_id", csv.IdAssessment.ToString());
-        var assessment = _context.Assessments.AsNoTracking().FirstOrDefault(a => a.IdAssessment == idAssessment);
+        var idAssessment = mapper.GetOrAdd("assessment_id", csv.IdAssessment.ToString());
+        var assessment = context.Assessments.AsNoTracking().FirstOrDefault(a => a.IdAssessment == idAssessment);
         if (assessment == null)
             throw new InvalidOperationException($"Assessment {csv.IdAssessment} not found");
 

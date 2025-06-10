@@ -11,80 +11,34 @@ using Serilog;
 
 namespace OuladEtlEda.Pipeline;
 
-public class EtlPipeline
+public class EtlPipeline(
+    CsvReader<CourseCsv> courseReader,
+    CsvReader<AssessmentCsv> assessmentReader,
+    CsvReader<StudentInfoCsv> studentInfoReader,
+    CsvReader<StudentRegistrationCsv> registrationReader,
+    CsvReader<StudentAssessmentCsv> studentAssessmentReader,
+    CsvReader<VleCsv> vleReader,
+    CsvReader<StudentVleCsv> studentVleReader,
+    CategoricalOrdinalMapper mapper,
+    CourseValidator courseValidator,
+    AssessmentValidator assessmentValidator,
+    StudentInfoValidator studentInfoValidator,
+    StudentRegistrationValidator registrationValidator,
+    StudentAssessmentValidator studentAssessmentValidator,
+    VleValidator vleValidator,
+    StudentVleValidator studentVleValidator,
+    BulkLoader loader,
+    OuladContext context)
 {
-    private readonly AssessmentCsvMapper _assessmentMapper;
-    private readonly CsvReader<AssessmentCsv> _assessmentReader;
-    private readonly AssessmentValidator _assessmentValidator;
-    private readonly OuladContext _context;
+    private readonly AssessmentCsvMapper _assessmentMapper = new(mapper);
 
-    private readonly CourseCsvMapper _courseMapper;
-    private readonly CsvReader<CourseCsv> _courseReader;
+    private readonly CourseCsvMapper _courseMapper = new();
 
-    private readonly CourseValidator _courseValidator;
-    private readonly BulkLoader _loader;
-    private readonly CategoricalOrdinalMapper _mapper;
-    private readonly StudentRegistrationCsvMapper _registrationMapper;
-    private readonly CsvReader<StudentRegistrationCsv> _registrationReader;
-    private readonly StudentRegistrationValidator _registrationValidator;
-    private readonly StudentAssessmentCsvMapper _studentAssessmentMapper;
-    private readonly CsvReader<StudentAssessmentCsv> _studentAssessmentReader;
-    private readonly StudentAssessmentValidator _studentAssessmentValidator;
-    private readonly StudentInfoCsvMapper _studentInfoMapper;
-    private readonly CsvReader<StudentInfoCsv> _studentInfoReader;
-    private readonly StudentInfoValidator _studentInfoValidator;
-    private readonly StudentVleCsvMapper _studentVleMapper;
-    private readonly CsvReader<StudentVleCsv> _studentVleReader;
-    private readonly StudentVleValidator _studentVleValidator;
-    private readonly VleCsvMapper _vleMapper;
-    private readonly CsvReader<VleCsv> _vleReader;
-    private readonly VleValidator _vleValidator;
-
-    public EtlPipeline(
-        CsvReader<CourseCsv> courseReader,
-        CsvReader<AssessmentCsv> assessmentReader,
-        CsvReader<StudentInfoCsv> studentInfoReader,
-        CsvReader<StudentRegistrationCsv> registrationReader,
-        CsvReader<StudentAssessmentCsv> studentAssessmentReader,
-        CsvReader<VleCsv> vleReader,
-        CsvReader<StudentVleCsv> studentVleReader,
-        CategoricalOrdinalMapper mapper,
-        CourseValidator courseValidator,
-        AssessmentValidator assessmentValidator,
-        StudentInfoValidator studentInfoValidator,
-        StudentRegistrationValidator registrationValidator,
-        StudentAssessmentValidator studentAssessmentValidator,
-        VleValidator vleValidator,
-        StudentVleValidator studentVleValidator,
-        BulkLoader loader,
-        OuladContext context)
-    {
-        _courseReader = courseReader;
-        _assessmentReader = assessmentReader;
-        _studentInfoReader = studentInfoReader;
-        _registrationReader = registrationReader;
-        _studentAssessmentReader = studentAssessmentReader;
-        _vleReader = vleReader;
-        _studentVleReader = studentVleReader;
-        _mapper = mapper;
-        _courseValidator = courseValidator;
-        _assessmentValidator = assessmentValidator;
-        _studentInfoValidator = studentInfoValidator;
-        _registrationValidator = registrationValidator;
-        _studentAssessmentValidator = studentAssessmentValidator;
-        _vleValidator = vleValidator;
-        _studentVleValidator = studentVleValidator;
-        _loader = loader;
-        _context = context;
-
-        _courseMapper = new CourseCsvMapper();
-        _assessmentMapper = new AssessmentCsvMapper(mapper);
-        _studentInfoMapper = new StudentInfoCsvMapper(mapper);
-        _registrationMapper = new StudentRegistrationCsvMapper();
-        _studentAssessmentMapper = new StudentAssessmentCsvMapper(mapper, context);
-        _vleMapper = new VleCsvMapper(mapper);
-        _studentVleMapper = new StudentVleCsvMapper();
-    }
+    private readonly StudentRegistrationCsvMapper _registrationMapper = new();
+    private readonly StudentAssessmentCsvMapper _studentAssessmentMapper = new(mapper, context);
+    private readonly StudentInfoCsvMapper _studentInfoMapper = new(mapper);
+    private readonly StudentVleCsvMapper _studentVleMapper = new();
+    private readonly VleCsvMapper _vleMapper = new(mapper);
 
     private async Task LoadAsync<TCsv, TEntity>(
         CsvReaderBase<TCsv> reader,
@@ -104,7 +58,7 @@ public class EtlPipeline
                 Log.Information("Processed {Count} records for {Entity}", count, typeof(TEntity).Name);
         }
 
-        await _loader.BulkInsertAsync(_context, entities);
+        await loader.BulkInsertAsync(context, entities);
         Log.Information("Inserted {Count} records for {Entity}", count, typeof(TEntity).Name);
     }
 
@@ -129,16 +83,16 @@ public class EtlPipeline
 
     private async Task TruncateTablesAsync()
     {
-        if (!_context.Database.IsRelational())
+        if (!context.Database.IsRelational())
         {
-            _context.StudentVles.RemoveRange(_context.StudentVles);
-            _context.StudentAssessments.RemoveRange(_context.StudentAssessments);
-            _context.StudentRegistrations.RemoveRange(_context.StudentRegistrations);
-            _context.Vles.RemoveRange(_context.Vles);
-            _context.StudentInfos.RemoveRange(_context.StudentInfos);
-            _context.Assessments.RemoveRange(_context.Assessments);
-            _context.Courses.RemoveRange(_context.Courses);
-            await _context.SaveChangesAsync();
+            context.StudentVles.RemoveRange(context.StudentVles);
+            context.StudentAssessments.RemoveRange(context.StudentAssessments);
+            context.StudentRegistrations.RemoveRange(context.StudentRegistrations);
+            context.Vles.RemoveRange(context.Vles);
+            context.StudentInfos.RemoveRange(context.StudentInfos);
+            context.Assessments.RemoveRange(context.Assessments);
+            context.Courses.RemoveRange(context.Courses);
+            await context.SaveChangesAsync();
             return;
         }
 
@@ -153,66 +107,63 @@ public class EtlPipeline
             "courses"
         };
 
-        foreach (var table in tables)
-        {
-            await _context.Database.ExecuteSqlRawAsync($"DELETE FROM [{table}];");
-        }
+        foreach (var table in tables) await context.Database.ExecuteSqlRawAsync($"DELETE FROM [{table}];");
     }
 
     private Task LoadCoursesAsync()
     {
         return LoadAsync(
-            _courseReader,
+            courseReader,
             _courseMapper.Map,
-            _courseValidator);
+            courseValidator);
     }
 
     private Task LoadAssessmentsAsync()
     {
         return LoadAsync(
-            _assessmentReader,
+            assessmentReader,
             _assessmentMapper.Map,
-            _assessmentValidator);
+            assessmentValidator);
     }
 
 
     private Task LoadStudentInfoAsync()
     {
         return LoadAsync(
-            _studentInfoReader,
+            studentInfoReader,
             _studentInfoMapper.Map,
-            _studentInfoValidator);
+            studentInfoValidator);
     }
 
     private Task LoadRegistrationsAsync()
     {
         return LoadAsync(
-            _registrationReader,
+            registrationReader,
             _registrationMapper.Map,
-            _registrationValidator);
+            registrationValidator);
     }
 
     private Task LoadStudentAssessmentsAsync()
     {
         return LoadAsync(
-            _studentAssessmentReader,
+            studentAssessmentReader,
             _studentAssessmentMapper.Map,
-            _studentAssessmentValidator);
+            studentAssessmentValidator);
     }
 
     private Task LoadVleAsync()
     {
         return LoadAsync(
-            _vleReader,
+            vleReader,
             _vleMapper.Map,
-            _vleValidator);
+            vleValidator);
     }
 
     private Task LoadStudentVleAsync()
     {
         return LoadAsync(
-            _studentVleReader,
+            studentVleReader,
             _studentVleMapper.Map,
-            _studentVleValidator);
+            studentVleValidator);
     }
 }

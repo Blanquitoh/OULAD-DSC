@@ -3,12 +3,8 @@ using OuladEtlEda.Domain;
 
 namespace OuladEtlEda.DataAccess;
 
-public class OuladContext : DbContext
+public class OuladContext(DbContextOptions<OuladContext> options) : DbContext(options)
 {
-    public OuladContext(DbContextOptions<OuladContext> options) : base(options)
-    {
-    }
-
     public DbSet<Course> Courses => Set<Course>();
     public DbSet<Assessment> Assessments => Set<Assessment>();
     public DbSet<StudentAssessment> StudentAssessments => Set<StudentAssessment>();

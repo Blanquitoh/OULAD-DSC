@@ -3,15 +3,8 @@ using OuladEtlEda.Domain;
 
 namespace OuladEtlEda.Pipeline.Mappers;
 
-public class VleCsvMapper : ICsvEntityMapper<VleCsv, Vle>
+public class VleCsvMapper(CategoricalOrdinalMapper mapper) : ICsvEntityMapper<VleCsv, Vle>
 {
-    private readonly CategoricalOrdinalMapper _mapper;
-
-    public VleCsvMapper(CategoricalOrdinalMapper mapper)
-    {
-        _mapper = mapper;
-    }
-
     public Vle Map(VleCsv csv)
     {
         return new Vle
@@ -20,7 +13,7 @@ public class VleCsvMapper : ICsvEntityMapper<VleCsv, Vle>
             CodeModule = csv.CodeModule,
             CodePresentation = csv.CodePresentation,
             ActivityType = csv.ActivityType,
-            ActivityTypeOrdinal = csv.ActivityType == null ? null : _mapper.GetOrAdd("activity_type", csv.ActivityType),
+            ActivityTypeOrdinal = csv.ActivityType == null ? null : mapper.GetOrAdd("activity_type", csv.ActivityType),
             WeekFrom = csv.WeekFrom,
             WeekTo = csv.WeekTo
         };

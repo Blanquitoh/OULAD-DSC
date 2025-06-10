@@ -3,15 +3,8 @@ using OuladEtlEda.Domain;
 
 namespace OuladEtlEda.Pipeline.Mappers;
 
-public class StudentInfoCsvMapper : ICsvEntityMapper<StudentInfoCsv, StudentInfo>
+public class StudentInfoCsvMapper(CategoricalOrdinalMapper mapper) : ICsvEntityMapper<StudentInfoCsv, StudentInfo>
 {
-    private readonly CategoricalOrdinalMapper _mapper;
-
-    public StudentInfoCsvMapper(CategoricalOrdinalMapper mapper)
-    {
-        _mapper = mapper;
-    }
-
     public StudentInfo Map(StudentInfoCsv csv)
     {
         return new StudentInfo
@@ -21,10 +14,10 @@ public class StudentInfoCsvMapper : ICsvEntityMapper<StudentInfoCsv, StudentInfo
             IdStudent = csv.IdStudent,
             Gender = ParseGender(csv.Gender),
             Region = csv.Region,
-            RegionOrdinal = csv.Region == null ? null : _mapper.GetOrAdd("region", csv.Region),
+            RegionOrdinal = csv.Region == null ? null : mapper.GetOrAdd("region", csv.Region),
             HighestEducation = ParseEducation(csv.HighestEducation),
             ImdBand = csv.ImdBand,
-            ImdBandOrdinal = csv.ImdBand == null ? null : _mapper.GetOrAdd("imd_band", csv.ImdBand),
+            ImdBandOrdinal = csv.ImdBand == null ? null : mapper.GetOrAdd("imd_band", csv.ImdBand),
             AgeBand = ParseAgeBand(csv.AgeBand),
             NumOfPrevAttempts = csv.NumOfPrevAttempts,
             StudiedCredits = csv.StudiedCredits,

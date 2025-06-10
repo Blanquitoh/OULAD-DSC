@@ -3,9 +3,5 @@ using OuladEtlEda.DataImport.Models;
 
 namespace OuladEtlEda.DataImport.Readers;
 
-public class CsvVleReader : CsvReaderBase<VleCsv>
-{
-    public CsvVleReader(string path, CsvConfiguration? configuration = null) : base(path, configuration)
-    {
-    }
-}
+public class CsvVleReader(string path, CsvConfiguration? configuration = null)
+    : CsvReaderBase<VleCsv>(path, configuration);

@@ -4,23 +4,17 @@ using CsvHelper.Configuration;
 
 namespace OuladEtlEda.DataImport.Readers;
 
-public abstract class CsvReaderBase<T>
+public abstract class CsvReaderBase<T>(string path, CsvConfiguration? configuration = null)
 {
-    private readonly CsvConfiguration _configuration;
-    private readonly string _path;
-
-    protected CsvReaderBase(string path, CsvConfiguration? configuration = null)
-    {
-        _path = path;
-        _configuration = configuration ?? new CsvConfiguration(CultureInfo.InvariantCulture)
-        {
-            HasHeaderRecord = true
-        };
-    }
+    private readonly CsvConfiguration _configuration = configuration ??
+                                                       new CsvConfiguration(CultureInfo.InvariantCulture)
+                                                       {
+                                                           HasHeaderRecord = true
+                                                       };
 
     public virtual async IAsyncEnumerable<T> ReadAsync()
     {
-        await using var stream = File.OpenRead(_path);
+        await using var stream = File.OpenRead(path);
         using var reader = new StreamReader(stream);
         using var csv = new CsvReader(reader, _configuration);
         Configure(csv);
